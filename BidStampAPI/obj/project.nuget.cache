@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "YyXhWXlfeQmOcgq83IFOrLshkxfz6CmcaPmVkuUKkqSPF7Ab/q2Vk0ZOmCk07hROuNinhz+lYeIFA+OPPyeGXQ==",
+  "dgSpecHash": "+SV0oZ7VaVNmI6p7a/3eqqv0dMRsi43YVEuYs/cVyOIIQxvfCew46hM9Abxsu4agGb+GN+/WGK3mmyhsH8MEFQ==",
   "success": true,
-  "projectFilePath": "C:\\Users\\paulr\\Documents\\projecto\\BidStamp\\BidStamp\\BidStampAPI\\API_BidStamp.csproj",
+  "projectFilePath": "C:\\Users\\paulr\\Documents\\projecto\\BidStamp\\BidStampAPI\\API_BidStamp.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\paulr\\.nuget\\packages\\azure.core\\1.24.0\\azure.core.1.24.0.nupkg.sha512",
     "C:\\Users\\paulr\\.nuget\\packages\\azure.identity\\1.6.0\\azure.identity.1.6.0.nupkg.sha512",

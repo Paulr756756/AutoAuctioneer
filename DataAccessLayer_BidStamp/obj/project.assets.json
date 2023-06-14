@@ -3683,11 +3683,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\paulr\\Documents\\projecto\\BidStamp\\BidStamp\\DataAccessLayer_BidStamp\\DataAccessLibrary_BidStamp.csproj",
+      "projectUniqueName": "C:\\Users\\paulr\\Documents\\projecto\\BidStamp\\DataAccessLayer_BidStamp\\DataAccessLibrary_BidStamp.csproj",
       "projectName": "DataAccessLibrary_BidStamp",
-      "projectPath": "C:\\Users\\paulr\\Documents\\projecto\\BidStamp\\BidStamp\\DataAccessLayer_BidStamp\\DataAccessLibrary_BidStamp.csproj",
+      "projectPath": "C:\\Users\\paulr\\Documents\\projecto\\BidStamp\\DataAccessLayer_BidStamp\\DataAccessLibrary_BidStamp.csproj",
       "packagesPath": "C:\\Users\\paulr\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\paulr\\Documents\\projecto\\BidStamp\\BidStamp\\DataAccessLayer_BidStamp\\obj\\",
+      "outputPath": "C:\\Users\\paulr\\Documents\\projecto\\BidStamp\\DataAccessLayer_BidStamp\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
