@@ -16,7 +16,7 @@ namespace API_BidStamp.Controllers
         {
             _dbContext = dbContext;
         }
-
+        
         [HttpPost("register")]
         public async Task<IActionResult> Register(UserRegisterRequest request)
         {
