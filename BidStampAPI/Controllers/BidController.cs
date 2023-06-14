@@ -10,48 +10,93 @@ namespace API_BidStamp.Controllers
     [Route("api/[controller]")]
     public class BidController : ControllerBase
     {
-        private readonly BidStampApiDbContext _dbContext;
-        public BidController(BidStampApiDbContext dbContext)
+        private readonly DatabaseContext _dbContext;
+        public BidController(DatabaseContext dbContext)
         {
             _dbContext = dbContext;
         }
 
-        [HttpGet]
+        [HttpGet("getallbids")]
         public async Task<IActionResult> GetAllBids()
         {
             var response = await _dbContext.Bids.ToListAsync();
             return Ok(response);
         }
 
-        [HttpGet]
-        [Route("{id}")]
-        public async Task<IActionResult> GetBidById([FromRoute] Guid id)
+        [HttpGet("getbidbyid")]
+        public async Task<IActionResult> GetBidById(Guid id)
         {
-            var response = _dbContext.Bids.Find(id);
+            var response = await _dbContext.Bids.FirstOrDefaultAsync(b=> b.BidId == id);
+            if(response == null)
+            {
+                return BadRequest("Bid doesn't exist");
+            }
             return Ok(response);
 
         }
 
-        [HttpPost]
+        [HttpPost("addbid")]
         public async Task<IActionResult> AddBid(AddBidRequest request)
         {
-            if (_dbContext.Stamps.Find(request.StampId) != null && _dbContext.Users.Find(request.UserId) != null)
+            
+            if (!_dbContext.Listings.Any(s=> s.ListingId == request.ListingId))
             {
-                Bid bid = new Bid()
-                {
-                    BidId = Guid.NewGuid(),
-                    UserId = request.UserId,
-                    StampId = request.StampId,
-                    BidAmount = request.BidAmount,
-                    BidTime = request.BidTime
-                };
-
-                await _dbContext.Bids.AddAsync(bid);
-                await _dbContext.SaveChangesAsync();
-                return Ok(bid);
+                return BadRequest("No such listing exists");
+            }
+            if(!_dbContext.Users.Any(u => u.UserId == request.UserId))
+            {
+                return BadRequest("No such user exists");
             }
 
-            return NotFound();
+            Bid bid = new Bid()
+            {
+                BidId = Guid.NewGuid(),
+                UserId = request.UserId,
+                ListingId = request.ListingId,
+                BidAmount = request.BidAmount,
+                BidTime = DateTime.UtcNow,
+            };
+
+            await _dbContext.Bids.AddAsync(bid);
+            await _dbContext.SaveChangesAsync();
+            return Ok(bid);
+        }
+
+        [HttpDelete("deleteBids")]
+        public async Task<IActionResult> DeleteBid(DeleteBidRequest request)
+        {
+            var bid = await _dbContext.Bids.FirstOrDefaultAsync(bid => bid.UserId == request.UserId);
+            if (bid == null)
+            {
+                return BadRequest("Bid doesn't exist");
+            } else if(request.UserId != bid.UserId)
+            {
+                return BadRequest("You don't have ownership of the bid");
+            }
+
+            _dbContext.Bids.Remove(bid);
+            return Ok($"bid removed with bid Id:{bid.BidId}");
+        }
+
+        [HttpPatch]
+        public async Task<IActionResult> UpdateBidAmt(UpdateBidRequest request)
+        {
+            var bid = _dbContext.Bids.FirstOrDefault(b=> b.BidId == request.BidId);
+            if (bid == null)
+            {
+                return BadRequest("Bid Does not exist");
+            }
+            if(request.UserId != bid.UserId)
+            {
+                return BadRequest("You do not have ownership of the bid");
+            }
+
+            int prevAmt = bid.BidAmount;
+            bid.BidAmount=request.BidAmount;
+
+            await _dbContext.SaveChangesAsync();
+
+            return Ok($"Bid with id:{bid.BidId} amount:{prevAmt} updated to amount:{bid.BidAmount} ");
         }
     }
 }

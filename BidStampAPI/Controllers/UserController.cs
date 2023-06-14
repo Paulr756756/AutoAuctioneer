@@ -11,8 +11,8 @@ namespace API_BidStamp.Controllers
     [Route("api/[controller]")]
     public class UserController : ControllerBase
     {
-        private readonly BidStampApiDbContext _dbContext;
-        public UserController(BidStampApiDbContext dbContext)
+        private readonly DatabaseContext _dbContext;
+        public UserController(DatabaseContext dbContext)
         {
             _dbContext = dbContext;
         }

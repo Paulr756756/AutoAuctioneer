@@ -12,9 +12,9 @@ namespace API_BidStamp.Controllers
     [Route("api/[controller]")]
     public class StampController : ControllerBase
     {
-        private readonly BidStampApiDbContext _dbContext;
+        private readonly DatabaseContext _dbContext;
         /*private readonly ILogger _logger;*/
-        public StampController(BidStampApiDbContext dbContext)
+        public StampController(DatabaseContext dbContext)
         {
             _dbContext = dbContext;
             /*_logger = logger;*/
@@ -26,19 +26,6 @@ namespace API_BidStamp.Controllers
             var response = Ok(await _dbContext.Stamps.ToListAsync());
             return response;
         }
-
-        /*// GET: Stamp/Details/5
-        public ActionResult Details(int id)
-        {
-            return View();
-        }
-
-        // GET: Stamp/Create
-        public ActionResult Create()
-        {
-            return View();
-        }*/
-
 
         [HttpPost]
         public async Task<ActionResult> AddStamp(AddStampRequest request)

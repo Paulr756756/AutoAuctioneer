@@ -2,14 +2,13 @@
 
 namespace API_BidStamp.Models.BidRequestModels
 {
-    public class AddBidRequest
+    public class UpdateBidRequest
     {
         [Required]
-        public Guid ListingId { get; set; }
-        [Required]
+        public Guid BidId { get; set; }
+        [Required] 
         public Guid UserId { get; set; }
-        [Required]
+        [Required] 
         public int BidAmount { get; set; }
-        /*public DateTime BidTime { get; set; }*/
     }
 }

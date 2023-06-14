@@ -14,7 +14,7 @@ builder.Services.AddCors(c =>
     c.AddPolicy("AllowOrigin", options => options.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
 });
 
-builder.Services.AddDbContext<BidStampApiDbContext>(options => options
+builder.Services.AddDbContext<DatabaseContext>(options => options
 .UseSqlServer(builder.Configuration.GetConnectionString("BidStampDb")));
 
 
