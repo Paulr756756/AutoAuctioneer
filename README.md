@@ -1,2 +1,2 @@
 # BidStamp API
-BidStamp is an online bidding website that focuses on bidding of limited edition postal stamps. Made for the true Collectors!.
+This is an API created for BidStamp. BidStamp is an online bidding web application that focuses on bidding of limited edition postal stamps.
