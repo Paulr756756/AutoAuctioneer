@@ -4143,9 +4143,9 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\paulr\\Documents\\projecto\\BidStamp\\BidStamp\\BidStampAPI\\BidStampAPI.csproj",
-      "projectName": "BidStampAPI",
-      "projectPath": "C:\\Users\\paulr\\Documents\\projecto\\BidStamp\\BidStamp\\BidStampAPI\\BidStampAPI.csproj",
+      "projectUniqueName": "C:\\Users\\paulr\\Documents\\projecto\\BidStamp\\BidStamp\\BidStampAPI\\API_BidStamp.csproj",
+      "projectName": "API_BidStamp",
+      "projectPath": "C:\\Users\\paulr\\Documents\\projecto\\BidStamp\\BidStamp\\BidStampAPI\\API_BidStamp.csproj",
       "packagesPath": "C:\\Users\\paulr\\.nuget\\packages\\",
       "outputPath": "C:\\Users\\paulr\\Documents\\projecto\\BidStamp\\BidStamp\\BidStampAPI\\obj\\",
       "projectStyle": "PackageReference",
@@ -4163,6 +4163,7 @@
       "sources": {
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
         "C:\\Program Files\\dotnet\\library-packs": {},
+        "C:\\Program Files\\dotnet\\sdk\\7.0.302\\Sdks\\Microsoft.NET.Sdk.Web\\library-packs": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
@@ -4223,7 +4224,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.203\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.302\\RuntimeIdentifierGraph.json"
       }
     }
   }

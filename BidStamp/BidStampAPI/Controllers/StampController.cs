@@ -1,15 +1,16 @@
-﻿using BidStampAPI.Models;
+﻿using API_BidStamp.Models.StampRequestModels;
 using DataAccessLibrary_BidStamp;
 using DataAccessLibrary_BidStamp.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Diagnostics.Metrics;
 
-namespace BidStampAPI.Controllers
+namespace API_BidStamp.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class StampController : Controller
+    public class StampController : ControllerBase
     {
         private readonly BidStampApiDbContext _dbContext;
         /*private readonly ILogger _logger;*/
@@ -18,7 +19,7 @@ namespace BidStampAPI.Controllers
             _dbContext = dbContext;
             /*_logger = logger;*/
         }
-        
+
         [HttpGet]
         public async Task<IActionResult> GetAllStamps()
         {
@@ -38,7 +39,7 @@ namespace BidStampAPI.Controllers
             return View();
         }*/
 
-        
+
         [HttpPost]
         public async Task<ActionResult> AddStamp(AddStampRequest request)
         {
@@ -55,55 +56,67 @@ namespace BidStampAPI.Controllers
                 StartingBid = request.StartingBid,
                 EndingBid = request.EndingBid,
                 StartDate = request.StartDate,
-                EndDate  = request.EndDate
+                EndDate = request.EndDate
             };
 
             await _dbContext.Stamps.AddAsync(stamp);
             await _dbContext.SaveChangesAsync();
             return Ok(stamp);
-        
+
         }
 
-       /* // GET: Stamp/Edit/5
-        public ActionResult Edit(int id)
+        [HttpPut]
+        [Route("{id}")]
+        public async Task<IActionResult> UpdateStamp([FromRoute] Guid id, UpdateStampRequest request)
         {
-            return View();
+            var stamp = _dbContext.Stamps.Find(id);
+            if (stamp != null)
+            {
+                stamp.StampTitle = request.StampTitle;
+                stamp.Description = request.Description;
+                stamp.ImageUrl = request.ImageUrl;
+                stamp.Year = request.Year;
+                stamp.Country = request.Country;
+                stamp.Condition = request.Condition;
+                stamp.CatalogNumber = request.CatalogNumber;
+                stamp.StartingBid = request.StartingBid;
+                stamp.EndingBid = request.EndingBid;
+                stamp.StartDate = request.StartDate;
+                stamp.EndDate = request.EndDate;
+
+
+                await _dbContext.SaveChangesAsync();
+                return Ok(stamp);
+            }
+
+            return NotFound();
         }
 
-        // POST: Stamp/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        [HttpDelete]
+        [Route("{id}")]
+        public async Task<IActionResult> DeleteStamp([FromRoute] Guid id)
         {
-            try
+            var stamp = _dbContext.Stamps.Find(id);
+            if (stamp != null)
             {
-                return RedirectToAction(nameof(Index));
+                _dbContext.Stamps.Remove(stamp);
+                await _dbContext.SaveChangesAsync();
+                return Ok();
             }
-            catch
-            {
-                return View();
-            }
+
+            return NotFound();
         }
 
-        // GET: Stamp/Delete/5
-        public ActionResult Delete(int id)
+        [HttpGet]
+        [Route("{id}")]
+        public async Task<IActionResult> GetStampById([FromRoute] Guid id)
         {
-            return View();
+            var stamp = _dbContext.Stamps.Find(id);
+            if (stamp != null) return Ok(stamp);
+
+            return NotFound();
         }
 
-        // POST: Stamp/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }*/
     }
+
 }

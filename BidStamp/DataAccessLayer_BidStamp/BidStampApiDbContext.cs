@@ -12,5 +12,9 @@ namespace DataAccessLibrary_BidStamp
 
         //This is a property that will act as a table
         public DbSet<Stamp> Stamps { get; set; }
+        public DbSet<Bid> Bids { get; set; }
+        public DbSet<User> Users { get; set; }
+        public DbSet<WatchList> WatchLists { get; set; }
+
     }
 }

@@ -10,14 +10,19 @@ namespace DataAccessLibrary_BidStamp.Models
     public class User
     {
         public Guid UserId { get; set; }
-        public string UserName { get; set; }
-        public string Password { get; set; }
-        public string Email { get; set; }
+        public string? UserName { get; set; }
+        public byte[] PasswordHash { get; set; } = new byte[32];
+        public byte[] PasswordSalt { get; set; } = new byte[32];
+        public string? VerificationToken { get; set; }
+        public DateTime? VerifiedAt { get; set; }
+        public string? PasswordResetToken { get; set; }
+        public DateTime? ResetTokenExpires { get; set; }
+        public string Email { get; set; } = string.Empty;
         public string? FirstName { get; set; }
         public string? LastName { get; set; }
         public string? Address { get; set;}
-        public string Phone { get; set;}
-        public DateOnly RegistrationDate { get; set;}
+        public string? Phone { get; set;}
+        public DateTime RegistrationDate { get; set;}
 
     }
 
@@ -39,17 +44,17 @@ namespace DataAccessLibrary_BidStamp.Models
 
     public class Bid
     {
-        public int BidId { get; set; }
-        public int StampId { get; set; }
-        public int UserId { get; set; }
+        public Guid BidId { get; set; }
+        public Guid StampId { get; set; }
+        public Guid UserId { get; set; }
         public decimal BidAmount { get; set; }
         public DateTime BidTime { get; set; }
     }
 
     public class WatchList
     {
-        public int WatchlistId { get; set; }
-        public int UserId { get; set; }
-        public int StampId { get; set; }
+        public Guid WatchlistId { get; set; }
+        public Guid UserId { get; set; }
+        public Guid StampId { get; set; }
     }
 }

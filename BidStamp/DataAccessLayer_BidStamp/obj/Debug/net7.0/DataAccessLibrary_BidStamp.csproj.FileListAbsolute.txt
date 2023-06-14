@@ -1,4 +1,5 @@
 C:\Users\paulr\Documents\projecto\BidStamp\BidStamp\DataAccessLayer_BidStamp\bin\Debug\net7.0\DataAccessLibrary_BidStamp.deps.json
+C:\Users\paulr\Documents\projecto\BidStamp\BidStamp\DataAccessLayer_BidStamp\bin\Debug\net7.0\DataAccessLibrary_BidStamp.runtimeconfig.json
 C:\Users\paulr\Documents\projecto\BidStamp\BidStamp\DataAccessLayer_BidStamp\bin\Debug\net7.0\DataAccessLibrary_BidStamp.dll
 C:\Users\paulr\Documents\projecto\BidStamp\BidStamp\DataAccessLayer_BidStamp\bin\Debug\net7.0\DataAccessLibrary_BidStamp.pdb
 C:\Users\paulr\Documents\projecto\BidStamp\BidStamp\DataAccessLayer_BidStamp\obj\Debug\net7.0\DataAccessLibrary_BidStamp.csproj.AssemblyReference.cache
@@ -9,6 +10,5 @@ C:\Users\paulr\Documents\projecto\BidStamp\BidStamp\DataAccessLayer_BidStamp\obj
 C:\Users\paulr\Documents\projecto\BidStamp\BidStamp\DataAccessLayer_BidStamp\obj\Debug\net7.0\DataAccessLibrary_BidStamp.dll
 C:\Users\paulr\Documents\projecto\BidStamp\BidStamp\DataAccessLayer_BidStamp\obj\Debug\net7.0\refint\DataAccessLibrary_BidStamp.dll
 C:\Users\paulr\Documents\projecto\BidStamp\BidStamp\DataAccessLayer_BidStamp\obj\Debug\net7.0\DataAccessLibrary_BidStamp.pdb
-C:\Users\paulr\Documents\projecto\BidStamp\BidStamp\DataAccessLayer_BidStamp\obj\Debug\net7.0\ref\DataAccessLibrary_BidStamp.dll
-C:\Users\paulr\Documents\projecto\BidStamp\BidStamp\DataAccessLayer_BidStamp\bin\Debug\net7.0\DataAccessLibrary_BidStamp.runtimeconfig.json
 C:\Users\paulr\Documents\projecto\BidStamp\BidStamp\DataAccessLayer_BidStamp\obj\Debug\net7.0\DataAccessLibrary_BidStamp.genruntimeconfig.cache
+C:\Users\paulr\Documents\projecto\BidStamp\BidStamp\DataAccessLayer_BidStamp\obj\Debug\net7.0\ref\DataAccessLibrary_BidStamp.dll

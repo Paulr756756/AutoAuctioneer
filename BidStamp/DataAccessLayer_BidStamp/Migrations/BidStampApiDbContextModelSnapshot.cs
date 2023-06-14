@@ -22,6 +22,29 @@ namespace DataAccessLibrary_BidStamp.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("DataAccessLibrary_BidStamp.Models.Bid", b =>
+                {
+                    b.Property<Guid>("BidId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<decimal>("BidAmount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<DateTime>("BidTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("StampId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("BidId");
+
+                    b.ToTable("Bids");
+                });
+
             modelBuilder.Entity("DataAccessLibrary_BidStamp.Models.Stamp", b =>
                 {
                     b.Property<Guid>("StampId")
@@ -65,6 +88,77 @@ namespace DataAccessLibrary_BidStamp.Migrations
                     b.HasKey("StampId");
 
                     b.ToTable("Stamps");
+                });
+
+            modelBuilder.Entity("DataAccessLibrary_BidStamp.Models.User", b =>
+                {
+                    b.Property<Guid>("UserId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Address")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FirstName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LastName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<byte[]>("PasswordHash")
+                        .IsRequired()
+                        .HasColumnType("varbinary(max)");
+
+                    b.Property<string>("PasswordResetToken")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<byte[]>("PasswordSalt")
+                        .IsRequired()
+                        .HasColumnType("varbinary(max)");
+
+                    b.Property<string>("Phone")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("RegistrationDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("ResetTokenExpires")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("UserName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("VerificationToken")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("VerifiedAt")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("UserId");
+
+                    b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("DataAccessLibrary_BidStamp.Models.WatchList", b =>
+                {
+                    b.Property<Guid>("WatchlistId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("StampId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("WatchlistId");
+
+                    b.ToTable("WatchLists");
                 });
 #pragma warning restore 612, 618
         }
