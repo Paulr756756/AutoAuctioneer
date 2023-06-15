@@ -45,19 +45,20 @@ namespace API_BidStamp.Controllers
             {
                 return BadRequest("This stamp already present in another listing");
             }
-            if (!_dbContext.Users.Any(u => u.UserId == request.UserId))
-            {
-                return BadRequest("No such user exists");
-            }
-            if (!_dbContext.Stamps.Any(s => s.StampId == request.StampId))
+            Stamp stamp =await _dbContext.Stamps.FirstOrDefaultAsync(s=>s.StampId==request.StampId);
+            if(stamp == null)
             {
                 return BadRequest("No such stamp exists");
+            }else if(stamp.UserId != request.UserId)
+            {
+                return BadRequest("This stamp is not in your collection");
             }
 
             var listing = new Listing()
             {
                 ListingId = Guid.NewGuid(),
-                Stamp = await _dbContext.Stamps.FirstOrDefaultAsync(s=> s.StampId == request.StampId),
+                Stamp = stamp,
+                //TODO() : use stamp instead of fetching user again
                 User = await _dbContext.Users.FirstOrDefaultAsync(u=> u.UserId == request.UserId),
                 UserId = request.UserId,
             };

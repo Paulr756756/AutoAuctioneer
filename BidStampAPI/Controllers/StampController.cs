@@ -27,6 +27,15 @@ namespace API_BidStamp.Controllers
             return response;
         }
 
+        [HttpGet("getstampbyid")]
+        public async Task<IActionResult> GetStampById(Guid id)
+        {
+            var stamp = await _dbContext.Stamps.FirstOrDefaultAsync(s => s.StampId == id);
+            if (stamp != null) return Ok(stamp);
+
+            return NotFound();
+        }
+
         [HttpPost("addstamp")]
         public async Task<ActionResult> AddStamp(AddStampRequest request, Guid UserId)
         {
@@ -45,8 +54,6 @@ namespace API_BidStamp.Controllers
                 Country = request.Country,
                 Condition = request.Condition,
                 CatalogNumber = request.CatalogNumber,
-                StartingBid = request.StartingBid,
-                EndingBid = request.EndingBid,
                 StartDate = request.StartDate,
                 EndDate = request.EndDate,
                 User = user,
@@ -78,8 +85,6 @@ namespace API_BidStamp.Controllers
                 stamp.Country = request.Country;
                 stamp.Condition = request.Condition;
                 stamp.CatalogNumber = request.CatalogNumber;
-                stamp.StartingBid = request.StartingBid;
-                stamp.EndingBid = request.EndingBid;
                 stamp.StartDate = request.StartDate;
                 stamp.EndDate = request.EndDate;
                 
@@ -120,14 +125,7 @@ namespace API_BidStamp.Controllers
             return NotFound();
         }
 
-        [HttpGet("getstampbyid")]
-        public async Task<IActionResult> GetStampById(Guid id)
-        {
-            var stamp = await _dbContext.Stamps.FirstOrDefaultAsync(s=> s.StampId==id);
-            if (stamp != null) return Ok(stamp);
-
-            return NotFound();
-        }
+        
 
     }
 

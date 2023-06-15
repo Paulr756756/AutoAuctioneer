@@ -14,8 +14,6 @@ namespace API_BidStamp.Models.StampRequestModels
         public string? Country { get; set; }
         public string? Condition { get; set; }
         public string? CatalogNumber { get; set; }
-        public int? StartingBid { get; set; }
-        public int? EndingBid { get; set; }
         public DateTime? StartDate { get; set; }
         public DateTime? EndDate { get; set; }
     }

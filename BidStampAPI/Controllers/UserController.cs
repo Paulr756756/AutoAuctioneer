@@ -16,7 +16,7 @@ namespace API_BidStamp.Controllers
         {
             _dbContext = dbContext;
         }
-        
+
         [HttpPost("register")]
         public async Task<IActionResult> Register(UserRegisterRequest request)
         {
@@ -90,7 +90,7 @@ namespace API_BidStamp.Controllers
         [HttpPost("verify")]
         public async Task<IActionResult> Verify(string token)
         {
-            User user = await _dbContext.Users.FirstOrDefaultAsync();
+            User user = await _dbContext.Users.FirstOrDefaultAsync(u=> u.VerificationToken==token);
             if (user == null)
             {
                 return BadRequest("User Not Found");
@@ -105,7 +105,7 @@ namespace API_BidStamp.Controllers
         public async Task<IActionResult> ForgotPassword(string email)
         {
             User user = await _dbContext.Users.FirstOrDefaultAsync(u => u.Email == email);
-            if(user == null)
+            if (user == null)
             {
                 return BadRequest("User not found");
             }
@@ -129,13 +129,29 @@ namespace API_BidStamp.Controllers
             user.PasswordHash = passwordHash;
             user.PasswordSalt = passwordSalt;
             user.ResetTokenExpires = null;
-            user.PasswordResetToken= null;
-            
+            user.PasswordResetToken = null;
+
             await _dbContext.SaveChangesAsync();
             return Ok("SuccessfullyResetted your password");
         }
 
         //TODO() : User Delete
+        [HttpDelete("delete-user")]
+        public async Task<IActionResult> DeleteUser(DeleteUserRequest request)
+        {
+            var user = await _dbContext.Users.FirstOrDefaultAsync(u => u.Email == request.Email);
+            if(!VerifyPassword(request.Password, user.PasswordHash, user.PasswordSalt)){
+                return BadRequest("Passwords do not match");
+            }
+
+
+            List<Stamp> stamps = await _dbContext.Stamps.Where(s=>s.UserId==user.UserId).ToListAsync();
+            List<Listing> listings = await _dbContext.Listings.Where(l => l.UserId == user.UserId).ToListAsync();
+
+            _dbContext.Users.Remove(user);
+            await _dbContext.SaveChangesAsync();
+            return Ok("User deleted successfully with id"+ user.UserId);
+        }
     }
 }
     

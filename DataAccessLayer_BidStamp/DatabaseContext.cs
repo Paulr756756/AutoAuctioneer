@@ -34,8 +34,27 @@ namespace DataAccessLibrary_BidStamp
                 .HasOne(s=>s.Listing)
                 .WithOne(l=>l.Stamp)
                 .OnDelete(DeleteBehavior.ClientCascade);
+            /*modelBuilder
+                .Entity<Stamp>()
+                .HasOne(s => s.User)
+                .WithMany(u => u.Stamps)
+                .OnDelete(DeleteBehavior.ClientCascade);
+            modelBuilder
+                .Entity<Listing>()
+                .HasOne(u => u.User)
+                .WithMany(l => l.Listings)
+                .OnDelete(DeleteBehavior.ClientCascade);*/
+            modelBuilder
+                .Entity<Bid>()
+                .HasOne(e=>e.Listing)
+                .WithMany(e=>e.Bids)
+                .OnDelete(DeleteBehavior.ClientCascade);
+            modelBuilder
+                .Entity<Bid>()
+                .HasOne(e=>e.User)
+                .WithMany(e=>e.Bids)
+                .OnDelete(DeleteBehavior.ClientCascade);
 
         }
-
     }
 }

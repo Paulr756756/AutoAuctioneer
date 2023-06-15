@@ -38,21 +38,27 @@ namespace API_BidStamp.Controllers
         [HttpPost("addbid")]
         public async Task<IActionResult> AddBid(AddBidRequest request)
         {
-            
-            if (!_dbContext.Listings.Any(s=> s.ListingId == request.ListingId))
-            {
-                return BadRequest("No such listing exists");
-            }
-            if(!_dbContext.Users.Any(u => u.UserId == request.UserId))
+            var user = await _dbContext.Users.FirstOrDefaultAsync(e => e.UserId == request.UserId);
+            if (user==null)
             {
                 return BadRequest("No such user exists");
             }
-
+            var listing = await _dbContext.Listings.FirstOrDefaultAsync(e => e.ListingId == request.ListingId);
+            if (listing==null)
+            {
+                return BadRequest("No such listing exists");
+            }else if(listing.UserId==request.UserId)
+            {
+                return BadRequest("You are trying to Bid on a Listing You posted");
+            }
+            
             Bid bid = new Bid()
             {
                 BidId = Guid.NewGuid(),
                 UserId = request.UserId,
+                User=user,
                 ListingId = request.ListingId,
+                Listing=listing,
                 BidAmount = request.BidAmount,
                 BidTime = DateTime.UtcNow,
             };
@@ -75,6 +81,7 @@ namespace API_BidStamp.Controllers
             }
 
             _dbContext.Bids.Remove(bid);
+            await _dbContext.SaveChangesAsync();
             return Ok($"bid removed with bid Id:{bid.BidId}");
         }
 

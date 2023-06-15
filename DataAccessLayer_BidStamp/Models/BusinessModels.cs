@@ -23,8 +23,10 @@ namespace DataAccessLibrary_BidStamp.Models
         public string? Address { get; set;}
         public string? Phone { get; set;}
         public DateTime RegistrationDate { get; set;}
+
         public List<Listing>? Listings = new List<Listing>();
         public List<Stamp>? Stamps = new List<Stamp>();
+        public List<Bid>? Bids = new List<Bid>();
 
     }
 
@@ -38,8 +40,8 @@ namespace DataAccessLibrary_BidStamp.Models
         public string? Country { get; set; }
         public string? Condition { get; set; }
         public string? CatalogNumber { get; set; }
-        public int? StartingBid { get; set; }
-        public int? EndingBid { get; set; }
+       /* public int? StartingBid { get; set; }
+        public int? EndingBid { get; set; }*/
         public DateTime? StartDate { get; set; }
         public DateTime? EndDate { get; set; }
         /*public Guid? ListingId { get; set; }*/
@@ -52,7 +54,9 @@ namespace DataAccessLibrary_BidStamp.Models
     {
         public Guid BidId { get; set; }
         public Guid ListingId { get; set; }
+        public Listing Listing { get; set; }
         public Guid UserId { get; set; }
+        public User User { get; set; }
         public int BidAmount { get; set; }
         public DateTime BidTime { get; set; }
     }
@@ -65,5 +69,6 @@ namespace DataAccessLibrary_BidStamp.Models
         public User User { get; set; }
         public Stamp Stamp { get; set; }
         public Guid? BidId { get; set; }
+        public List<Bid>? Bids = new List<Bid>();
     }
 }
