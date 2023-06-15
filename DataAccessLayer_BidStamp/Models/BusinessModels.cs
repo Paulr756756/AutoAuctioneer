@@ -23,6 +23,8 @@ namespace DataAccessLibrary_BidStamp.Models
         public string? Address { get; set;}
         public string? Phone { get; set;}
         public DateTime RegistrationDate { get; set;}
+        public List<Listing>? Listings = new List<Listing>();
+        public List<Stamp>? Stamps = new List<Stamp>();
 
     }
 
@@ -40,21 +42,28 @@ namespace DataAccessLibrary_BidStamp.Models
         public int? EndingBid { get; set; }
         public DateTime? StartDate { get; set; }
         public DateTime? EndDate { get; set; }
+        /*public Guid? ListingId { get; set; }*/
+        public Listing? Listing { get; set; }
+        public Guid UserId { get; set; }
+        public User User { get; set; }
     }
 
     public class Bid
     {
         public Guid BidId { get; set; }
-        public Guid StampId { get; set; }
+        public Guid ListingId { get; set; }
         public Guid UserId { get; set; }
-        public decimal BidAmount { get; set; }
+        public int BidAmount { get; set; }
         public DateTime BidTime { get; set; }
     }
 
-    public class WatchList
+    public class Listing
     {
-        public Guid WatchlistId { get; set; }
+        public Guid ListingId { get; set; }
         public Guid UserId { get; set; }
         public Guid StampId { get; set; }
+        public User User { get; set; }
+        public Stamp Stamp { get; set; }
+        public Guid? BidId { get; set; }
     }
 }

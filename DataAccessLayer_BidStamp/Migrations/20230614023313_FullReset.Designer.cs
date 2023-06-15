@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DataAccessLibrary_BidStamp.Migrations
 {
-    [DbContext(typeof(BidStampApiDbContext))]
+    [DbContext(typeof(DatabaseContext))]
     [Migration("20230614023313_FullReset")]
     partial class FullReset
     {

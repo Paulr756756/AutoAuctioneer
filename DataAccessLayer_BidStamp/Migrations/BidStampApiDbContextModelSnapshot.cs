@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DataAccessLibrary_BidStamp.Migrations
 {
-    [DbContext(typeof(BidStampApiDbContext))]
+    [DbContext(typeof(DatabaseContext))]
     partial class BidStampApiDbContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)
@@ -28,13 +28,13 @@ namespace DataAccessLibrary_BidStamp.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<decimal>("BidAmount")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<int>("BidAmount")
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("BidTime")
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid>("StampId")
+                    b.Property<Guid>("ListingId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("UserId")
@@ -43,6 +43,31 @@ namespace DataAccessLibrary_BidStamp.Migrations
                     b.HasKey("BidId");
 
                     b.ToTable("Bids");
+                });
+
+            modelBuilder.Entity("DataAccessLibrary_BidStamp.Models.Listing", b =>
+                {
+                    b.Property<Guid>("ListingId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("BidId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("StampId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("ListingId");
+
+                    b.HasIndex("StampId")
+                        .IsUnique();
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Listings");
                 });
 
             modelBuilder.Entity("DataAccessLibrary_BidStamp.Models.Stamp", b =>
@@ -82,10 +107,15 @@ namespace DataAccessLibrary_BidStamp.Migrations
                     b.Property<int?>("StartingBid")
                         .HasColumnType("int");
 
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<string>("Year")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("StampId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Stamps");
                 });
@@ -130,7 +160,6 @@ namespace DataAccessLibrary_BidStamp.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("UserName")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("VerificationToken")
@@ -144,21 +173,46 @@ namespace DataAccessLibrary_BidStamp.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("DataAccessLibrary_BidStamp.Models.WatchList", b =>
+            modelBuilder.Entity("DataAccessLibrary_BidStamp.Models.Listing", b =>
                 {
-                    b.Property<Guid>("WatchlistId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                    b.HasOne("DataAccessLibrary_BidStamp.Models.Stamp", "Stamp")
+                        .WithOne("Listing")
+                        .HasForeignKey("DataAccessLibrary_BidStamp.Models.Listing", "StampId")
+                        .OnDelete(DeleteBehavior.ClientCascade)
+                        .IsRequired();
 
-                    b.Property<Guid>("StampId")
-                        .HasColumnType("uniqueidentifier");
+                    b.HasOne("DataAccessLibrary_BidStamp.Models.User", "User")
+                        .WithMany("Listings")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.ClientCascade)
+                        .IsRequired();
 
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Navigation("Stamp");
 
-                    b.HasKey("WatchlistId");
+                    b.Navigation("User");
+                });
 
-                    b.ToTable("WatchLists");
+            modelBuilder.Entity("DataAccessLibrary_BidStamp.Models.Stamp", b =>
+                {
+                    b.HasOne("DataAccessLibrary_BidStamp.Models.User", "User")
+                        .WithMany("Stamps")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.ClientCascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("DataAccessLibrary_BidStamp.Models.Stamp", b =>
+                {
+                    b.Navigation("Listing");
+                });
+
+            modelBuilder.Entity("DataAccessLibrary_BidStamp.Models.User", b =>
+                {
+                    b.Navigation("Listings");
+
+                    b.Navigation("Stamps");
                 });
 #pragma warning restore 612, 618
         }

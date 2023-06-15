@@ -7,8 +7,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "API_BidStamp", "BidStampAPI
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataAccessLibrary_BidStamp", "DataAccessLayer_BidStamp\DataAccessLibrary_BidStamp.csproj", "{40264E07-B66C-4F0A-AEE5-FCE5B58BE3D9}"
 EndProject
-Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "client_bidstamp", "client_bidstamp_react\client_bidstamp.esproj", "{4EB098EA-8DB1-47BC-8FE6-D21A48D9D390}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -23,12 +21,6 @@ Global
 		{40264E07-B66C-4F0A-AEE5-FCE5B58BE3D9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{40264E07-B66C-4F0A-AEE5-FCE5B58BE3D9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{40264E07-B66C-4F0A-AEE5-FCE5B58BE3D9}.Release|Any CPU.Build.0 = Release|Any CPU
-		{4EB098EA-8DB1-47BC-8FE6-D21A48D9D390}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4EB098EA-8DB1-47BC-8FE6-D21A48D9D390}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{4EB098EA-8DB1-47BC-8FE6-D21A48D9D390}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
-		{4EB098EA-8DB1-47BC-8FE6-D21A48D9D390}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{4EB098EA-8DB1-47BC-8FE6-D21A48D9D390}.Release|Any CPU.Build.0 = Release|Any CPU
-		{4EB098EA-8DB1-47BC-8FE6-D21A48D9D390}.Release|Any CPU.Deploy.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
