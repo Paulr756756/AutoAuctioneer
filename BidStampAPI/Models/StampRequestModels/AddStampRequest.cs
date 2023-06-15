@@ -1,7 +1,12 @@
-﻿namespace API_BidStamp.Models.StampRequestModels
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace API_BidStamp.Models.StampRequestModels
 {
     public class AddStampRequest
     {
+       /* [Required]
+        public Guid UserId;*/
+        [Required]
         public string StampTitle { get; set; }
         public string? Description { get; set; }
         public string? ImageUrl { get; set; }

@@ -30,7 +30,7 @@ namespace API_BidStamp.Controllers
             }
             if (listing.UserId != request.UserId)
             {
-                return BadRequest("You do not have the ownership of this listing");
+                return BadRequest("You do not have the authority to delete  this listing");
             }
 
             _dbContext.Listings.Remove(listing);
@@ -41,7 +41,7 @@ namespace API_BidStamp.Controllers
         [HttpPost("addlisting")]
         public async Task<IActionResult> AddListing(ListingRegisterRequest request)
         {
-            if(_dbContext.Listings.Any(l=> l.StampId == request.StampId))
+            if(_dbContext.Listings.Any(l=> l.Stamp.StampId == request.StampId))
             {
                 return BadRequest("This stamp already present in another listing");
             }
@@ -57,9 +57,14 @@ namespace API_BidStamp.Controllers
             var listing = new Listing()
             {
                 ListingId = Guid.NewGuid(),
-                StampId = request.StampId,
+                Stamp = await _dbContext.Stamps.FirstOrDefaultAsync(s=> s.StampId == request.StampId),
+                User = await _dbContext.Users.FirstOrDefaultAsync(u=> u.UserId == request.UserId),
                 UserId = request.UserId,
             };
+
+            listing.Stamp.Listing = listing;
+            listing.StampId = request.StampId; 
+
             _dbContext.Listings.Add(listing);
             await _dbContext.SaveChangesAsync();
             return Ok($"Listing Added with Id:{listing.ListingId}");

@@ -27,9 +27,14 @@ namespace API_BidStamp.Controllers
             return response;
         }
 
-        [HttpPost]
-        public async Task<ActionResult> AddStamp(AddStampRequest request)
+        [HttpPost("addstamp")]
+        public async Task<ActionResult> AddStamp(AddStampRequest request, Guid UserId)
         {
+            var user = await _dbContext.Users.FirstOrDefaultAsync(u => u.UserId == UserId);
+            if (user == null) {
+                return BadRequest("No such user present. Signup first");
+            }
+
             Stamp stamp = new Stamp()
             {
                 StampId = Guid.NewGuid(),
@@ -43,22 +48,29 @@ namespace API_BidStamp.Controllers
                 StartingBid = request.StartingBid,
                 EndingBid = request.EndingBid,
                 StartDate = request.StartDate,
-                EndDate = request.EndDate
+                EndDate = request.EndDate,
+                User = user,
+                UserId = UserId,
+
             };
+            /*user.Stamps.Add(stamp);*/
 
             await _dbContext.Stamps.AddAsync(stamp);
             await _dbContext.SaveChangesAsync();
             return Ok(stamp);
-
         }
 
-        [HttpPut]
-        [Route("{id}")]
-        public async Task<IActionResult> UpdateStamp([FromRoute] Guid id, UpdateStampRequest request)
+        [HttpPut("updatestamp")]
+        public async Task<IActionResult> UpdateStamp(UpdateStampRequest request, Guid StampId, Guid UserId)
         {
-            var stamp = _dbContext.Stamps.Find(id);
+            var stamp = await _dbContext.Stamps.FirstOrDefaultAsync(s => s.StampId == StampId);
+            
             if (stamp != null)
             {
+                if (UserId != stamp.UserId)
+                {
+                    return BadRequest("You are not authorized to update this stamp");
+                }
                 stamp.StampTitle = request.StampTitle;
                 stamp.Description = request.Description;
                 stamp.ImageUrl = request.ImageUrl;
@@ -70,7 +82,11 @@ namespace API_BidStamp.Controllers
                 stamp.EndingBid = request.EndingBid;
                 stamp.StartDate = request.StartDate;
                 stamp.EndDate = request.EndDate;
-
+                
+                /*if (ListingId != null)
+                {   
+                    stamp.Listing = await _dbContext.Listings.FirstOrDefaultAsync(l => l.ListingId == ListingId);
+                }*/
 
                 await _dbContext.SaveChangesAsync();
                 return Ok(stamp);
@@ -79,26 +95,35 @@ namespace API_BidStamp.Controllers
             return NotFound();
         }
 
-        [HttpDelete]
-        [Route("{id}")]
-        public async Task<IActionResult> DeleteStamp([FromRoute] Guid id)
+        [HttpDelete("deletestamp")]
+        public async Task<IActionResult> DeleteStamp(Guid UserId, Guid StampId)
         {
-            var stamp = _dbContext.Stamps.Find(id);
+            var stamp = await _dbContext.Stamps.FirstOrDefaultAsync(s => s.StampId == StampId);
             if (stamp != null)
             {
-                _dbContext.Stamps.Remove(stamp);
-                await _dbContext.SaveChangesAsync();
+               /* if (stamp.Listing != null)
+                {
+                    _dbContext.Listings.Remove(stamp.Listing);
+                }*/
+               if(UserId != stamp.UserId)
+                {
+                    return BadRequest("You are not authorized to delete this stamp");
+                }else
+                {
+                    var listing = await _dbContext.Listings.FirstOrDefaultAsync(l=> l.Stamp == stamp);
+                    _dbContext.Stamps.Remove(stamp);
+
+                    await _dbContext.SaveChangesAsync();
+                }
                 return Ok();
             }
-
             return NotFound();
         }
 
-        [HttpGet]
-        [Route("{id}")]
-        public async Task<IActionResult> GetStampById([FromRoute] Guid id)
+        [HttpGet("getstampbyid")]
+        public async Task<IActionResult> GetStampById(Guid id)
         {
-            var stamp = _dbContext.Stamps.Find(id);
+            var stamp = await _dbContext.Stamps.FirstOrDefaultAsync(s=> s.StampId==id);
             if (stamp != null) return Ok(stamp);
 
             return NotFound();
