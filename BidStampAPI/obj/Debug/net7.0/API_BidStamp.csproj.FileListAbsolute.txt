@@ -168,3 +168,8 @@ C:\Users\paulr\Documents\projecto\BidStamp\BidStampAPI\obj\Debug\net7.0\refint\A
 C:\Users\paulr\Documents\projecto\BidStamp\BidStampAPI\obj\Debug\net7.0\API_BidStamp.pdb
 C:\Users\paulr\Documents\projecto\BidStamp\BidStampAPI\obj\Debug\net7.0\API_BidStamp.genruntimeconfig.cache
 C:\Users\paulr\Documents\projecto\BidStamp\BidStampAPI\obj\Debug\net7.0\ref\API_BidStamp.dll
+C:\Users\paulr\Documents\projecto\BidStamp\BidStampAPI\bin\Debug\net7.0\BCrypt.Net-Next.dll
+C:\Users\paulr\Documents\projecto\BidStamp\BidStampAPI\bin\Debug\net7.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+C:\Users\paulr\Documents\projecto\BidStamp\BidStampAPI\bin\Debug\net7.0\Scrutor.dll
+C:\Users\paulr\Documents\projecto\BidStamp\BidStampAPI\bin\Debug\net7.0\Swashbuckle.AspNetCore.Filters.dll
+C:\Users\paulr\Documents\projecto\BidStamp\BidStampAPI\bin\Debug\net7.0\Swashbuckle.AspNetCore.Filters.Abstractions.dll

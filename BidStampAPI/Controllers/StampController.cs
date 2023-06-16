@@ -1,6 +1,7 @@
 ﻿using API_BidStamp.Models.StampRequestModels;
 using DataAccessLibrary_BidStamp;
 using DataAccessLibrary_BidStamp.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -20,14 +21,14 @@ namespace API_BidStamp.Controllers
             /*_logger = logger;*/
         }
 
-        [HttpGet]
+        [HttpGet, Authorize(Roles ="Client")]
         public async Task<IActionResult> GetAllStamps()
         {
             var response = Ok(await _dbContext.Stamps.ToListAsync());
             return response;
         }
 
-        [HttpGet("getstampbyid")]
+        [HttpGet("getstampbyid"), Authorize(Roles ="Client")]
         public async Task<IActionResult> GetStampById(Guid id)
         {
             var stamp = await _dbContext.Stamps.FirstOrDefaultAsync(s => s.StampId == id);
@@ -36,7 +37,7 @@ namespace API_BidStamp.Controllers
             return NotFound();
         }
 
-        [HttpPost("addstamp")]
+        [HttpPost("addstamp"), Authorize(Roles ="Client")]
         public async Task<ActionResult> AddStamp(AddStampRequest request, Guid UserId)
         {
             var user = await _dbContext.Users.FirstOrDefaultAsync(u => u.UserId == UserId);

@@ -11,8 +11,8 @@ namespace DataAccessLibrary_BidStamp.Models
     {
         public Guid UserId { get; set; }
         public string? UserName { get; set; }
-        public byte[] PasswordHash { get; set; } = new byte[32];
-        public byte[] PasswordSalt { get; set; } = new byte[32];
+        public string PasswordHash { get; set; } 
+       /* public byte[] PasswordSalt { get; set; } = new byte[32];*/
         public string? VerificationToken { get; set; }
         public DateTime? VerifiedAt { get; set; }
         public string? PasswordResetToken { get; set; }

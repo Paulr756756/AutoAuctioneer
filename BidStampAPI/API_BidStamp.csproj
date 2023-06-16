@@ -4,9 +4,12 @@
         <TargetFramework>net7.0</TargetFramework>
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
-    </PropertyGroup>
+      <UserSecretsId>eb28090a-a83a-4364-ab11-53df9919840f</UserSecretsId>
+  </PropertyGroup>
 
     <ItemGroup>
+        <PackageReference Include="BCrypt.Net-Next" Version="4.0.3" />
+        <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="7.0.7" />
         <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="7.0.5" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.5">
           <PrivateAssets>all</PrivateAssets>
@@ -14,6 +17,7 @@
         </PackageReference>
         <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="7.0.5" />
         <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
+        <PackageReference Include="Swashbuckle.AspNetCore.Filters" Version="7.0.6" />
     </ItemGroup>
 
     <ItemGroup>

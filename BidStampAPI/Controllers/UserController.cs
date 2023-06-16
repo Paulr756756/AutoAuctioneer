@@ -1,9 +1,15 @@
 ﻿using API_BidStamp.Models.UserRequestModels;
+using API_BidStamp.Services.UserService;
 using DataAccessLibrary_BidStamp;
 using DataAccessLibrary_BidStamp.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 using System.Security.Cryptography;
+using System.Text;
 
 namespace API_BidStamp.Controllers
 {
@@ -12,9 +18,13 @@ namespace API_BidStamp.Controllers
     public class UserController : ControllerBase
     {
         private readonly DatabaseContext _dbContext;
-        public UserController(DatabaseContext dbContext)
+        private readonly IConfiguration _config;
+        private readonly IUserService _userService;
+        public UserController(DatabaseContext dbContext, IConfiguration config, IUserService userService)
         {
             _dbContext = dbContext;
+            _config = config;
+            _userService = userService;
         }
 
         [HttpPost("register")]
@@ -25,15 +35,15 @@ namespace API_BidStamp.Controllers
                 return BadRequest("User Already exists");
             }
 
-            CreatePasswordHash(request.Password, out byte[] passwordHash, out byte[] passwordSalt);
+            /*CreatePasswordHash(request.Password, out byte[] passwordHash, out byte[] passwordSalt);*/
 
             var user = new User
             {
                 UserId = Guid.NewGuid(),
                 UserName = request.UserName,
                 Email = request.Email,
-                PasswordHash = passwordHash,
-                PasswordSalt = passwordSalt,
+                PasswordHash = BCrypt.Net.BCrypt.EnhancedHashPassword(request.Password),
+                /*PasswordSalt = passwordSalt,*/
                 VerificationToken = CreateRandomToken(),
                 RegistrationDate = DateTime.Now,
             };
@@ -41,15 +51,6 @@ namespace API_BidStamp.Controllers
             _dbContext.Users.Add(user);
             await _dbContext.SaveChangesAsync();
             return Ok("User successfully created!");
-        }
-
-        private void CreatePasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt)
-        {
-            using (var hmac = new HMACSHA512())
-            {
-                passwordSalt = hmac.Key;
-                passwordHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
-            }
         }
 
         private string CreateRandomToken()
@@ -69,21 +70,17 @@ namespace API_BidStamp.Controllers
             {
                 return BadRequest("User not verified");
             }
-            else if (!VerifyPassword(request.Password, user.PasswordHash, user.PasswordSalt))
+            else if (!BCrypt.Net.BCrypt.EnhancedVerify(request.Password, user.PasswordHash))
             {
                 return BadRequest("User credentials not correct");
             }
 
-            return Ok($"Welcome Back \nUser:{user.UserName}\nEmail:{user.Email}");
-        }
+            var token = CreateJwtToken(user);
 
-        private bool VerifyPassword(string password, byte[] passwordHash, byte[] passwordSalt)
-        {
-            using (var hmac = new HMACSHA512(passwordSalt))
-            {
-                var computedHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
-                return computedHash.SequenceEqual(passwordHash);
-            }
+            string response = $"Welcome Back \nUser:{user.UserName}\nEmail:{user.Email}\n" +
+                $"your token is :{token}";
+
+            return Ok(response);
         }
 
 
@@ -124,10 +121,10 @@ namespace API_BidStamp.Controllers
                 return BadRequest("Invalid Token");
             }
 
-            CreatePasswordHash(request.Password, out byte[] passwordHash, out byte[] passwordSalt);
+            /*CreatePasswordHash(request.Password, out byte[] passwordHash, out byte[] passwordSalt);*/
 
-            user.PasswordHash = passwordHash;
-            user.PasswordSalt = passwordSalt;
+            user.PasswordHash = BCrypt.Net.BCrypt.EnhancedHashPassword(request.Password);
+            /*user.PasswordSalt = passwordSalt;*/
             user.ResetTokenExpires = null;
             user.PasswordResetToken = null;
 
@@ -140,7 +137,7 @@ namespace API_BidStamp.Controllers
         public async Task<IActionResult> DeleteUser(DeleteUserRequest request)
         {
             var user = await _dbContext.Users.FirstOrDefaultAsync(u => u.Email == request.Email);
-            if(!VerifyPassword(request.Password, user.PasswordHash, user.PasswordSalt)){
+            if(!BCrypt.Net.BCrypt.EnhancedVerify(request.Password, user.PasswordHash)){
                 return BadRequest("Passwords do not match");
             }
 
@@ -151,6 +148,41 @@ namespace API_BidStamp.Controllers
             _dbContext.Users.Remove(user);
             await _dbContext.SaveChangesAsync();
             return Ok("User deleted successfully with id"+ user.UserId);
+        }
+
+
+        private string CreateJwtToken(User user)
+        {
+            List<Claim> claims = new List<Claim>
+            {
+                new Claim(ClaimTypes.Name, user.UserName),
+                new Claim(ClaimTypes.Role, "Client")
+            };
+
+            /*var key = new SymmetricSecurityKey(Convert.FromBase64String(
+                _config.GetSection("AppSettings:Token").Value!));*/
+            
+             var key = new SymmetricSecurityKey(Convert.FromBase64String(
+                _config.GetSection("Authentication:Schemes:Bearer:SigningKeys:0:Value").Value!));
+             
+
+            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
+            var token = new JwtSecurityToken(
+                claims: claims,
+                expires: DateTime.Now.AddDays(1),
+                signingCredentials: creds
+                );
+
+            var jwt = new JwtSecurityTokenHandler().WriteToken(token);
+
+            return jwt;
+        }
+
+        [HttpGet("getuserdetails"), Authorize]
+        public ActionResult<object> GetMe()
+        {
+            var userName = _userService.GetMyName();
+            return Ok(userName);
         }
     }
 }
