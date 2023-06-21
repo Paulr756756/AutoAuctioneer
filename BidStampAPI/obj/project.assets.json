@@ -1380,7 +1380,7 @@
           }
         }
       },
-      "DataAccessLibrary_BidStamp/1.0.0": {
+      "DataAccessLayer_BidStamp/1.0.0": {
         "type": "project",
         "framework": ".NETCoreApp,Version=v7.0",
         "dependencies": {
@@ -1390,10 +1390,10 @@
           "System.Data.SqlClient": "4.8.5"
         },
         "compile": {
-          "bin/placeholder/DataAccessLibrary_BidStamp.dll": {}
+          "bin/placeholder/DataAccessLayer_BidStamp.dll": {}
         },
         "runtime": {
-          "bin/placeholder/DataAccessLibrary_BidStamp.dll": {}
+          "bin/placeholder/DataAccessLayer_BidStamp.dll": {}
         }
       }
     }
@@ -4289,16 +4289,16 @@
         "version.txt"
       ]
     },
-    "DataAccessLibrary_BidStamp/1.0.0": {
+    "DataAccessLayer_BidStamp/1.0.0": {
       "type": "project",
-      "path": "../DataAccessLayer_BidStamp/DataAccessLibrary_BidStamp.csproj",
-      "msbuildProject": "../DataAccessLayer_BidStamp/DataAccessLibrary_BidStamp.csproj"
+      "path": "../DataAccessLayer_BidStamp/DataAccessLayer_BidStamp.csproj",
+      "msbuildProject": "../DataAccessLayer_BidStamp/DataAccessLayer_BidStamp.csproj"
     }
   },
   "projectFileDependencyGroups": {
     "net7.0": [
       "BCrypt.Net-Next >= 4.0.3",
-      "DataAccessLibrary_BidStamp >= 1.0.0",
+      "DataAccessLayer_BidStamp >= 1.0.0",
       "Microsoft.AspNetCore.Authentication.JwtBearer >= 7.0.7",
       "Microsoft.AspNetCore.OpenApi >= 7.0.5",
       "Microsoft.EntityFrameworkCore.Design >= 7.0.5",
@@ -4341,8 +4341,8 @@
         "net7.0": {
           "targetAlias": "net7.0",
           "projectReferences": {
-            "C:\\Users\\paulr\\Documents\\projecto\\BidStamp\\DataAccessLayer_BidStamp\\DataAccessLibrary_BidStamp.csproj": {
-              "projectPath": "C:\\Users\\paulr\\Documents\\projecto\\BidStamp\\DataAccessLayer_BidStamp\\DataAccessLibrary_BidStamp.csproj"
+            "C:\\Users\\paulr\\Documents\\projecto\\BidStamp\\DataAccessLayer_BidStamp\\DataAccessLayer_BidStamp.csproj": {
+              "projectPath": "C:\\Users\\paulr\\Documents\\projecto\\BidStamp\\DataAccessLayer_BidStamp\\DataAccessLayer_BidStamp.csproj"
             }
           }
         }

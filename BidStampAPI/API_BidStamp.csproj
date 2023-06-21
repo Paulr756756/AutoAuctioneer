@@ -21,7 +21,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\DataAccessLayer_BidStamp\DataAccessLibrary_BidStamp.csproj" />
+      <ProjectReference Include="..\DataAccessLayer_BidStamp\DataAccessLayer_BidStamp.csproj" />
     </ItemGroup>
 
 </Project>

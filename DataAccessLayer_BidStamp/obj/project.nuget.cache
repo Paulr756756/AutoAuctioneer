@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "ZpX4omay0SCUysT4yuJC6jIZKceyF33YiO6MqQv8x2gODa5sKU53NuYBaNP8/WgerbvyQGazsgB+N5BCtrvJYg==",
+  "dgSpecHash": "7WE+7Fj4nHi6W0eRk3G4EMfvEMDkG/uE6UkkWZ72l4JOb3cK684gkirw1J298SJEF2NTsqN/ELHAJ1wF01jcdg==",
   "success": true,
-  "projectFilePath": "C:\\Users\\paulr\\Documents\\projecto\\BidStamp\\DataAccessLayer_BidStamp\\DataAccessLibrary_BidStamp.csproj",
+  "projectFilePath": "C:\\Users\\paulr\\Documents\\projecto\\BidStamp\\DataAccessLayer_BidStamp\\DataAccessLayer_BidStamp.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\paulr\\.nuget\\packages\\azure.core\\1.24.0\\azure.core.1.24.0.nupkg.sha512",
     "C:\\Users\\paulr\\.nuget\\packages\\azure.identity\\1.6.0\\azure.identity.1.6.0.nupkg.sha512",

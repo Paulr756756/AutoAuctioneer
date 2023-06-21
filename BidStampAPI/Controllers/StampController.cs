@@ -21,7 +21,7 @@ namespace API_BidStamp.Controllers
             /*_logger = logger;*/
         }
 
-        [HttpGet, Authorize(Roles ="Client")]
+        [HttpGet]
         public async Task<IActionResult> GetAllStamps()
         {
             var response = Ok(await _dbContext.Stamps.ToListAsync());

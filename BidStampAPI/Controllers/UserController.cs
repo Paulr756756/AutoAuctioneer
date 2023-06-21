@@ -19,116 +19,61 @@ namespace API_BidStamp.Controllers
     {
         private readonly DatabaseContext _dbContext;
         private readonly IConfiguration _config;
-        private readonly IUserService _userService;
-        public UserController(DatabaseContext dbContext, IConfiguration config, IUserService userService)
+        private readonly IUserService _user_service;
+        public UserController(DatabaseContext dbContext, IConfiguration config,
+            IUserService userService)
         {
             _dbContext = dbContext;
             _config = config;
-            _userService = userService;
+            _user_service = userService;
         }
 
         [HttpPost("register")]
         public async Task<IActionResult> Register(UserRegisterRequest request)
         {
-            if (_dbContext.Users.Any(u => u.Email == request.Email))
-            {
-                return BadRequest("User Already exists");
+            if( await _user_service.registerUser(request)) {
+                return Ok("User created");
             }
-
-            /*CreatePasswordHash(request.Password, out byte[] passwordHash, out byte[] passwordSalt);*/
-
-            var user = new User
-            {
-                UserId = Guid.NewGuid(),
-                UserName = request.UserName,
-                Email = request.Email,
-                PasswordHash = BCrypt.Net.BCrypt.EnhancedHashPassword(request.Password),
-                /*PasswordSalt = passwordSalt,*/
-                VerificationToken = CreateRandomToken(),
-                RegistrationDate = DateTime.Now,
-            };
-
-            _dbContext.Users.Add(user);
-            await _dbContext.SaveChangesAsync();
-            return Ok("User successfully created!");
-        }
-
-        private string CreateRandomToken()
-        {
-            return Convert.ToHexString(RandomNumberGenerator.GetBytes(64));
+            return BadRequest("Error");
         }
 
         [HttpPost("login")]
-        public async Task<IActionResult> Login(UserLoginRequest request)
-        {
-            User user = await _dbContext.Users.FirstOrDefaultAsync(u => u.Email == request.Email);
-            if (user == null)
-            {
-                return BadRequest("User Not Found");
-            }
-            else if (user.VerifiedAt == null)
-            {
-                return BadRequest("User not verified");
-            }
-            else if (!BCrypt.Net.BCrypt.EnhancedVerify(request.Password, user.PasswordHash))
-            {
-                return BadRequest("User credentials not correct");
-            }
+        public async Task<IActionResult> Login(UserLoginRequest request){
+            string token = await _user_service.loginUser(request);
 
-            var token = CreateJwtToken(user);
-
-            string response = $"Welcome Back \nUser:{user.UserName}\nEmail:{user.Email}\n" +
-                $"your token is :{token}";
-
-            return Ok(response);
+            /*string response = $"Welcome Back \nUser:{user.UserName}\nEmail:{user.Email}\n" +
+                $"your token is :{token}";*/
+            return Ok(token);
         }
 
 
         [HttpPost("verify")]
         public async Task<IActionResult> Verify(string token)
         {
-            User user = await _dbContext.Users.FirstOrDefaultAsync(u=> u.VerificationToken==token);
-            if (user == null)
-            {
-                return BadRequest("User Not Found");
-            }
-            user.VerifiedAt = DateTime.UtcNow;
-            await _dbContext.SaveChangesAsync();
-
-            return Ok("User verified successfully");
+          if(_user_service.verifyUser(token).Result) {
+                return Ok("User verified successfully");
+          }
+            return BadRequest("User not verified");
         }
 
         [HttpPost("forgot-password")]
         public async Task<IActionResult> ForgotPassword(string email)
         {
-            User user = await _dbContext.Users.FirstOrDefaultAsync(u => u.Email == email);
-            if (user == null)
+            if (_user_service.forgotPassword(email).Result)
             {
                 return BadRequest("User not found");
             }
-            user.PasswordResetToken = CreateRandomToken();
-            user.ResetTokenExpires = DateTime.UtcNow.AddDays(1);
-            await _dbContext.SaveChangesAsync();
+           
             return Ok("You may now reset your password");
         }
 
         [HttpPost("reset-password")]
         public async Task<IActionResult> ResetPassword(ResetPasswordRequest request)
         {
-            User user = await _dbContext.Users.FirstOrDefaultAsync(u => u.PasswordResetToken == request.Token);
-            if (user == null || user.ResetTokenExpires < DateTime.UtcNow)
-            {
-                return BadRequest("Invalid Token");
+            if(_user_service.resetPassword(request).Result) {
+                return BadRequest("Couldn't reset your password");
             }
-
-            /*CreatePasswordHash(request.Password, out byte[] passwordHash, out byte[] passwordSalt);*/
-
-            user.PasswordHash = BCrypt.Net.BCrypt.EnhancedHashPassword(request.Password);
-            /*user.PasswordSalt = passwordSalt;*/
-            user.ResetTokenExpires = null;
-            user.PasswordResetToken = null;
-
-            await _dbContext.SaveChangesAsync();
+            
             return Ok("SuccessfullyResetted your password");
         }
 
@@ -136,54 +81,18 @@ namespace API_BidStamp.Controllers
         [HttpDelete("delete-user")]
         public async Task<IActionResult> DeleteUser(DeleteUserRequest request)
         {
-            var user = await _dbContext.Users.FirstOrDefaultAsync(u => u.Email == request.Email);
-            if(!BCrypt.Net.BCrypt.EnhancedVerify(request.Password, user.PasswordHash)){
-                return BadRequest("Passwords do not match");
+            if (_user_service.deleteUser(request).Result) {
+                return Ok("User deleted successfully");
             }
 
-
-            List<Stamp> stamps = await _dbContext.Stamps.Where(s=>s.UserId==user.UserId).ToListAsync();
-            List<Listing> listings = await _dbContext.Listings.Where(l => l.UserId == user.UserId).ToListAsync();
-
-            _dbContext.Users.Remove(user);
-            await _dbContext.SaveChangesAsync();
-            return Ok("User deleted successfully with id"+ user.UserId);
-        }
-
-
-        private string CreateJwtToken(User user)
-        {
-            List<Claim> claims = new List<Claim>
-            {
-                new Claim(ClaimTypes.Name, user.UserName),
-                new Claim(ClaimTypes.Role, "Client")
-            };
-
-            /*var key = new SymmetricSecurityKey(Convert.FromBase64String(
-                _config.GetSection("AppSettings:Token").Value!));*/
-            
-             var key = new SymmetricSecurityKey(Convert.FromBase64String(
-                _config.GetSection("Authentication:Schemes:Bearer:SigningKeys:0:Value").Value!));
-             
-
-            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
-            var token = new JwtSecurityToken(
-                claims: claims,
-                expires: DateTime.Now.AddDays(1),
-                signingCredentials: creds
-                );
-
-            var jwt = new JwtSecurityTokenHandler().WriteToken(token);
-
-            return jwt;
+            return BadRequest("Couldn't delete user!");
         }
 
         [HttpGet("getuserdetails"), Authorize]
-        public ActionResult<object> GetMe()
-        {
-            var userName = _userService.GetMyName();
+        public ActionResult<object> GetMe() {
+            var userName = _user_service.getMyName();
             return Ok(userName);
-        }
+        }        
     }
 }
     

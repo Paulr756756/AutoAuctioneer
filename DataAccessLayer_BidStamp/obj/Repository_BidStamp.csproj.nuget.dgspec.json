@@ -1,15 +1,15 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\paulr\\Documents\\projecto\\BidStamp\\DataAccessLayer_BidStamp\\DataAccessLayer_BidStamp.csproj": {}
+    "C:\\Users\\paulr\\Documents\\projecto\\BidStamp\\DataAccessLayer_BidStamp\\Repository_BidStamp.csproj": {}
   },
   "projects": {
-    "C:\\Users\\paulr\\Documents\\projecto\\BidStamp\\DataAccessLayer_BidStamp\\DataAccessLayer_BidStamp.csproj": {
+    "C:\\Users\\paulr\\Documents\\projecto\\BidStamp\\DataAccessLayer_BidStamp\\Repository_BidStamp.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\paulr\\Documents\\projecto\\BidStamp\\DataAccessLayer_BidStamp\\DataAccessLayer_BidStamp.csproj",
-        "projectName": "DataAccessLayer_BidStamp",
-        "projectPath": "C:\\Users\\paulr\\Documents\\projecto\\BidStamp\\DataAccessLayer_BidStamp\\DataAccessLayer_BidStamp.csproj",
+        "projectUniqueName": "C:\\Users\\paulr\\Documents\\projecto\\BidStamp\\DataAccessLayer_BidStamp\\Repository_BidStamp.csproj",
+        "projectName": "Repository_BidStamp",
+        "projectPath": "C:\\Users\\paulr\\Documents\\projecto\\BidStamp\\DataAccessLayer_BidStamp\\Repository_BidStamp.csproj",
         "packagesPath": "C:\\Users\\paulr\\.nuget\\packages\\",
         "outputPath": "C:\\Users\\paulr\\Documents\\projecto\\BidStamp\\DataAccessLayer_BidStamp\\obj\\",
         "projectStyle": "PackageReference",

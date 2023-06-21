@@ -5,7 +5,7 @@ VisualStudioVersion = 17.5.33627.172
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "API_BidStamp", "BidStampAPI\API_BidStamp.csproj", "{3CD55808-1736-46FB-A88B-318755146CFB}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataAccessLibrary_BidStamp", "DataAccessLayer_BidStamp\DataAccessLibrary_BidStamp.csproj", "{40264E07-B66C-4F0A-AEE5-FCE5B58BE3D9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataAccessLayer_BidStamp", "DataAccessLayer_BidStamp\DataAccessLayer_BidStamp.csproj", "{40264E07-B66C-4F0A-AEE5-FCE5B58BE3D9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
