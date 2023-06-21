@@ -17,13 +17,11 @@ namespace API_BidStamp.Controllers
     [Route("api/[controller]")]
     public class UserController : ControllerBase
     {
-        private readonly DatabaseContext _dbContext;
         private readonly IConfiguration _config;
         private readonly IUserService _user_service;
         public UserController(DatabaseContext dbContext, IConfiguration config,
             IUserService userService)
         {
-            _dbContext = dbContext;
             _config = config;
             _user_service = userService;
         }
@@ -59,7 +57,7 @@ namespace API_BidStamp.Controllers
         [HttpPost("forgot-password")]
         public async Task<IActionResult> ForgotPassword(string email)
         {
-            if (_user_service.forgotPassword(email).Result)
+            if (!_user_service.forgotPassword(email).Result)
             {
                 return BadRequest("User not found");
             }
@@ -70,7 +68,7 @@ namespace API_BidStamp.Controllers
         [HttpPost("reset-password")]
         public async Task<IActionResult> ResetPassword(ResetPasswordRequest request)
         {
-            if(_user_service.resetPassword(request).Result) {
+            if(!_user_service.resetPassword(request).Result) {
                 return BadRequest("Couldn't reset your password");
             }
             

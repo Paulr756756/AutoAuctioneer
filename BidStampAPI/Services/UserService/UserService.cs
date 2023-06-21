@@ -17,7 +17,6 @@ namespace API_BidStamp.Services.UserService
     public class UserService : IUserService
     {
         private readonly IHttpContextAccessor _httpContextAccessor;
-      /*  private readonly DatabaseContext _db_context;*/
         private readonly IUserRepository _user_repository;
         private readonly IConfiguration _config;
 
@@ -120,7 +119,20 @@ namespace API_BidStamp.Services.UserService
 
             return true;
         }
-        public async Task<bool> resetPassword(ResetPasswordRequest request){
+        
+        public async Task<bool> forgotPassword(string email) {
+            var user = await _user_repository.getUserByEmail(email);
+            if(user == null) { 
+                return false;
+            }
+
+            user.PasswordResetToken = createRandomToken();
+            
+            await _user_repository.forgotPassword(user);
+            return true;
+        }
+
+        public async Task<bool> resetPassword(ResetPasswordRequest request) {
 
             var user = await _user_repository.getUserByPToken(request.Token);
 
@@ -136,17 +148,6 @@ namespace API_BidStamp.Services.UserService
             user.PasswordResetToken = null;
             await _user_repository.resetPassword(user);
 
-            return true;
-        }
-        public async Task<bool> forgotPassword(string email) {
-            var user = await _user_repository.getUserByEmail(email);
-            if(user == null) { 
-                return false;
-            }
-
-            user.PasswordResetToken = createRandomToken();
-            
-            await _user_repository.forgotPassword(user);
             return true;
         }
 
