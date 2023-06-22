@@ -1,4 +1,5 @@
 ﻿using API_BidStamp.Models.StampRequestModels;
+using API_BidStamp.Services.StampService;
 using DataAccessLibrary_BidStamp;
 using DataAccessLibrary_BidStamp.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -13,120 +14,56 @@ namespace API_BidStamp.Controllers
     [Route("api/[controller]")]
     public class StampController : ControllerBase
     {
-        private readonly DatabaseContext _dbContext;
+        private readonly IStampService _stamp_service;
         /*private readonly ILogger _logger;*/
-        public StampController(DatabaseContext dbContext)
+        public StampController(IStampService stamp_service)
         {
-            _dbContext = dbContext;
+            _stamp_service = stamp_service;
             /*_logger = logger;*/
         }
 
         [HttpGet]
         public async Task<IActionResult> GetAllStamps()
         {
-            var response = Ok(await _dbContext.Stamps.ToListAsync());
-            return response;
+            var response = await _stamp_service.getAllStamps();
+            return Ok(response);
         }
 
         [HttpGet("getstampbyid"), Authorize(Roles ="Client")]
         public async Task<IActionResult> GetStampById(Guid id)
         {
-            var stamp = await _dbContext.Stamps.FirstOrDefaultAsync(s => s.StampId == id);
-            if (stamp != null) return Ok(stamp);
+            Stamp stamp = await _stamp_service.getStampById(id);
 
-            return NotFound();
-        }
-
-        [HttpPost("addstamp"), Authorize(Roles ="Client")]
-        public async Task<ActionResult> AddStamp(AddStampRequest request, Guid UserId)
-        {
-            var user = await _dbContext.Users.FirstOrDefaultAsync(u => u.UserId == UserId);
-            if (user == null) {
-                return BadRequest("No such user present. Signup first");
-            }
-
-            Stamp stamp = new Stamp()
-            {
-                StampId = Guid.NewGuid(),
-                StampTitle = request.StampTitle,
-                Description = request.Description,
-                ImageUrl = request.ImageUrl,
-                Year = request.Year,
-                Country = request.Country,
-                Condition = request.Condition,
-                CatalogNumber = request.CatalogNumber,
-                StartDate = request.StartDate,
-                EndDate = request.EndDate,
-                User = user,
-                UserId = UserId,
-
-            };
-            /*user.Stamps.Add(stamp);*/
-
-            await _dbContext.Stamps.AddAsync(stamp);
-            await _dbContext.SaveChangesAsync();
             return Ok(stamp);
         }
 
-        [HttpPut("updatestamp")]
-        public async Task<IActionResult> UpdateStamp(UpdateStampRequest request, Guid StampId, Guid UserId)
+        [HttpPost("addstamp"), Authorize(Roles ="Client")]
+        public async Task<ActionResult> AddStamp(AddStampRequest request, Guid user_id)
         {
-            var stamp = await _dbContext.Stamps.FirstOrDefaultAsync(s => s.StampId == StampId);
-            
-            if (stamp != null)
-            {
-                if (UserId != stamp.UserId)
-                {
-                    return BadRequest("You are not authorized to update this stamp");
-                }
-                stamp.StampTitle = request.StampTitle;
-                stamp.Description = request.Description;
-                stamp.ImageUrl = request.ImageUrl;
-                stamp.Year = request.Year;
-                stamp.Country = request.Country;
-                stamp.Condition = request.Condition;
-                stamp.CatalogNumber = request.CatalogNumber;
-                stamp.StartDate = request.StartDate;
-                stamp.EndDate = request.EndDate;
-                
-                /*if (ListingId != null)
-                {   
-                    stamp.Listing = await _dbContext.Listings.FirstOrDefaultAsync(l => l.ListingId == ListingId);
-                }*/
-
-                await _dbContext.SaveChangesAsync();
-                return Ok(stamp);
+            if (!await _stamp_service.addStamp(request, user_id)){
+                return BadRequest("Couldn't add stamp");
             }
+            return Ok($"Added stamp successfully:{request.StampTitle}");
+        }
 
-            return NotFound();
+        [HttpPut("updatestamp")]
+        public async Task<IActionResult> UpdateStamp
+            (UpdateStampRequest request, Guid stamp_id, Guid user_id){
+
+            if(!await _stamp_service.updateStamp(request, stamp_id, user_id)) {
+                return BadRequest("Stamp couldn't be updated");
+            }
+            
+            return Ok($"Stamp updated successfully : {request.StampTitle}");
         }
 
         [HttpDelete("deletestamp")]
-        public async Task<IActionResult> DeleteStamp(Guid UserId, Guid StampId)
-        {
-            var stamp = await _dbContext.Stamps.FirstOrDefaultAsync(s => s.StampId == StampId);
-            if (stamp != null)
-            {
-               /* if (stamp.Listing != null)
-                {
-                    _dbContext.Listings.Remove(stamp.Listing);
-                }*/
-               if(UserId != stamp.UserId)
-                {
-                    return BadRequest("You are not authorized to delete this stamp");
-                }else
-                {
-                    var listing = await _dbContext.Listings.FirstOrDefaultAsync(l=> l.Stamp == stamp);
-                    _dbContext.Stamps.Remove(stamp);
-
-                    await _dbContext.SaveChangesAsync();
-                }
-                return Ok();
+        public async Task<IActionResult> DeleteStamp(Guid stamp_id, Guid user_id) {
+            if(!await _stamp_service.deleteStamp(stamp_id, user_id)) {
+                return BadRequest($"Stamp couldn't be deleted");
             }
-            return NotFound();
+            return Ok($"Deleted stamp with id {stamp_id}");
         }
-
-        
 
     }
 

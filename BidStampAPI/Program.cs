@@ -1,4 +1,6 @@
+using API_BidStamp.Services.StampService;
 using API_BidStamp.Services.UserService;
+using DataAccessLayer_BidStamp.Models;
 using DataAccessLibrary_BidStamp;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
@@ -29,6 +31,9 @@ builder.Services.AddSwaggerGen(options =>
 
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IStampRepository, StampRepository>();
+builder.Services.AddScoped<IStampService, StampService>();
+
 builder.Services.AddHttpContextAccessor();
 
 builder.Services.AddAuthentication().AddJwtBearer(options =>

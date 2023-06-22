@@ -17,6 +17,7 @@ namespace Repository_BidStamp.Models
         Task<User> getUserByEmail(string email);
         Task<bool> getUserByVToken(string token);
         Task<User> getUserByPToken(string token);
+        Task<User> getUserById(Guid id);
         Task resetPassword(User user);
         Task forgotPassword(User user);
     }
@@ -74,6 +75,10 @@ namespace Repository_BidStamp.Models
             return await _db_context.Users.FirstOrDefaultAsync(u=> u.PasswordResetToken == token);  
         }
 
+        public async Task<User> getUserById(Guid id) {
+            return await _db_context.Users.FirstOrDefaultAsync(u => u.UserId == id);
+        }
+
         public async Task forgotPassword(User user) {
             user.ResetTokenExpires = DateTime.UtcNow.AddDays(1);
             await _db_context.SaveChangesAsync();
@@ -83,5 +88,6 @@ namespace Repository_BidStamp.Models
             _db_context.Update<User>(user);
             await _db_context.SaveChangesAsync();
         }
+        
     }
 }
