@@ -1,74 +1,79 @@
 ﻿using API_BidStamp.Models.ListingRequestModels;
+using API_BidStamp.Services.ListingService;
 using DataAccessLibrary_BidStamp;
-using DataAccessLibrary_BidStamp.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
-namespace API_BidStamp.Controllers
-{
-    public class ListingController : ControllerBase
-    {
-        private readonly DatabaseContext _dbContext;
-        public ListingController(DatabaseContext dbContext) {
-            _dbContext = dbContext;
-        }
+namespace API_BidStamp.Controllers;
 
-        [HttpGet("geteverylistings")]
-        public async Task<IActionResult> GetAllListings()
-        {
-            var response =  await _dbContext.Listings.ToListAsync();
-            return Ok(response);
-        }
+public class ListingController : ControllerBase {
+    private readonly DatabaseContext _dbContext;
+    private readonly IListingService _listingService;
 
-        [HttpDelete("deleteListing")]
-        public async Task<IActionResult> DeleteListing(ListingDeleteRequest request)
-        {
-            var listing = await _dbContext.Listings.FirstOrDefaultAsync(l=> l.ListingId == request.ListingId);
-            if (listing == null)
-            {
-                return BadRequest("No such listing exists");
-            }
-            if (listing.UserId != request.UserId)
-            {
-                return BadRequest("You do not have the authority to delete  this listing");
-            }
+    public ListingController(DatabaseContext dbContext, IListingService listingService) {
+        _dbContext = dbContext;
+        _listingService = listingService;
+    }
 
-            _dbContext.Listings.Remove(listing);
-            await _dbContext.SaveChangesAsync();
-            return Ok($"Listing Removed with id:{request.ListingId}");
-        }
+    [HttpGet("geteverylistings")]
+    public async Task<IActionResult> GetAllListings() {
+        var response = await _listingService.getAlListingsService();
+        return Ok(response);
+    }
 
-        [HttpPost("addlisting")]
-        public async Task<IActionResult> AddListing(ListingRegisterRequest request)
-        {
-            if(_dbContext.Listings.Any(l=> l.Stamp.StampId == request.StampId))
-            {
-                return BadRequest("This stamp already present in another listing");
-            }
-            Stamp stamp =await _dbContext.Stamps.FirstOrDefaultAsync(s=>s.StampId==request.StampId);
-            if(stamp == null)
-            {
-                return BadRequest("No such stamp exists");
-            }else if(stamp.UserId != request.UserId)
-            {
-                return BadRequest("This stamp is not in your collection");
-            }
+    [HttpGet("getlistingbyid")]
+    public async Task<IActionResult> getListingById(Guid id) {
+        var response = await _listingService.getListingyId(id);
+        if (response == null) return BadRequest("No such listing");
 
-            var listing = new Listing()
-            {
-                ListingId = Guid.NewGuid(),
-                Stamp = stamp,
-                //TODO() : use stamp instead of fetching user again
-                User = await _dbContext.Users.FirstOrDefaultAsync(u=> u.UserId == request.UserId),
-                UserId = request.UserId,
-            };
+        return Ok(response);
+    }
 
-            listing.Stamp.Listing = listing;
-            listing.StampId = request.StampId; 
 
-            _dbContext.Listings.Add(listing);
-            await _dbContext.SaveChangesAsync();
-            return Ok($"Listing Added with Id:{listing.ListingId}");
-        }
+    [HttpPost("addlisting")]
+    [Authorize(Roles = "Client")]
+    public async Task<IActionResult> AddListing(ListingRegisterRequest request) {
+        var response = await _listingService.addListingService(request);
+
+        if (!response) return BadRequest("Error");
+        /*if (_dbContext.Listings.Any(l => l.Stamp.StampId == request.StampId))
+            return BadRequest("This stamp already present in another listing");
+        var stamp = await _dbContext.Stamps.FirstOrDefaultAsync(s => s.StampId == request.StampId);
+        if (stamp == null)
+            return BadRequest("No such stamp exists");
+        if (stamp.UserId != request.UserId)
+            return BadRequest("This stamp is not in your collection");
+
+        var listing = new Listing {
+            ListingId = Guid.NewGuid(),
+            Stamp = stamp,
+            //TODO() : use stamp instead of fetching user again
+            User = await _dbContext.Users.FirstOrDefaultAsync(u => u.UserId == request.UserId),
+            UserId = request.UserId
+        };
+
+        listing.Stamp.Listing = listing;
+        listing.StampId = request.StampId;
+
+        _dbContext.Listings.Add(listing);
+        await _dbContext.SaveChangesAsync();*/
+        return Ok("New listing posted.");
+    }
+
+    [HttpDelete("deleteListing")]
+    [Authorize(Roles = "Client")]
+    public async Task<IActionResult> DeleteListing(ListingDeleteRequest request) {
+        var response = await _listingService.deleteListingService(request);
+        if (!response) return BadRequest("More error");
+
+        /*var listing =
+            await _dbContext.Listings.FirstOrDefaultAsync(l => l.ListingId == request.ListingId);
+        if (listing == null) return BadRequest("No such listing exists");
+        if (listing.UserId != request.UserId)
+            return BadRequest("You do not have the authority to delete  this listing");
+
+        _dbContext.Listings.Remove(listing);
+        await _dbContext.SaveChangesAsync();*/
+        return Ok($"Listing Removed with id:{request.ListingId}");
     }
 }
