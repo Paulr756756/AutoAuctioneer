@@ -1,4 +1,5 @@
 ﻿using API_BidStamp.Models.StampRequestModels;
+using DataAccessLayer_BidStamp.Models;
 using DataAccessLibrary_BidStamp.Models;
 
 namespace API_BidStamp.Services.StampService;

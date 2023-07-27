@@ -1,7 +1,8 @@
 ﻿using API_BidStamp.Models.ListingRequestModels;
+using DataAccessLayer_BidStamp;
 using DataAccessLayer_BidStamp.Models;
+using DataAccessLayer_BidStamp.Repositories;
 using DataAccessLibrary_BidStamp.Models;
-using Repository_BidStamp.Models;
 
 namespace API_BidStamp.Services.ListingService;
 

@@ -2,9 +2,9 @@
 using System.Security.Claims;
 using System.Security.Cryptography;
 using API_BidStamp.Models.UserRequestModels;
-using DataAccessLibrary_BidStamp.Models;
+using DataAccessLayer_BidStamp.Models;
+using DataAccessLayer_BidStamp.Repositories;
 using Microsoft.IdentityModel.Tokens;
-using Repository_BidStamp.Models;
 
 namespace API_BidStamp.Services.UserService;
 

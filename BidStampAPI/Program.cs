@@ -2,12 +2,13 @@ using API_BidStamp.Services;
 using API_BidStamp.Services.ListingService;
 using API_BidStamp.Services.StampService;
 using API_BidStamp.Services.UserService;
+using DataAccessLayer_BidStamp;
 using DataAccessLayer_BidStamp.Models;
+using DataAccessLayer_BidStamp.Repositories;
 using DataAccessLibrary_BidStamp;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using Repository_BidStamp.Models;
 using Swashbuckle.AspNetCore.Filters;
 
 var builder = WebApplication.CreateBuilder(args);

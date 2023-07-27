@@ -1,5 +1,5 @@
 using API_BidStamp.Models.ListingRequestModels;
-using DataAccessLibrary_BidStamp.Models;
+using DataAccessLayer_BidStamp.Models;
 
 namespace API_BidStamp.Services.ListingService;
 

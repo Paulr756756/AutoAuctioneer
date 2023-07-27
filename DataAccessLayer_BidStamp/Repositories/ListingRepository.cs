@@ -1,8 +1,9 @@
+using DataAccessLayer_BidStamp.Models;
 using DataAccessLibrary_BidStamp;
 using DataAccessLibrary_BidStamp.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace DataAccessLayer_BidStamp.Models;
+namespace DataAccessLayer_BidStamp.Repositories;
 
 public interface IListingRepository {
     Task<List<Listing>> getAllListings();

@@ -1,4 +1,5 @@
-﻿using DataAccessLibrary_BidStamp.Models;
+﻿using DataAccessLayer_BidStamp.Models;
+using DataAccessLibrary_BidStamp.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace DataAccessLibrary_BidStamp;
@@ -11,6 +12,7 @@ public class DatabaseContext : DbContext {
     public DbSet<Bid> Bids { get; set; }
     public DbSet<User> Users { get; set; }
     public DbSet<Listing> Listings { get; set; }
+    public DbSet<Car> Cars { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder) {
         base.OnModelCreating(modelBuilder);
@@ -49,5 +51,19 @@ public class DatabaseContext : DbContext {
             .HasOne(e => e.User)
             .WithMany(e => e.Bids)
             .OnDelete(DeleteBehavior.ClientCascade);
+        
+        
+        //For Cars Dbset
+        /*modelBuilder
+            .Entity<User>()
+            .HasMany(u => u.Cars)
+            .WithOne(c => c.User)
+            .OnDelete(DeleteBehavior.ClientCascade);
+        
+        modelBuilder
+            .Entity<CarModel>()
+            .HasOne(c => c.Listings)
+            .WithOne(l => l.Car)
+            .OnDelete(DeleteBehavior.ClientCascade);*/
     }
 }
