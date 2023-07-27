@@ -44,7 +44,7 @@ public class BidRepository : IBidRepository {
     }
 
     public async Task updateBidAmt(Bid request) {
-        //TODO(find a more efficient way) 
+        //TODO(find a more efficient way)
         /*var bid = await getBidById(request.BidId);
         bid.BidAmount = request.BidAmount;
         bid.BidTime = request.BidTime;*/
