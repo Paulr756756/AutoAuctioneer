@@ -1488,24 +1488,32 @@
     ]
   },
   "packageFolders": {
-    "/home/paulr/.nuget/packages/": {}
+    "C:\\Users\\paulr\\.nuget\\packages\\": {},
+    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/home/paulr/Documents/BidStamp/DataAccessLayer_BidStamp/DataAccessLayer_BidStamp.csproj",
+      "projectUniqueName": "C:\\Workstation\\BidStamp\\DataAccessLayer_BidStamp\\DataAccessLayer_BidStamp.csproj",
       "projectName": "DataAccessLayer_BidStamp",
-      "projectPath": "/home/paulr/Documents/BidStamp/DataAccessLayer_BidStamp/DataAccessLayer_BidStamp.csproj",
-      "packagesPath": "/home/paulr/.nuget/packages/",
-      "outputPath": "/home/paulr/Documents/BidStamp/DataAccessLayer_BidStamp/obj/",
+      "projectPath": "C:\\Workstation\\BidStamp\\DataAccessLayer_BidStamp\\DataAccessLayer_BidStamp.csproj",
+      "packagesPath": "C:\\Users\\paulr\\.nuget\\packages\\",
+      "outputPath": "C:\\Workstation\\BidStamp\\DataAccessLayer_BidStamp\\obj\\",
       "projectStyle": "PackageReference",
+      "fallbackFolders": [
+        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+      ],
       "configFilePaths": [
-        "/home/paulr/.nuget/NuGet/NuGet.Config"
+        "C:\\Users\\paulr\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
         "net7.0"
       ],
       "sources": {
+        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+        "C:\\Program Files\\dotnet\\library-packs": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
@@ -1569,7 +1577,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "/usr/lib/dotnet/sdk/7.0.109/RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.306\\RuntimeIdentifierGraph.json"
       }
     }
   }

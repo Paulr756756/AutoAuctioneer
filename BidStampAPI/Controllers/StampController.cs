@@ -1,4 +1,4 @@
-﻿using API_BidStamp.Models.StampRequestModels;
+﻿/*using API_BidStamp.Models.StampRequestModels;
 using API_BidStamp.Services.StampService;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -10,10 +10,10 @@ namespace API_BidStamp.Controllers;
 public class StampController : ControllerBase {
     private readonly IStampService _stamp_service;
 
-    /*private readonly ILogger _logger;*/
+    /*private readonly ILogger _logger;#1#
     public StampController(IStampService stamp_service) {
         _stamp_service = stamp_service;
-        /*_logger = logger;*/
+        /*_logger = logger;#1#
     }
 
     [HttpGet]
@@ -55,4 +55,4 @@ public class StampController : ControllerBase {
             return BadRequest("Stamp couldn't be deleted");
         return Ok($"Deleted stamp with id {stamp_id}");
     }
-}
+}*/

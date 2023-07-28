@@ -3,10 +3,6 @@ using DataAccessLibrary_BidStamp.Models;
 namespace DataAccessLayer_BidStamp.Models; 
 
 public class User {
-    public List<Bid>? Bids = new();
-
-    public List<Listing>? Listings = new();
-    public List<Stamp>? Stamps = new();
     public Guid UserId { get; set; }
     public string? UserName { get; set; }
 
@@ -23,4 +19,10 @@ public class User {
     public string? Address { get; set; }
     public string? Phone { get; set; }
     public DateTime RegistrationDate { get; set; }
+    
+    public List<Bid>? Bids = new();
+    public List<Listing>? Listings = new();
+    /*public List<Stamp>? Stamps = new();*/
+    public List<Car>? Cars = new();
+    public List<CarPart>? CarParts = new();
 }

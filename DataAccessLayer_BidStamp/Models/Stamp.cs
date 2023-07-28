@@ -1,4 +1,4 @@
-namespace DataAccessLayer_BidStamp.Models; 
+/*namespace DataAccessLayer_BidStamp.Models; 
 public class Stamp {
     public Guid StampId { get; set; }
     public string StampTitle { get; set; }
@@ -11,13 +11,13 @@ public class Stamp {
     public string? CatalogNumber { get; set; }
 
     /* public int? StartingBid { get; set; }
-     public int? EndingBid { get; set; }*/
+     public int? EndingBid { get; set; }#1#
     public DateTime? StartDate { get; set; }
 
     public DateTime? EndDate { get; set; }
 
-    /*public Guid? ListingId { get; set; }*/
+    /*public Guid? ListingId { get; set; }#1#
     public Listing? Listing { get; set; }
     public Guid UserId { get; set; }
     public User User { get; set; }
-}
+}*/

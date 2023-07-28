@@ -1,9 +1,6 @@
 using API_BidStamp.Services;
 using API_BidStamp.Services.ListingService;
-using API_BidStamp.Services.StampService;
 using API_BidStamp.Services.UserService;
-using DataAccessLayer_BidStamp;
-using DataAccessLayer_BidStamp.Models;
 using DataAccessLayer_BidStamp.Repositories;
 using DataAccessLibrary_BidStamp;
 using Microsoft.EntityFrameworkCore;
@@ -31,8 +28,10 @@ builder.Services.AddSwaggerGen(options => {
 builder.Services
     .AddScoped<IUserService, UserService>()
     .AddScoped<IUserRepository, UserRepository>()
+    /*
     .AddScoped<IStampService, StampService>()
-    .AddScoped<IStampRepository, StampRepository>()
+    */
+    /*.AddScoped<IStampRepository, StampRepository>()*/
     .AddScoped<IListingRepository, ListingRepository>()
     .AddScoped<IListingService, ListingService>()
     .AddScoped<IBidService, BidService>()

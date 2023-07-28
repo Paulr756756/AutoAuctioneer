@@ -1,4 +1,4 @@
-﻿using DataAccessLayer_BidStamp.Models;
+﻿/*using DataAccessLayer_BidStamp.Models;
 using DataAccessLibrary_BidStamp;
 using DataAccessLibrary_BidStamp.Models;
 using Microsoft.EntityFrameworkCore;
@@ -45,4 +45,4 @@ public class StampRepository : IStampRepository {
         await _dbContext.SaveChangesAsync();
         return true;
     }
-}
+}*/

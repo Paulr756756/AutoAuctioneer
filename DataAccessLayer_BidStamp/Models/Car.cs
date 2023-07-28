@@ -4,7 +4,7 @@ namespace DataAccessLayer_BidStamp.Models;
 
 public class Car {
     
-    public string CarId { get; set; }
+    public Guid CarId { get; set; }
     
     //Basic Attributes
     public string Make { get; set; }

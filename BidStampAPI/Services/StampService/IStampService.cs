@@ -1,4 +1,4 @@
-﻿using API_BidStamp.Models.StampRequestModels;
+﻿/*using API_BidStamp.Models.StampRequestModels;
 using DataAccessLayer_BidStamp.Models;
 using DataAccessLibrary_BidStamp.Models;
 
@@ -10,4 +10,4 @@ public interface IStampService {
     Task<List<Stamp>> getAllStamps();
     Task<Stamp> getStampById(Guid id);
     Task<bool> updateStamp(UpdateStampRequest request, Guid stamp_id, Guid user_id);
-}
+}*/

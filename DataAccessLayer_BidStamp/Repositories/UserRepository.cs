@@ -36,12 +36,16 @@ public class UserRepository : IUserRepository {
     }
 
     public async Task deleteUser(User user) {
-        var stamps = await _db_context.Stamps.Where(
-                s => s.UserId == user.UserId)
+        var stamps = await _db_context.Cars.Where(
+                c => c.UserId == user.UserId)
             .ToListAsync();
         var listings = await _db_context.Listings.Where(
                 l => l.UserId == user.UserId)
             .ToListAsync();
+
+        var carparts = await _db_context.CarParts.Where(
+            c => c.UserId == user.UserId
+        ).ToListAsync();
 
         _db_context.Users.Remove(user);
         await _db_context.SaveChangesAsync();

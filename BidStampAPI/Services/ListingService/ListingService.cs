@@ -8,13 +8,13 @@ namespace API_BidStamp.Services.ListingService;
 
 public class ListingService : IListingService {
     private readonly IListingRepository _listingRepository;
-    private readonly IStampRepository _stampRepository;
+    /*private readonly IStampRepository _stampRepository;*/
     private readonly IUserRepository _userRepository;
 
-    public ListingService(IListingRepository listingRepository, IStampRepository
-        stampRepository, IUserRepository userRepository) {
+    public ListingService(IListingRepository listingRepository,/* IStampRepository
+        stampRepository,*/ IUserRepository userRepository) {
         _listingRepository = listingRepository;
-        _stampRepository = stampRepository;
+        /*_stampRepository = stampRepository;*/
         _userRepository = userRepository;
     }
 
@@ -26,6 +26,7 @@ public class ListingService : IListingService {
         return await _listingRepository.getListingById(guid);
     }
 
+    /*
     public async Task<bool> addListingService(ListingRegisterRequest request) {
         var stamp = await _stampRepository.getStampById(request.StampId);
         if (stamp == null)
@@ -47,6 +48,7 @@ public class ListingService : IListingService {
         await _listingRepository.postListing(listing);
         return true;
     }
+    */
 
     public async Task<bool> deleteListingService(ListingDeleteRequest request) {
         var listing = await _listingRepository.getListingById(request.ListingId);

@@ -1,4 +1,4 @@
-﻿using API_BidStamp.Models.StampRequestModels;
+﻿/*using API_BidStamp.Models.StampRequestModels;
 using DataAccessLayer_BidStamp;
 using DataAccessLayer_BidStamp.Models;
 using DataAccessLayer_BidStamp.Repositories;
@@ -73,4 +73,4 @@ public class StampService : IStampService {
         await _stamp_repository.deleteStamp(stamp);
         return true;
     }
-}
+}*/

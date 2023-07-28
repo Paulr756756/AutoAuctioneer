@@ -26,3 +26,17 @@ C:/Users/paulr/Documents/projecto/BidStamp/DataAccessLayer_BidStamp/obj/Debug/ne
 /home/paulr/Documents/BidStamp/DataAccessLayer_BidStamp/obj/Debug/net7.0/DataAccessLayer_BidStamp.pdb
 /home/paulr/Documents/BidStamp/DataAccessLayer_BidStamp/obj/Debug/net7.0/DataAccessLayer_BidStamp.genruntimeconfig.cache
 /home/paulr/Documents/BidStamp/DataAccessLayer_BidStamp/obj/Debug/net7.0/ref/DataAccessLayer_BidStamp.dll
+C:\Workstation\BidStamp\DataAccessLayer_BidStamp\bin\Debug\net7.0\DataAccessLayer_BidStamp.deps.json
+C:\Workstation\BidStamp\DataAccessLayer_BidStamp\bin\Debug\net7.0\DataAccessLayer_BidStamp.runtimeconfig.json
+C:\Workstation\BidStamp\DataAccessLayer_BidStamp\bin\Debug\net7.0\DataAccessLayer_BidStamp.dll
+C:\Workstation\BidStamp\DataAccessLayer_BidStamp\bin\Debug\net7.0\DataAccessLayer_BidStamp.pdb
+C:\Workstation\BidStamp\DataAccessLayer_BidStamp\obj\Debug\net7.0\DataAccessLayer_BidStamp.csproj.AssemblyReference.cache
+C:\Workstation\BidStamp\DataAccessLayer_BidStamp\obj\Debug\net7.0\DataAccessLayer_BidStamp.GeneratedMSBuildEditorConfig.editorconfig
+C:\Workstation\BidStamp\DataAccessLayer_BidStamp\obj\Debug\net7.0\DataAccessLayer_BidStamp.AssemblyInfoInputs.cache
+C:\Workstation\BidStamp\DataAccessLayer_BidStamp\obj\Debug\net7.0\DataAccessLayer_BidStamp.AssemblyInfo.cs
+C:\Workstation\BidStamp\DataAccessLayer_BidStamp\obj\Debug\net7.0\DataAccessLayer_BidStamp.csproj.CoreCompileInputs.cache
+C:\Workstation\BidStamp\DataAccessLayer_BidStamp\obj\Debug\net7.0\DataAccessLayer_BidStamp.dll
+C:\Workstation\BidStamp\DataAccessLayer_BidStamp\obj\Debug\net7.0\refint\DataAccessLayer_BidStamp.dll
+C:\Workstation\BidStamp\DataAccessLayer_BidStamp\obj\Debug\net7.0\DataAccessLayer_BidStamp.pdb
+C:\Workstation\BidStamp\DataAccessLayer_BidStamp\obj\Debug\net7.0\DataAccessLayer_BidStamp.genruntimeconfig.cache
+C:\Workstation\BidStamp\DataAccessLayer_BidStamp\obj\Debug\net7.0\ref\DataAccessLayer_BidStamp.dll
