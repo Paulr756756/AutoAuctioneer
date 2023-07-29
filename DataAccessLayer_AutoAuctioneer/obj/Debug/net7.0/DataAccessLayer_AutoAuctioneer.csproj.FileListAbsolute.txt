@@ -1,0 +1,14 @@
+C:\Workstation\BidStamp\DataAccessLayer_AutoAuctioneer\bin\Debug\net7.0\DataAccessLayer_AutoAuctioneer.deps.json
+C:\Workstation\BidStamp\DataAccessLayer_AutoAuctioneer\bin\Debug\net7.0\DataAccessLayer_AutoAuctioneer.runtimeconfig.json
+C:\Workstation\BidStamp\DataAccessLayer_AutoAuctioneer\bin\Debug\net7.0\DataAccessLayer_AutoAuctioneer.dll
+C:\Workstation\BidStamp\DataAccessLayer_AutoAuctioneer\bin\Debug\net7.0\DataAccessLayer_AutoAuctioneer.pdb
+C:\Workstation\BidStamp\DataAccessLayer_AutoAuctioneer\obj\Debug\net7.0\DataAccessLayer_AutoAuctioneer.csproj.AssemblyReference.cache
+C:\Workstation\BidStamp\DataAccessLayer_AutoAuctioneer\obj\Debug\net7.0\DataAccessLayer_AutoAuctioneer.GeneratedMSBuildEditorConfig.editorconfig
+C:\Workstation\BidStamp\DataAccessLayer_AutoAuctioneer\obj\Debug\net7.0\DataAccessLayer_AutoAuctioneer.AssemblyInfoInputs.cache
+C:\Workstation\BidStamp\DataAccessLayer_AutoAuctioneer\obj\Debug\net7.0\DataAccessLayer_AutoAuctioneer.AssemblyInfo.cs
+C:\Workstation\BidStamp\DataAccessLayer_AutoAuctioneer\obj\Debug\net7.0\DataAccessLayer_AutoAuctioneer.csproj.CoreCompileInputs.cache
+C:\Workstation\BidStamp\DataAccessLayer_AutoAuctioneer\obj\Debug\net7.0\DataAccessLayer_AutoAuctioneer.dll
+C:\Workstation\BidStamp\DataAccessLayer_AutoAuctioneer\obj\Debug\net7.0\refint\DataAccessLayer_AutoAuctioneer.dll
+C:\Workstation\BidStamp\DataAccessLayer_AutoAuctioneer\obj\Debug\net7.0\DataAccessLayer_AutoAuctioneer.pdb
+C:\Workstation\BidStamp\DataAccessLayer_AutoAuctioneer\obj\Debug\net7.0\DataAccessLayer_AutoAuctioneer.genruntimeconfig.cache
+C:\Workstation\BidStamp\DataAccessLayer_AutoAuctioneer\obj\Debug\net7.0\ref\DataAccessLayer_AutoAuctioneer.dll

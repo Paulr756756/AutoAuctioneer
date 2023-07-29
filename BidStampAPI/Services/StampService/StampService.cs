@@ -1,10 +1,10 @@
-﻿/*using API_BidStamp.Models.StampRequestModels;
-using DataAccessLayer_BidStamp;
-using DataAccessLayer_BidStamp.Models;
-using DataAccessLayer_BidStamp.Repositories;
+﻿/*using API_AutoAuctioneer.Models.StampRequestModels;
+using DataAccessLayer_AutoAuctioneer;
+using DataAccessLayer_AutoAuctioneer.Models;
+using DataAccessLayer_AutoAuctioneer.Repositories;
 using DataAccessLibrary_BidStamp.Models;
 
-namespace API_BidStamp.Services.StampService;
+namespace API_AutoAuctioneer.Services.StampService;
 
 public class StampService : IStampService {
     private readonly IStampRepository _stamp_repository;
@@ -74,3 +74,4 @@ public class StampService : IStampService {
         return true;
     }
 }*/
+

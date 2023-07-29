@@ -1,9 +1,10 @@
-using API_BidStamp.Models.BidRequestModels;
-using DataAccessLibrary_BidStamp.Models;
+using API_AutoAuctioneer.Models.BidRequestModels;
+using DataAccessLibrary_AutoAuctioneer.Models;
 
-namespace API_BidStamp.Services;
+namespace API_AutoAuctioneer.Services;
 
-public interface IBidService {
+public interface IBidService
+{
     Task<List<Bid>> getAllBidsService();
     Task<Bid> getBidByIdService(Guid id);
     Task<List<Bid>> getBidsPerListingService(Guid id);

@@ -56,3 +56,4 @@ public class StampController : ControllerBase {
         return Ok($"Deleted stamp with id {stamp_id}");
     }
 }*/
+

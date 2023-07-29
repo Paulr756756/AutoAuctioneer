@@ -1,28 +1,31 @@
-﻿using API_BidStamp.Models.ListingRequestModels;
-using DataAccessLayer_BidStamp;
-using DataAccessLayer_BidStamp.Models;
-using DataAccessLayer_BidStamp.Repositories;
-using DataAccessLibrary_BidStamp.Models;
+﻿using API_AutoAuctioneer.Models.ListingRequestModels;
+using DataAccessLayer_AutoAuctioneer.Models;
+using DataAccessLayer_AutoAuctioneer.Repositories;
 
-namespace API_BidStamp.Services.ListingService;
+namespace API_AutoAuctioneer.Services.ListingService;
 
-public class ListingService : IListingService {
+public class ListingService : IListingService
+{
     private readonly IListingRepository _listingRepository;
+
     /*private readonly IStampRepository _stampRepository;*/
     private readonly IUserRepository _userRepository;
 
-    public ListingService(IListingRepository listingRepository,/* IStampRepository
-        stampRepository,*/ IUserRepository userRepository) {
+    public ListingService(IListingRepository listingRepository, /* IStampRepository
+        stampRepository,*/ IUserRepository userRepository)
+    {
         _listingRepository = listingRepository;
         /*_stampRepository = stampRepository;*/
         _userRepository = userRepository;
     }
 
-    public async Task<List<Listing>> getAlListingsService() {
+    public async Task<List<Listing>> getAlListingsService()
+    {
         return await _listingRepository.getAllListings();
     }
 
-    public async Task<Listing> getListingyId(Guid guid) {
+    public async Task<Listing> getListingyId(Guid guid)
+    {
         return await _listingRepository.getListingById(guid);
     }
 
@@ -50,7 +53,8 @@ public class ListingService : IListingService {
     }
     */
 
-    public async Task<bool> deleteListingService(ListingDeleteRequest request) {
+    public async Task<bool> deleteListingService(ListingDeleteRequest request)
+    {
         var listing = await _listingRepository.getListingById(request.ListingId);
         if (listing == null)
             return false;

@@ -1,8 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace API_BidStamp.Models.UserRequestModels;
+namespace API_AutoAuctioneer.Models.UserRequestModels;
 
-public class UserRegisterRequest {
+public class UserRegisterRequest
+{
     [Required]
     [MinLength(5)]
     [MaxLength(15)]

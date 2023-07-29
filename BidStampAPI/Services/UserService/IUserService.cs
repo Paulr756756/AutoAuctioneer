@@ -1,8 +1,9 @@
-﻿using API_BidStamp.Models.UserRequestModels;
+﻿using API_AutoAuctioneer.Models.UserRequestModels;
 
-namespace API_BidStamp.Services.UserService;
+namespace API_AutoAuctioneer.Services.UserService;
 
-public interface IUserService {
+public interface IUserService
+{
     string getMyName();
     Task<bool> registerUser(UserRegisterRequest request);
     Task<bool> deleteUser(DeleteUserRequest request);

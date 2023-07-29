@@ -837,7 +837,7 @@
           "buildTransitive/net6.0/System.Text.Json.targets": {}
         }
       },
-      "DataAccessLayer_BidStamp/1.0.0": {
+      "DataAccessLayer_AutoAuctioneer/1.0.0": {
         "type": "project",
         "framework": ".NETCoreApp,Version=v7.0",
         "dependencies": {
@@ -847,10 +847,10 @@
           "System.Data.SqlClient": "4.8.5"
         },
         "compile": {
-          "bin/placeholder/DataAccessLayer_BidStamp.dll": {}
+          "bin/placeholder/DataAccessLayer_AutoAuctioneer.dll": {}
         },
         "runtime": {
-          "bin/placeholder/DataAccessLayer_BidStamp.dll": {}
+          "bin/placeholder/DataAccessLayer_AutoAuctioneer.dll": {}
         }
       }
     }
@@ -2439,16 +2439,16 @@
         "useSharedDesignerContext.txt"
       ]
     },
-    "DataAccessLayer_BidStamp/1.0.0": {
+    "DataAccessLayer_AutoAuctioneer/1.0.0": {
       "type": "project",
-      "path": "../DataAccessLayer_BidStamp/DataAccessLayer_BidStamp.csproj",
-      "msbuildProject": "../DataAccessLayer_BidStamp/DataAccessLayer_BidStamp.csproj"
+      "path": "../DataAccessLayer_AutoAuctioneer/DataAccessLayer_AutoAuctioneer.csproj",
+      "msbuildProject": "../DataAccessLayer_AutoAuctioneer/DataAccessLayer_AutoAuctioneer.csproj"
     }
   },
   "projectFileDependencyGroups": {
     "net7.0": [
       "BCrypt.Net-Next >= 4.0.3",
-      "DataAccessLayer_BidStamp >= 1.0.0",
+      "DataAccessLayer_AutoAuctioneer >= 1.0.0",
       "Microsoft.AspNetCore.Authentication.JwtBearer >= 7.0.7",
       "Microsoft.AspNetCore.OpenApi >= 7.0.5",
       "Microsoft.EntityFrameworkCore.Design >= 7.0.5",
@@ -2464,9 +2464,9 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Workstation\\BidStamp\\BidStampAPI\\API_BidStamp.csproj",
-      "projectName": "API_BidStamp",
-      "projectPath": "C:\\Workstation\\BidStamp\\BidStampAPI\\API_BidStamp.csproj",
+      "projectUniqueName": "C:\\Workstation\\BidStamp\\BidStampAPI\\API_AutoAuctioneer.csproj",
+      "projectName": "API_AutoAuctioneer",
+      "projectPath": "C:\\Workstation\\BidStamp\\BidStampAPI\\API_AutoAuctioneer.csproj",
       "packagesPath": "C:\\Users\\paulr\\.nuget\\packages\\",
       "outputPath": "C:\\Workstation\\BidStamp\\BidStampAPI\\obj\\",
       "projectStyle": "PackageReference",
@@ -2491,8 +2491,8 @@
         "net7.0": {
           "targetAlias": "net7.0",
           "projectReferences": {
-            "C:\\Workstation\\BidStamp\\DataAccessLayer_BidStamp\\DataAccessLayer_BidStamp.csproj": {
-              "projectPath": "C:\\Workstation\\BidStamp\\DataAccessLayer_BidStamp\\DataAccessLayer_BidStamp.csproj"
+            "C:\\Workstation\\BidStamp\\DataAccessLayer_AutoAuctioneer\\DataAccessLayer_AutoAuctioneer.csproj": {
+              "projectPath": "C:\\Workstation\\BidStamp\\DataAccessLayer_AutoAuctioneer\\DataAccessLayer_AutoAuctioneer.csproj"
             }
           }
         }

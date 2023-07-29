@@ -1,8 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace API_BidStamp.Models.StampRequestModels;
+namespace API_AutoAuctioneer.Models.StampRequestModels;
 
-public class AddStampRequest {
+public class AddStampRequest
+{
     /* [Required]
      public Guid UserId;*/
     [Required] public string StampTitle { get; set; }

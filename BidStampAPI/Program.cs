@@ -1,8 +1,8 @@
-using API_BidStamp.Services;
-using API_BidStamp.Services.ListingService;
-using API_BidStamp.Services.UserService;
-using DataAccessLayer_BidStamp.Repositories;
-using DataAccessLibrary_BidStamp;
+using API_AutoAuctioneer.Services;
+using API_AutoAuctioneer.Services.ListingService;
+using API_AutoAuctioneer.Services.UserService;
+using DataAccessLayer_AutoAuctioneer.Repositories;
+using DataAccessLibrary_AutoAuctioneer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
@@ -15,8 +15,10 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen(options => {
-    options.AddSecurityDefinition("oauth2", new OpenApiSecurityScheme {
+builder.Services.AddSwaggerGen(options =>
+{
+    options.AddSecurityDefinition("oauth2", new OpenApiSecurityScheme
+    {
         In = ParameterLocation.Header,
         Name = "Authorization",
         Type = SecuritySchemeType.ApiKey
@@ -26,6 +28,7 @@ builder.Services.AddSwaggerGen(options => {
 });
 
 builder.Services
+    .AddScoped(typeof(IBaseRepository<>), typeof(BaseRepository<>))
     .AddScoped<IUserService, UserService>()
     .AddScoped<IUserRepository, UserRepository>()
     /*
@@ -53,8 +56,10 @@ builder.Services.AddHttpContextAccessor();
 })*/
 
 
-builder.Services.AddAuthentication().AddJwtBearer(options => {
-    options.TokenValidationParameters = new TokenValidationParameters {
+builder.Services.AddAuthentication().AddJwtBearer(options =>
+{
+    options.TokenValidationParameters = new TokenValidationParameters
+    {
         ValidateIssuerSigningKey = true,
         ValidateAudience = false,
         ValidateIssuer = false,
@@ -70,7 +75,8 @@ builder.Services.AddAuthentication().AddJwtBearer(options => {
 });*/
 /*
 builder.Services.AddAuthentication().AddJwtBearer();*/
-builder.Services.AddCors(c => {
+builder.Services.AddCors(c =>
+{
     c.AddPolicy("AllowOrigin", options =>
         options.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
 });
@@ -82,7 +88,8 @@ builder.Services.AddDbContext<DatabaseContext>(options => options
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment()) {
+if (app.Environment.IsDevelopment())
+{
     app.UseDeveloperExceptionPage();
     app.UseSwagger();
     app.UseSwaggerUI();

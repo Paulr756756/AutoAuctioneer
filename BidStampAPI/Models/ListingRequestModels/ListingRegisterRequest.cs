@@ -1,8 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace API_BidStamp.Models.ListingRequestModels;
+namespace API_AutoAuctioneer.Models.ListingRequestModels;
 
-public class ListingRegisterRequest {
+public class ListingRegisterRequest
+{
     [Required] public Guid UserId { get; set; }
 
     [Required] public Guid StampId { get; set; }

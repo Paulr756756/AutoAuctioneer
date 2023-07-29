@@ -1,8 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace API_BidStamp.Models.UserRequestModels;
+namespace API_AutoAuctioneer.Models.UserRequestModels;
 
-public class DeleteUserRequest {
+public class DeleteUserRequest
+{
     [Required] public string Email { get; set; } = string.Empty;
 
     [Required] public string Password { get; set; } = string.Empty;

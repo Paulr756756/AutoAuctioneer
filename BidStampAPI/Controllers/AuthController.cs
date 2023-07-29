@@ -1,4 +1,4 @@
-﻿namespace API_BidStamp.Controllers;
+﻿namespace API_AutoAuctioneer.Controllers;
 /*[Route("api/{controller}"]
 [ApiController]
 public class AuthController : ControllerBase

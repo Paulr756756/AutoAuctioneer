@@ -1,8 +1,8 @@
-﻿/*using API_BidStamp.Models.StampRequestModels;
-using DataAccessLayer_BidStamp.Models;
+﻿/*using API_AutoAuctioneer.Models.StampRequestModels;
+using DataAccessLayer_AutoAuctioneer.Models;
 using DataAccessLibrary_BidStamp.Models;
 
-namespace API_BidStamp.Services.StampService;
+namespace API_AutoAuctioneer.Services.StampService;
 
 public interface IStampService {
     Task<bool> deleteStamp(Guid stamp_id, Guid user_id);
@@ -11,3 +11,4 @@ public interface IStampService {
     Task<Stamp> getStampById(Guid id);
     Task<bool> updateStamp(UpdateStampRequest request, Guid stamp_id, Guid user_id);
 }*/
+

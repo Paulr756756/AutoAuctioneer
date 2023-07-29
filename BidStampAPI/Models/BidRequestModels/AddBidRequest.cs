@@ -1,8 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace API_BidStamp.Models.BidRequestModels;
+namespace API_AutoAuctioneer.Models.BidRequestModels;
 
-public class AddBidRequest {
+public class AddBidRequest
+{
     [Required] public Guid ListingId { get; set; }
 
     [Required] public Guid UserId { get; set; }

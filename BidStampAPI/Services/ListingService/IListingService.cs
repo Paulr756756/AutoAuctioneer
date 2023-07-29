@@ -1,11 +1,14 @@
-using API_BidStamp.Models.ListingRequestModels;
-using DataAccessLayer_BidStamp.Models;
+using API_AutoAuctioneer.Models.ListingRequestModels;
+using DataAccessLayer_AutoAuctioneer.Models;
 
-namespace API_BidStamp.Services.ListingService;
+namespace API_AutoAuctioneer.Services.ListingService;
 
-public interface IListingService {
+public interface IListingService
+{
     Task<List<Listing>> getAlListingsService();
+
     Task<Listing> getListingyId(Guid guid);
+
     /*Task<bool> addListingService(ListingRegisterRequest request);*/
     Task<bool> deleteListingService(ListingDeleteRequest request);
 }

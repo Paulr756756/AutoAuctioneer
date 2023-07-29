@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.33627.172
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "API_AutoAuctioneer", "BidStampAPI\API_AutoAuctioneer.csproj", "{3CD55808-1736-46FB-A88B-318755146CFB}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataAccessLayer_AutoAuctioneer", "DataAccessLayer_AutoAuctioneer\DataAccessLayer_AutoAuctioneer.csproj", "{40264E07-B66C-4F0A-AEE5-FCE5B58BE3D9}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{3CD55808-1736-46FB-A88B-318755146CFB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3CD55808-1736-46FB-A88B-318755146CFB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3CD55808-1736-46FB-A88B-318755146CFB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3CD55808-1736-46FB-A88B-318755146CFB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{40264E07-B66C-4F0A-AEE5-FCE5B58BE3D9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{40264E07-B66C-4F0A-AEE5-FCE5B58BE3D9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{40264E07-B66C-4F0A-AEE5-FCE5B58BE3D9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{40264E07-B66C-4F0A-AEE5-FCE5B58BE3D9}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {30966BE3-DE44-4076-BB61-4B8B1E2843C8}
+	EndGlobalSection
+EndGlobal

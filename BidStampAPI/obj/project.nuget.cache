@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "3OmIPdqAhmw/uG1q9YJHgBDEYoMlfPpn0hv9Ecs6yYtys5TX9329bTqoTEcDFgJCMMzIei75DXlnAhEhF/7g/w==",
+  "dgSpecHash": "RSvobrwmoiBJfLxUkf4xpcFrekLY2BIIC6IvGNRvPkTnePSZOBTFPc0t/tGSNygnaMcOZbgKWooOYbZUjV2wUA==",
   "success": true,
-  "projectFilePath": "C:\\Workstation\\BidStamp\\BidStampAPI\\API_BidStamp.csproj",
+  "projectFilePath": "C:\\Workstation\\BidStamp\\BidStampAPI\\API_AutoAuctioneer.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\paulr\\.nuget\\packages\\bcrypt.net-next\\4.0.3\\bcrypt.net-next.4.0.3.nupkg.sha512",
     "C:\\Users\\paulr\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",

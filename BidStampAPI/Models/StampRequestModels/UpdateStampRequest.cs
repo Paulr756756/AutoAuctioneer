@@ -1,6 +1,7 @@
-﻿namespace API_BidStamp.Models.StampRequestModels;
+﻿namespace API_AutoAuctioneer.Models.StampRequestModels;
 
-public class UpdateStampRequest {
+public class UpdateStampRequest
+{
     public string StampTitle { get; set; }
     public string? Description { get; set; }
     public string? ImageUrl { get; set; }
