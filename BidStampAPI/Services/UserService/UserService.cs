@@ -23,11 +23,11 @@ public class UserService : IUserService
     }
 
 
-    public async Task<bool> registerUser(UserRegisterRequest request)
+    public async Task<bool> registerUser<T>(UserRegisterRequest request)
     {
         try
         {
-            if (_user_repository.checkUserExists(request.Email).Result) return false;
+            if (_user_repository.CheckUserExists(request.Email).Result) return false;
 
             var user = new User
             {
@@ -41,7 +41,7 @@ public class UserService : IUserService
                 RegistrationDate = DateTime.UtcNow
             };
 
-            await _user_repository.storeUser(user);
+            var response = await _user_repository.StoreUser<T>(user);
             return true;
         }
         catch (Exception ex)
@@ -52,7 +52,7 @@ public class UserService : IUserService
 
     public async Task<string> loginUser(UserLoginRequest request)
     {
-        var user = await _user_repository.getUserByEmail(request.Email);
+        var user = await _user_repository.GetUserByEmail(request.Email);
         if (user == null)
             return "User not found";
         if (user.VerifiedAt == null)
@@ -65,7 +65,7 @@ public class UserService : IUserService
 
     public async Task<bool> verifyUser(string token)
     {
-        return await _user_repository.getUserByVToken(token);
+        return await _user_repository.GetUserByVToken(token);
     }
 
     public string getMyName()
@@ -79,27 +79,27 @@ public class UserService : IUserService
 
     public async Task<bool> deleteUser(DeleteUserRequest request)
     {
-        var user = _user_repository.getUserByEmail(request.Email).Result;
+        var user = _user_repository.GetUserByEmail(request.Email).Result;
         if (!BCrypt.Net.BCrypt.EnhancedVerify(request.Password, user.PasswordHash)) return false;
-        await _user_repository.deleteUser(user);
+        await _user_repository.DeleteUser(user);
 
         return true;
     }
 
     public async Task<bool> forgotPassword(string email)
     {
-        var user = await _user_repository.getUserByEmail(email);
+        var user = await _user_repository.GetUserByEmail(email);
         if (user == null) return false;
 
         user.PasswordResetToken = createRandomToken();
 
-        await _user_repository.forgotPassword(user);
+        await _user_repository.ForgotPassword(user);
         return true;
     }
 
     public async Task<bool> resetPassword(ResetPasswordRequest request)
     {
-        var user = await _user_repository.getUserByPToken(request.Token);
+        var user = await _user_repository.GetUserByPToken(request.Token);
 
         if (user == null || user.ResetTokenExpires < DateTime.UtcNow) return false;
 
@@ -109,7 +109,7 @@ public class UserService : IUserService
         /*user.PasswordSalt = passwordSalt;*/
         user.ResetTokenExpires = null;
         user.PasswordResetToken = null;
-        await _user_repository.resetPassword(user);
+        await _user_repository.ResetPassword(user);
 
         return true;
     }

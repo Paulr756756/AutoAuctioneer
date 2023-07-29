@@ -20,6 +20,10 @@ public class Result<T>
 
     public static Result<T> SuccessList(List<T> dataList) =>
         new Result<T>(true, default, dataList, null);
+
     public static Result<T> Failure(string errorMessage) =>
         new Result<T>(false, default, default, errorMessage);
+
+    public static Result<T> SuccessNoData() =>
+        new Result<T>(true, default, default, null);
 }

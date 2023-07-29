@@ -7,9 +7,11 @@ namespace DataAccessLayer_AutoAuctioneer.Repositories;
 
 public interface IBaseRepository<TEntity> where TEntity : class
 {
-    Task<Result<TEntity>> GetALlItemsAsync();
+    Task<Result<TEntity>> GetALlItemsAsync<T>();
     Task<Result<TEntity>> GetSingleItemAsync<T>(Expression<Func<TEntity, bool>> predicate);
-    Task UpdateItemAsync<T>(TEntity item);
+    Task<Result<T>> StoreItemAsync<T>(TEntity item);
+    Task<Result<T>> UpdateItemAsync<T>(TEntity item);
+    Task<Result<T>> DeleteItemAsync<T>(TEntity item);
 }
 
 public class BaseRepository<TEntity> : IBaseRepository<TEntity> where TEntity : class
@@ -22,7 +24,7 @@ public class BaseRepository<TEntity> : IBaseRepository<TEntity> where TEntity : 
     }
 
     //Why do we use IList instead of a list
-    public async Task<Result<TEntity>> GetALlItemsAsync()
+    public async Task<Result<TEntity>> GetALlItemsAsync<T>()
     {
         try
         {
@@ -52,13 +54,39 @@ public class BaseRepository<TEntity> : IBaseRepository<TEntity> where TEntity : 
         }
     }
 
-    public async Task UpdateItemAsync<T>(TEntity item)
+    public async Task<Result<T>> StoreItemAsync<T>(TEntity item)
     {
-        _dbContext.Entry(item).State = EntityState.Modified;
-        await _dbContext.SaveChangesAsync();
+        try
+        {
+            await _dbContext.Set<TEntity>().AddAsync(item);
+            await _dbContext.SaveChangesAsync();
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            return Result<T>.Failure(e.ToString());
+        }
+
+        return Result<T>.SuccessNoData();
     }
 
-    public async Task DeleteItemAsync<T>(TEntity item)
+    public async Task<Result<T>> UpdateItemAsync<T>(TEntity item)
+    {
+        try
+        {
+            _dbContext.Entry(item).State = EntityState.Modified;
+            await _dbContext.SaveChangesAsync();
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            return Result<T>.Failure(e.ToString());
+        }
+
+        return Result<T>.SuccessNoData();
+    }
+
+    public async Task<Result<T>> DeleteItemAsync<T>(TEntity item)
     {
         try
         {
@@ -68,7 +96,8 @@ public class BaseRepository<TEntity> : IBaseRepository<TEntity> where TEntity : 
         catch (Exception e)
         {
             Console.WriteLine(e);
-            throw;
+            return Result<T>.Failure(e.ToString());
         }
+        return Result<T>.SuccessNoData();
     }
 }

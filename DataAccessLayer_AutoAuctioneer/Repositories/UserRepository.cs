@@ -1,104 +1,85 @@
 ﻿using DataAccessLayer_AutoAuctioneer.Models;
 using DataAccessLibrary_AutoAuctioneer;
+using DataAccessLibrary_AutoAuctioneer.Util;
 using Microsoft.EntityFrameworkCore;
 
 namespace DataAccessLayer_AutoAuctioneer.Repositories;
 
-public interface IUserRepository
+public interface IUserRepository : IBaseRepository<User>
 {
-    Task<bool> checkUserExists(string email);
-    Task storeUser(User user);
-    Task deleteUser(User user);
-    Task<User> getUserByEmail(string email);
-    Task<bool> getUserByVToken(string token);
-    Task<User> getUserByPToken(string token);
-    Task<User> getUserById(Guid id);
-    Task resetPassword(User user);
-    Task forgotPassword(User user);
+    bool CheckUserExists(string email);
+    Task<Result<T>> StoreUser<T>(User user);
+    Task<Result<T>> DeleteUser<T>(User user);
+    Task<Result<User>> GetUserByEmail(string email);
+    Task<Result<User>> GetUserByVToken(string token);
+    Task<Result<User>> GetUserByPToken(string token);
+    Task<Result<User>> GetUserById(Guid id);
+    Task<Result<T>> ResetPassword<T>(User user);
+    Task<Result<T>> ForgotPassword<T>(User user);
 }
 
 public class UserRepository : BaseRepository<User>, IUserRepository
 {
-    private readonly DatabaseContext _db_context;
-    //private readonly IBaseRepository<User> _baseRepository;
+    public UserRepository(DatabaseContext dbContext) : base(dbContext){ }
 
-    public UserRepository(DatabaseContext db_context) : base(db_context)
+    public async Task<Result<T>> StoreUser<T>(User user)
     {
-        _db_context = db_context;
-    }
-
-    public async Task storeUser(User user)
-    {
-        _db_context.Add(user);
-        await _db_context.SaveChangesAsync();
+        return await StoreItemAsync<T>(user);
     }
 
 
-    public async Task<bool> checkUserExists(string email)
+    public bool CheckUserExists(string email)
     {
-        if (_db_context.Users.Any(u => u.Email == email)) return true;
+        if (_dbContext.Users.Any(u => u.Email == email)) return true;
         return false;
     }
 
-    public async Task deleteUser(User user)
+    public async Task<Result<T>> DeleteUser<T>(User user)
     {
-        var stamps = await _db_context.Cars.Where(
+        /*var stamps = await _dbContext.Cars.Where(
                 c => c.UserId == user.UserId)
             .ToListAsync();
-        var listings = await _db_context.Listings.Where(
+        var listings = await _dbContext.Listings.Where(
                 l => l.UserId == user.UserId)
             .ToListAsync();
 
-        var carparts = await _db_context.CarParts.Where(
+        var carparts = await _dbContext.CarParts.Where(
             c => c.UserId == user.UserId
-        ).ToListAsync();
-
-        _db_context.Users.Remove(user);
-        await _db_context.SaveChangesAsync();
+        ).ToListAsync();*/
+        return await DeleteItemAsync<T>(user);
     }
 
-    public async Task<User> getUserByEmail(string email)
+    public async Task<Result<User>> GetUserByEmail(string email)
     {
-        var response = await GetSingleItemAsync<User>(u => u.Email == email);
-        return response.Data;
+        return await GetSingleItemAsync<User>(e => e.Email == email);
     }
 
-    public async Task<bool> getUserByVToken(string token)
+    public async Task<Result<User>> GetUserByVToken(string token)
     {
-        /*var user = await _db_context.Users.FirstOrDefaultAsync(
-            u => u.VerificationToken == token);*/
-        var response = await GetSingleItemAsync<User>(u => u.VerificationToken == token);
-        var user = response.Data;
-        if (user != null)
-        {
-            user.VerifiedAt = DateTime.UtcNow;
-            await _db_context.SaveChangesAsync();
-            return true;
-        }
-
-        return false;
+        return await GetSingleItemAsync<User>(e => e.VerificationToken == token);
     }
 
-    public async Task<User> getUserByPToken(string token)
+    public async Task<Result<User>> GetUserByPToken(string token)
     {
-        return await _db_context.Users.FirstOrDefaultAsync(
-            u => u.PasswordResetToken == token);
+        return await GetSingleItemAsync<User>(e => e.PasswordResetToken == token);
     }
 
-    public async Task<User> getUserById(Guid id)
+    public async Task<Result<User>> GetUserById(Guid id)
     {
-        return await _db_context.Users.FirstOrDefaultAsync(u => u.UserId == id);
+        return await GetSingleItemAsync<User>(e => e.UserId == id);
     }
 
-    public async Task forgotPassword(User user)
+    public async Task<Result<T>> ForgotPassword<T>(User user)
     {
         user.ResetTokenExpires = DateTime.UtcNow.AddDays(1);
-        await _db_context.SaveChangesAsync();
+        /*await _dbContext.SaveChangesAsync();*/
+        return await UpdateItemAsync<T>(user);
     }
 
-    public async Task resetPassword(User user)
+    public async Task<Result<T>> ResetPassword<T>(User user)
     {
-        _db_context.Update(user);
-        await _db_context.SaveChangesAsync();
+        /*_dbContext.Update(user);
+        await _dbContext.SaveChangesAsync();*/
+        return await UpdateItemAsync<T>(user);
     }
 }
