@@ -12,23 +12,42 @@ public class UserService : IUserService
 {
     private readonly IConfiguration _config;
     private readonly IHttpContextAccessor _httpContextAccessor;
-    private readonly IUserRepository _user_repository;
+    private readonly IUserRepository _userRepository;
 
     public UserService(IHttpContextAccessor httpContextAccessor,
-        IUserRepository user_repository, IConfiguration config)
+        IUserRepository userRepository, IConfiguration config)
     {
         _httpContextAccessor = httpContextAccessor;
-        _user_repository = user_repository;
+        _userRepository = userRepository;
         _config = config;
     }
 
 
-    public async Task<bool> registerUser<T>(UserRegisterRequest request)
+    public async Task<bool> RegisterUser<T>(UserRegisterRequest request)
     {
-        try
+        if (_userRepository.GetUserByEmail(request.Email).Result.Data != null)
         {
-            if (_user_repository.CheckUserExists(request.Email).Result) return false;
+            return false;
+        }
+        
+        var user = new User
+        {
+            UserId = Guid.NewGuid(),
+            UserName = request.UserName,
+            Email = request.Email,
+            PasswordHash = BCrypt.Net.BCrypt.EnhancedHashPassword(request.Password),
+        };
+        var response = await _userRepository.StoreUser<T>(user);
+        if (response.IsSuccess)
+        {
+            return true;
+        }
 
+        return false;
+        /*try
+        {
+            if (_userRepository.CheckUserExists(request.Email).Result) return false;
+    
             var user = new User
             {
                 UserId = Guid.NewGuid(),
@@ -36,85 +55,127 @@ public class UserService : IUserService
                 Email = request.Email,
                 PasswordHash = BCrypt.Net.BCrypt.EnhancedHashPassword
                     (request.Password),
-                /*PasswordSalt = passwordSalt,*/
-                VerificationToken = createRandomToken(),
+                /*PasswordSalt = passwordSalt,#1#
+                VerificationToken = CreateRandomToken(),
                 RegistrationDate = DateTime.UtcNow
             };
-
-            var response = await _user_repository.StoreUser<T>(user);
+    
+            var response = await _userRepository.StoreUser<T>(user);
             return true;
         }
         catch (Exception ex)
         {
             return false;
-        }
+        }*/
+    }
+    
+    public async Task<bool> VerifyUser(string token)
+    {
+        var response = await _userRepository.GetUserByVToken(token); 
+        return response.IsSuccess;
     }
 
-    public async Task<string> loginUser(UserLoginRequest request)
+
+    public async Task<string> LoginUser(UserLoginRequest request)
     {
-        var user = await _user_repository.GetUserByEmail(request.Email);
+        var response = await _userRepository.GetUserByEmail(request.Email);
+        var user = response.Data;
         if (user == null)
             return "User not found";
         if (user.VerifiedAt == null)
             return "User not verified";
         if (!BCrypt.Net.BCrypt.EnhancedVerify(request.Password, user.PasswordHash))
             return "User credentials not correct";
-        return createJwtToken(user);
+        return CreateJwtToken(user);
     }
 
 
-    public async Task<bool> verifyUser(string token)
+    
+    public string GetMyName()
     {
-        return await _user_repository.GetUserByVToken(token);
-    }
-
-    public string getMyName()
-    {
-        var result = string.Empty;
         if (_httpContextAccessor.HttpContext != null)
-            result = _httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.Name);
-
-        return result;
+        {
+            return _httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.Name);
+        }
+        return "Try logging in first";
     }
 
-    public async Task<bool> deleteUser(DeleteUserRequest request)
+    public async Task<bool> DeleteUser<T>(DeleteUserRequest request)
     {
-        var user = _user_repository.GetUserByEmail(request.Email).Result;
+        var user = _userRepository.GetUserByEmail(request.Email).Result.Data;
+        if (user == null)
+        {
+            Console.WriteLine("User does not exist");
+            return false;
+        }
         if (!BCrypt.Net.BCrypt.EnhancedVerify(request.Password, user.PasswordHash)) return false;
-        await _user_repository.DeleteUser(user);
+        var response = await _userRepository.DeleteUser<T>(user);
 
-        return true;
+        if (response.IsSuccess)
+        {
+            return true;
+        }
+        
+        Console.WriteLine(response.ErrorMessage);
+        return false;
     }
 
-    public async Task<bool> forgotPassword(string email)
+    public async Task<bool> ForgotPassword<T>(string email)
     {
-        var user = await _user_repository.GetUserByEmail(email);
-        if (user == null) return false;
+        var response = await _userRepository.GetUserByEmail(email);
+        var user = response.Data;
+        if (user == null)
+        {
+            Console.WriteLine("User does not exist");
+            return false;
+        }
 
-        user.PasswordResetToken = createRandomToken();
+        user.PasswordResetToken = CreateRandomToken();
 
-        await _user_repository.ForgotPassword(user);
-        return true;
+        var result = await _userRepository.ForgotPassword<T>(user);
+        if (result.IsSuccess)
+        {
+            return true;
+        }
+        Console.WriteLine(result.ErrorMessage);
+        return false;
     }
 
-    public async Task<bool> resetPassword(ResetPasswordRequest request)
+    public async Task<bool> ResetPassword<T>(ResetPasswordRequest request)
     {
-        var user = await _user_repository.GetUserByPToken(request.Token);
+        var response = await _userRepository.GetUserByPToken(request.Token);
+        if (!response.IsSuccess)
+        {
+            Console.WriteLine("Couldn't fetch password token :" + response.ErrorMessage);
+            return false;
+        }
+        
+        var user = response.Data;
 
-        if (user == null || user.ResetTokenExpires < DateTime.UtcNow) return false;
-
-        /*CreatePasswordHash(request.Password, out byte[] passwordHash, out byte[] passwordSalt);*/
-
+        if (user == null)
+        {
+            Console.WriteLine("User does not exist");
+            return false;
+        }
+        if (user.ResetTokenExpires < DateTime.UtcNow)
+        {
+            Console.WriteLine("User reset token has expired");
+        }
+        
         user.PasswordHash = BCrypt.Net.BCrypt.EnhancedHashPassword(request.Password);
-        /*user.PasswordSalt = passwordSalt;*/
         user.ResetTokenExpires = null;
         user.PasswordResetToken = null;
-        await _user_repository.ResetPassword(user);
-
-        return true;
+        var result =await _userRepository.ResetPassword<T>(user);
+        if (result.IsSuccess)
+        {
+            return true;
+        }
+        
+        Console.WriteLine("Couldn't reset password :" + result.ErrorMessage);
+        return false;
     }
 
-    private string createJwtToken(User user)
+    private string CreateJwtToken(User user)
     {
         var claims = new List<Claim>
         {
@@ -122,24 +183,8 @@ public class UserService : IUserService
             new(ClaimTypes.Role, "Client")
         };
 
-        //1.
-        /*var key = new SymmetricSecurityKey(Convert.FromBase64String(
-            _config.GetSection("AppSettings:Token").Value!));*/
-
-
         var key = new SymmetricSecurityKey(Convert.FromBase64String(
             _config.GetSection("Authentication:Schemes:Bearer:SigningKeys:0:Value").Value!));
-
-        /*4
-         var key = new SymmetricSecurityKey(Convert
-            .FromBase64String("+7C70wuX/udADESFi7Wgww=="));*/
-        /*3
-        var randomBytes = new byte[32];
-        using (var rng = RandomNumberGenerator.Create())
-        {
-            rng.GetBytes(randomBytes);
-        }
-        var key = new SymmetricSecurityKey(randomBytes);*/
 
         var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
         var token = new JwtSecurityToken(
@@ -153,7 +198,7 @@ public class UserService : IUserService
         return jwt;
     }
 
-    private string createRandomToken()
+    private string CreateRandomToken()
     {
         return Convert.ToHexString(RandomNumberGenerator.GetBytes(64));
     }

@@ -7,7 +7,7 @@ namespace DataAccessLayer_AutoAuctioneer.Repositories;
 
 public interface IUserRepository : IBaseRepository<User>
 {
-    bool CheckUserExists(string email);
+    /*bool CheckUserExists(string email);*/
     Task<Result<T>> StoreUser<T>(User user);
     Task<Result<T>> DeleteUser<T>(User user);
     Task<Result<User>> GetUserByEmail(string email);
@@ -28,11 +28,11 @@ public class UserRepository : BaseRepository<User>, IUserRepository
     }
 
 
-    public bool CheckUserExists(string email)
+    /*public bool CheckUserExists(string email)
     {
         if (_dbContext.Users.Any(u => u.Email == email)) return true;
         return false;
-    }
+    }*/
 
     public async Task<Result<T>> DeleteUser<T>(User user)
     {

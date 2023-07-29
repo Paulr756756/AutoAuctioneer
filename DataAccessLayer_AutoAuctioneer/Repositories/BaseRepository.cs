@@ -100,4 +100,5 @@ public class BaseRepository<TEntity> : IBaseRepository<TEntity> where TEntity : 
         }
         return Result<T>.SuccessNoData();
     }
+    
 }

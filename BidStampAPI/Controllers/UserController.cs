@@ -23,14 +23,14 @@ public class UserController : ControllerBase
     [HttpPost("register")]
     public async Task<IActionResult> Register(UserRegisterRequest request)
     {
-        if (await _userService.registerUser(request)) return Ok("User created");
+        if (await _userService.RegisterUser(request)) return Ok("User created");
         return BadRequest("Error");
     }
 
     [HttpPost("login")]
     public async Task<IActionResult> Login(UserLoginRequest request)
     {
-        var token = await _userService.loginUser(request);
+        var token = await _userService.LoginUser(request);
 
         /*string response = $"Welcome Back \nUser:{user.UserName}\nEmail:{user.Email}\n" +
             $"your token is :{token}";*/
@@ -41,14 +41,14 @@ public class UserController : ControllerBase
     [HttpPost("verify")]
     public async Task<IActionResult> Verify(string token)
     {
-        if (_userService.verifyUser(token).Result) return Ok("User verified successfully");
+        if (_userService.VerifyUser(token).Result) return Ok("User verified successfully");
         return BadRequest("User not verified");
     }
 
     [HttpPost("forgot-password")]
     public async Task<IActionResult> ForgotPassword(string email)
     {
-        if (!_userService.forgotPassword(email).Result) return BadRequest("User not found");
+        if (!_userService.ForgotPassword(email).Result) return BadRequest("User not found");
 
         return Ok("You may now reset your password");
     }
@@ -56,7 +56,7 @@ public class UserController : ControllerBase
     [HttpPost("reset-password")]
     public async Task<IActionResult> ResetPassword(ResetPasswordRequest request)
     {
-        if (!_userService.resetPassword(request).Result)
+        if (!_userService.ResetPassword(request).Result)
             return BadRequest("Couldn't reset your password");
 
         return Ok("SuccessfullyResetted your password");
@@ -66,7 +66,7 @@ public class UserController : ControllerBase
     [Authorize(Roles = "Client")]
     public async Task<IActionResult> DeleteUser(DeleteUserRequest request)
     {
-        if (_userService.deleteUser(request).Result) return Ok("User deleted successfully");
+        if (_userService.DeleteUser(request).Result) return Ok("User deleted successfully");
 
         return BadRequest("Couldn't delete user!");
     }
@@ -75,7 +75,7 @@ public class UserController : ControllerBase
     [Authorize(Roles = "Client")]
     public ActionResult<object> GetMe()
     {
-        var userName = _userService.getMyName();
+        var userName = _userService.GetMyName();
         return Ok(userName);
     }
 }
