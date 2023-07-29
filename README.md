@@ -1,2 +1,2 @@
-# BidStamp API
-This is an API created for BidStamp.
+# AutoAuctioneer API
+This is an Web API created for AuctoAuctioneer.
