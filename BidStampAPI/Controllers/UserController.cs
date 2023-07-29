@@ -13,17 +13,16 @@ public class UserController : ControllerBase
     private readonly IConfiguration _config;
     private readonly IUserService _userService;
 
-    public UserController(DatabaseContext dbContext, IConfiguration config,
-        IUserService userService)
+    public UserController(IConfiguration config, IUserService userService)
     {
         _config = config;
         _userService = userService;
     }
 
     [HttpPost("register")]
-    public async Task<IActionResult> Register<T>(UserRegisterRequest request)
+    public async Task<IActionResult> Register(UserRegisterRequest request)
     {
-        if (await _userService.RegisterUser<T>(request)) return Ok("User created");
+        if (await _userService.RegisterUser(request)) return Ok("User created");
         return BadRequest("Error");
     }
 
@@ -31,9 +30,6 @@ public class UserController : ControllerBase
     public async Task<IActionResult> Login(UserLoginRequest request)
     {
         var token = await _userService.LoginUser(request);
-
-        /*string response = $"Welcome Back \nUser:{user.UserName}\nEmail:{user.Email}\n" +
-            $"your token is :{token}";*/
         return Ok($"Welcome back: {token}");
     }
 
@@ -46,17 +42,17 @@ public class UserController : ControllerBase
     }
 
     [HttpPost("forgot-password")]
-    public async Task<IActionResult> ForgotPassword<T>(string email)
+    public async Task<IActionResult> ForgotPassword(string email)
     {
-        if (! await _userService.ForgotPassword<T>(email)) return BadRequest("User not found");
+        if (! await _userService.ForgotPassword(email)) return BadRequest("User not found");
 
         return Ok("You may now reset your password");
     }
 
     [HttpPost("reset-password")]
-    public async Task<IActionResult> ResetPassword<T>(ResetPasswordRequest request)
+    public async Task<IActionResult> ResetPassword(ResetPasswordRequest request)
     {
-        if (! await _userService.ResetPassword<T>(request))
+        if (! await _userService.ResetPassword(request))
             return BadRequest("Couldn't reset your password");
 
         return Ok("SuccessfullyResetted your password");
@@ -64,16 +60,16 @@ public class UserController : ControllerBase
 
     [HttpDelete("delete-user")]
     [Authorize(Roles = "Client")]
-    public async Task<IActionResult> DeleteUser<T>(DeleteUserRequest request)
+    public async Task<IActionResult> DeleteUser(DeleteUserRequest request)
     {
-        if (await _userService.DeleteUser<T>(request)) return Ok("User deleted successfully");
+        if (await _userService.DeleteUser(request)) return Ok("User deleted successfully");
 
         return BadRequest("Couldn't delete user!");
     }
 
     [HttpGet("getuserdetails")]
     [Authorize(Roles = "Client")]
-    public ActionResult<object> GetMe()
+    public IActionResult GetMe()
     {
         var userName = _userService.GetMyName();
         return Ok(userName);

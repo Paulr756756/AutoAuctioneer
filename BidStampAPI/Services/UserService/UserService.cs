@@ -23,7 +23,7 @@ public class UserService : IUserService
     }
 
 
-    public async Task<bool> RegisterUser<T>(UserRegisterRequest request)
+    public async Task<bool> RegisterUser(UserRegisterRequest request)
     {
         if (_userRepository.GetUserByEmail(request.Email).Result.Data != null)
         {
@@ -34,10 +34,12 @@ public class UserService : IUserService
         {
             UserId = Guid.NewGuid(),
             UserName = request.UserName,
-            Email = request.Email,
+            Email = request.Email.ToLower(),
             PasswordHash = BCrypt.Net.BCrypt.EnhancedHashPassword(request.Password),
+            VerificationToken = CreateRandomToken(),
+            RegistrationDate = DateTime.UtcNow
         };
-        var response = await _userRepository.StoreUser<T>(user);
+        var response = await _userRepository.StoreUser(user);
         if (response.IsSuccess)
         {
             return true;
@@ -71,8 +73,27 @@ public class UserService : IUserService
     
     public async Task<bool> VerifyUser(string token)
     {
-        var response = await _userRepository.GetUserByVToken(token); 
-        return response.IsSuccess;
+        var response = await _userRepository.GetUserByVToken(token);
+        if (!response.IsSuccess)
+        {
+            Console.WriteLine("Couldn't get user by Verification token" + response.ErrorMessage);
+            return false;
+        }
+
+        if (response.Data == null)
+        {
+            Console.WriteLine("No such user present");
+            return false;
+        }
+        response.Data.VerifiedAt = DateTime.UtcNow;
+        response = _userRepository.UpdateUser(response.Data).Result;
+        if(!response.IsSuccess)
+        {
+            Console.WriteLine("Couldn't update user :" + response.ErrorMessage);
+            return false;
+        }
+
+        return true;
     }
 
 
@@ -100,7 +121,7 @@ public class UserService : IUserService
         return "Try logging in first";
     }
 
-    public async Task<bool> DeleteUser<T>(DeleteUserRequest request)
+    public async Task<bool> DeleteUser(DeleteUserRequest request)
     {
         var user = _userRepository.GetUserByEmail(request.Email).Result.Data;
         if (user == null)
@@ -109,7 +130,7 @@ public class UserService : IUserService
             return false;
         }
         if (!BCrypt.Net.BCrypt.EnhancedVerify(request.Password, user.PasswordHash)) return false;
-        var response = await _userRepository.DeleteUser<T>(user);
+        var response = await _userRepository.DeleteUser(user);
 
         if (response.IsSuccess)
         {
@@ -120,7 +141,7 @@ public class UserService : IUserService
         return false;
     }
 
-    public async Task<bool> ForgotPassword<T>(string email)
+    public async Task<bool> ForgotPassword(string email)
     {
         var response = await _userRepository.GetUserByEmail(email);
         var user = response.Data;
@@ -132,7 +153,7 @@ public class UserService : IUserService
 
         user.PasswordResetToken = CreateRandomToken();
 
-        var result = await _userRepository.ForgotPassword<T>(user);
+        var result = await _userRepository.ForgotPassword(user);
         if (result.IsSuccess)
         {
             return true;
@@ -141,7 +162,7 @@ public class UserService : IUserService
         return false;
     }
 
-    public async Task<bool> ResetPassword<T>(ResetPasswordRequest request)
+    public async Task<bool> ResetPassword(ResetPasswordRequest request)
     {
         var response = await _userRepository.GetUserByPToken(request.Token);
         if (!response.IsSuccess)
@@ -165,7 +186,7 @@ public class UserService : IUserService
         user.PasswordHash = BCrypt.Net.BCrypt.EnhancedHashPassword(request.Password);
         user.ResetTokenExpires = null;
         user.PasswordResetToken = null;
-        var result =await _userRepository.ResetPassword<T>(user);
+        var result =await _userRepository.ResetPassword(user);
         if (result.IsSuccess)
         {
             return true;

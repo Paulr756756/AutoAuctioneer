@@ -35,7 +35,8 @@ public class BidService : IBidService
 
     public async Task<bool> postBidService(AddBidRequest request)
     {
-        var user = await _userRepository.GetUserById(request.UserId);
+        var responseUser = await _userRepository.GetUserById(request.UserId);
+        var user = responseUser.Data;
         if (user == null) return false;
         var listing = await _listingRepository.getListingById(request.ListingId);
         if (listing == null) return false;
