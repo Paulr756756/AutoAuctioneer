@@ -1,13 +1,14 @@
 ﻿using System.Linq.Expressions;
 using DataAccessLibrary_AutoAuctioneer;
+using DataAccessLibrary_AutoAuctioneer.Util;
 using Microsoft.EntityFrameworkCore;
 
 namespace DataAccessLayer_AutoAuctioneer.Repositories;
 
 public interface IBaseRepository<TEntity> where TEntity : class
 {
-    Task<List<TEntity>> GetALlItemsAsync();
-    Task<TEntity> GetSingleItemAsync<T>(Expression<Func<TEntity, bool>> predicate);
+    Task<Result<TEntity>> GetALlItemsAsync();
+    Task<Result<TEntity>> GetSingleItemAsync<T>(Expression<Func<TEntity, bool>> predicate);
     Task UpdateItemAsync<T>(TEntity item);
 }
 
@@ -21,29 +22,33 @@ public class BaseRepository<TEntity> : IBaseRepository<TEntity> where TEntity : 
     }
 
     //Why do we use IList instead of a list
-    public async Task<List<TEntity>> GetALlItemsAsync()
+    public async Task<Result<TEntity>> GetALlItemsAsync()
     {
         try
         {
-            return await _dbContext.Set<TEntity>().AsNoTracking().ToListAsync();
+            var response = await _dbContext.Set<TEntity>().AsNoTracking().ToListAsync();
+            return Result<TEntity>.SuccessList(response);
+
         }
         catch (Exception e)
         {
             Console.WriteLine(e);
-            throw;
+            return Result<TEntity>.Failure(e.ToString());
+            /*throw;*/
         }
     }
 
-    public async Task<TEntity> GetSingleItemAsync<T>(Expression<Func<TEntity, bool>> predicate)
+    public async Task<Result<TEntity>> GetSingleItemAsync<T>(Expression<Func<TEntity, bool>> predicate)
     {
         try
         {
-            return await _dbContext.Set<TEntity>().FirstOrDefaultAsync(predicate);
+            var response = await _dbContext.Set<TEntity>().FirstOrDefaultAsync(predicate);
+            return Result<TEntity>.Success(response);
         }
         catch (Exception e)
         {
             Console.WriteLine(e);
-            throw;
+            return Result<TEntity>.Failure(e.ToString());
         }
     }
 

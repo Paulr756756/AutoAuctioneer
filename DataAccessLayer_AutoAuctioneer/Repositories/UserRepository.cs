@@ -59,16 +59,16 @@ public class UserRepository : BaseRepository<User>, IUserRepository
 
     public async Task<User> getUserByEmail(string email)
     {
-        var user = await GetSingleItemAsync<User>(u => u.Email == email);
-        return user;
+        var response = await GetSingleItemAsync<User>(u => u.Email == email);
+        return response.Data;
     }
 
     public async Task<bool> getUserByVToken(string token)
     {
         /*var user = await _db_context.Users.FirstOrDefaultAsync(
             u => u.VerificationToken == token);*/
-        var user = await GetSingleItemAsync<User>(u => u.VerificationToken == token);
-
+        var response = await GetSingleItemAsync<User>(u => u.VerificationToken == token);
+        var user = response.Data;
         if (user != null)
         {
             user.VerifiedAt = DateTime.UtcNow;
