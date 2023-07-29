@@ -21,9 +21,9 @@ public class UserController : ControllerBase
     }
 
     [HttpPost("register")]
-    public async Task<IActionResult> Register(UserRegisterRequest request)
+    public async Task<IActionResult> Register<T>(UserRegisterRequest request)
     {
-        if (await _userService.RegisterUser(request)) return Ok("User created");
+        if (await _userService.RegisterUser<T>(request)) return Ok("User created");
         return BadRequest("Error");
     }
 
@@ -41,22 +41,22 @@ public class UserController : ControllerBase
     [HttpPost("verify")]
     public async Task<IActionResult> Verify(string token)
     {
-        if (_userService.VerifyUser(token).Result) return Ok("User verified successfully");
+        if (await _userService.VerifyUser(token)) return Ok("User verified successfully");
         return BadRequest("User not verified");
     }
 
     [HttpPost("forgot-password")]
-    public async Task<IActionResult> ForgotPassword(string email)
+    public async Task<IActionResult> ForgotPassword<T>(string email)
     {
-        if (!_userService.ForgotPassword(email).Result) return BadRequest("User not found");
+        if (! await _userService.ForgotPassword<T>(email)) return BadRequest("User not found");
 
         return Ok("You may now reset your password");
     }
 
     [HttpPost("reset-password")]
-    public async Task<IActionResult> ResetPassword(ResetPasswordRequest request)
+    public async Task<IActionResult> ResetPassword<T>(ResetPasswordRequest request)
     {
-        if (!_userService.ResetPassword(request).Result)
+        if (! await _userService.ResetPassword<T>(request))
             return BadRequest("Couldn't reset your password");
 
         return Ok("SuccessfullyResetted your password");
@@ -64,9 +64,9 @@ public class UserController : ControllerBase
 
     [HttpDelete("delete-user")]
     [Authorize(Roles = "Client")]
-    public async Task<IActionResult> DeleteUser(DeleteUserRequest request)
+    public async Task<IActionResult> DeleteUser<T>(DeleteUserRequest request)
     {
-        if (_userService.DeleteUser(request).Result) return Ok("User deleted successfully");
+        if (await _userService.DeleteUser<T>(request)) return Ok("User deleted successfully");
 
         return BadRequest("Couldn't delete user!");
     }
