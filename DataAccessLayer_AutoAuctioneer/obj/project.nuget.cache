@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "y3QwTPtJ0NlWf4N+yi72Tw+1iI+ysTNPjiSeUJHjAbopVT+/7M5v4S6kqHlLIMSiMtce1HCoGSv1EcQy9HSTfQ==",
+  "dgSpecHash": "9MdSWzIfkV7AnnG/JBGMqgHP3p0ZL59+RlVyGB6q0uzp9iXKGfaqp+BJMlfQHW9r9QuBfT+aTCzXKsIvwwE99w==",
   "success": true,
-  "projectFilePath": "C:\\Workstation\\BidStamp\\DataAccessLayer_AutoAuctioneer\\DataAccessLayer_AutoAuctioneer.csproj",
+  "projectFilePath": "C:\\Workstation\\AutoAuctioneerAPI\\DataAccessLayer_AutoAuctioneer\\DataAccessLayer_AutoAuctioneer.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\paulr\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",
     "C:\\Users\\paulr\\.nuget\\packages\\microsoft.entityframeworkcore\\7.0.5\\microsoft.entityframeworkcore.7.0.5.nupkg.sha512",

@@ -12,3 +12,17 @@ C:\Workstation\BidStamp\DataAccessLayer_AutoAuctioneer\obj\Debug\net7.0\refint\D
 C:\Workstation\BidStamp\DataAccessLayer_AutoAuctioneer\obj\Debug\net7.0\DataAccessLayer_AutoAuctioneer.pdb
 C:\Workstation\BidStamp\DataAccessLayer_AutoAuctioneer\obj\Debug\net7.0\DataAccessLayer_AutoAuctioneer.genruntimeconfig.cache
 C:\Workstation\BidStamp\DataAccessLayer_AutoAuctioneer\obj\Debug\net7.0\ref\DataAccessLayer_AutoAuctioneer.dll
+C:\Workstation\AutoAuctioneerAPI\DataAccessLayer_AutoAuctioneer\bin\Debug\net7.0\DataAccessLayer_AutoAuctioneer.deps.json
+C:\Workstation\AutoAuctioneerAPI\DataAccessLayer_AutoAuctioneer\bin\Debug\net7.0\DataAccessLayer_AutoAuctioneer.runtimeconfig.json
+C:\Workstation\AutoAuctioneerAPI\DataAccessLayer_AutoAuctioneer\bin\Debug\net7.0\DataAccessLayer_AutoAuctioneer.dll
+C:\Workstation\AutoAuctioneerAPI\DataAccessLayer_AutoAuctioneer\bin\Debug\net7.0\DataAccessLayer_AutoAuctioneer.pdb
+C:\Workstation\AutoAuctioneerAPI\DataAccessLayer_AutoAuctioneer\obj\Debug\net7.0\DataAccessLayer_AutoAuctioneer.csproj.AssemblyReference.cache
+C:\Workstation\AutoAuctioneerAPI\DataAccessLayer_AutoAuctioneer\obj\Debug\net7.0\DataAccessLayer_AutoAuctioneer.GeneratedMSBuildEditorConfig.editorconfig
+C:\Workstation\AutoAuctioneerAPI\DataAccessLayer_AutoAuctioneer\obj\Debug\net7.0\DataAccessLayer_AutoAuctioneer.AssemblyInfoInputs.cache
+C:\Workstation\AutoAuctioneerAPI\DataAccessLayer_AutoAuctioneer\obj\Debug\net7.0\DataAccessLayer_AutoAuctioneer.AssemblyInfo.cs
+C:\Workstation\AutoAuctioneerAPI\DataAccessLayer_AutoAuctioneer\obj\Debug\net7.0\DataAccessLayer_AutoAuctioneer.csproj.CoreCompileInputs.cache
+C:\Workstation\AutoAuctioneerAPI\DataAccessLayer_AutoAuctioneer\obj\Debug\net7.0\DataAccessLayer_AutoAuctioneer.dll
+C:\Workstation\AutoAuctioneerAPI\DataAccessLayer_AutoAuctioneer\obj\Debug\net7.0\refint\DataAccessLayer_AutoAuctioneer.dll
+C:\Workstation\AutoAuctioneerAPI\DataAccessLayer_AutoAuctioneer\obj\Debug\net7.0\DataAccessLayer_AutoAuctioneer.pdb
+C:\Workstation\AutoAuctioneerAPI\DataAccessLayer_AutoAuctioneer\obj\Debug\net7.0\DataAccessLayer_AutoAuctioneer.genruntimeconfig.cache
+C:\Workstation\AutoAuctioneerAPI\DataAccessLayer_AutoAuctioneer\obj\Debug\net7.0\ref\DataAccessLayer_AutoAuctioneer.dll

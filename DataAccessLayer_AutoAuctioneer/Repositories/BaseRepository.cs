@@ -12,6 +12,7 @@ public interface IBaseRepository<TEntity> where TEntity : class
     Task<Result<TEntity>> StoreItemAsync(TEntity item);
     Task<Result<TEntity>> UpdateItemAsync(TEntity item);
     Task<Result<TEntity>> DeleteItemAsync(TEntity item);
+    Task<Result<TEntity>> GetMultipleItemsAsync(Expression<Func<TEntity, bool>> predicate);
 }
 
 public class BaseRepository<TEntity> : IBaseRepository<TEntity> where TEntity : class
@@ -43,7 +44,7 @@ public class BaseRepository<TEntity> : IBaseRepository<TEntity> where TEntity : 
         try
         {
             var response = await _dbContext.Set<TEntity>().FirstOrDefaultAsync(predicate);
-            return Result<TEntity>.Success(response);
+            return Result<TEntity>.Success(response!);
         }
         catch (Exception e)
         {
@@ -98,5 +99,19 @@ public class BaseRepository<TEntity> : IBaseRepository<TEntity> where TEntity : 
         }
         return Result<TEntity>.SuccessNoData();
     }
-    
+
+    public async Task<Result<TEntity>> GetMultipleItemsAsync(Expression<Func<TEntity, bool>> predicate)
+    {
+        try
+        {
+            var response = await _dbContext.Set<TEntity>().Where(predicate).ToListAsync();
+            return Result<TEntity>.SuccessList(response);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            return Result<TEntity>.Failure(e.ToString());
+        }
+    }
+
 }

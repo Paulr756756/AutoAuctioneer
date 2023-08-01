@@ -1,46 +1,44 @@
 using DataAccessLayer_AutoAuctioneer.Models;
 using DataAccessLibrary_AutoAuctioneer;
+using DataAccessLibrary_AutoAuctioneer.Util;
 using Microsoft.EntityFrameworkCore;
 
 namespace DataAccessLayer_AutoAuctioneer.Repositories;
 
-public interface IListingRepository
+public interface IListingRepository : IBaseRepository<Listing>
 {
-    Task<List<Listing>> getAllListings();
-    Task<Listing> getListingById(Guid guid);
-    Task postListing(Listing listing);
-    Task deleteListing(Listing listing);
+    Task<Result<Listing>> GetAllListings();
+    Task<Result<Listing>> GetListingById(Guid guid);
+    Task<Result<Listing>> PostListing(Listing listing);
+    Task<Result<Listing>> DeleteListing(Listing listing);
 }
 
-public class ListingRepository : IListingRepository
+public class ListingRepository : BaseRepository<Listing>,IListingRepository
 {
     private readonly DatabaseContext _dbContext;
 
-    public ListingRepository(DatabaseContext databaseContext)
+    public ListingRepository(DatabaseContext databaseContext):base(databaseContext)
     {
         _dbContext = databaseContext;
     }
 
-    public async Task<List<Listing>> getAllListings()
+    public async Task<Result<Listing>> GetAllListings()
     {
-        var response = await _dbContext.Listings.ToListAsync();
-        return response;
+        return await GetALlItemsAsync();
     }
 
-    public async Task<Listing> getListingById(Guid guid)
+    public async Task<Result<Listing>> GetListingById(Guid guid)
     {
-        return await _dbContext.Listings.FirstOrDefaultAsync(l => l.ListingId == guid);
+        return await GetSingleItemAsync(e => e.ListingId == guid);
     }
 
-    public async Task postListing(Listing listing)
+    public async Task<Result<Listing>> PostListing(Listing listing)
     {
-        _dbContext.Add(listing);
-        await _dbContext.SaveChangesAsync();
+        return await StoreItemAsync(listing);
     }
 
-    public async Task deleteListing(Listing listing)
+    public async Task<Result<Listing>> DeleteListing(Listing listing)
     {
-        _dbContext.Listings.Remove(listing);
-        await _dbContext.SaveChangesAsync();
+        return await DeleteItemAsync(listing);
     }
 }

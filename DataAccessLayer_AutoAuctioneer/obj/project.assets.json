@@ -1494,11 +1494,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Workstation\\BidStamp\\DataAccessLayer_AutoAuctioneer\\DataAccessLayer_AutoAuctioneer.csproj",
+      "projectUniqueName": "C:\\Workstation\\AutoAuctioneerAPI\\DataAccessLayer_AutoAuctioneer\\DataAccessLayer_AutoAuctioneer.csproj",
       "projectName": "DataAccessLayer_AutoAuctioneer",
-      "projectPath": "C:\\Workstation\\BidStamp\\DataAccessLayer_AutoAuctioneer\\DataAccessLayer_AutoAuctioneer.csproj",
+      "projectPath": "C:\\Workstation\\AutoAuctioneerAPI\\DataAccessLayer_AutoAuctioneer\\DataAccessLayer_AutoAuctioneer.csproj",
       "packagesPath": "C:\\Users\\paulr\\.nuget\\packages\\",
-      "outputPath": "C:\\Workstation\\BidStamp\\DataAccessLayer_AutoAuctioneer\\obj\\",
+      "outputPath": "C:\\Workstation\\AutoAuctioneerAPI\\DataAccessLayer_AutoAuctioneer\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

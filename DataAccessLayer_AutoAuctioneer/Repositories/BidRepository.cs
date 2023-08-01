@@ -1,62 +1,56 @@
 using DataAccessLibrary_AutoAuctioneer;
 using DataAccessLibrary_AutoAuctioneer.Models;
+using DataAccessLibrary_AutoAuctioneer.Util;
 using Microsoft.EntityFrameworkCore;
 
 namespace DataAccessLayer_AutoAuctioneer.Repositories;
 
-public interface IBidRepository
+public interface IBidRepository : IBaseRepository<Bid>
 {
-    Task<List<Bid>> getAllBids();
-    Task<List<Bid>> getBidsPerListing(Guid guid);
-    Task<Bid> getBidById(Guid id);
-    Task postBid(Bid bid);
-    Task deleteBid(Bid bid);
-    Task updateBidAmt(Bid request);
+    Task<Result<Bid>> GetAllBids();
+    Task<Result<Bid>> GetBidsPerListing(Guid guid);
+    Task<Result<Bid>> GetBidById(Guid id);
+    Task<Result<Bid>> PostBid(Bid bid);
+    Task<Result<Bid>> DeleteBid(Bid bid);
+    Task<Result<Bid>> UpdateBidAmt(Bid request);
 }
 
-public class BidRepository : IBidRepository
+public class BidRepository : BaseRepository<Bid>,IBidRepository
 {
     private readonly DatabaseContext _dbContext;
 
-    public BidRepository(DatabaseContext dbContext)
+    public BidRepository(DatabaseContext dbContext): base(dbContext)
     {
         _dbContext = dbContext;
     }
 
-    public async Task<List<Bid>> getAllBids()
+    public async Task<Result<Bid>> GetAllBids()
     {
-        return await _dbContext.Bids.ToListAsync();
+        return await GetALlItemsAsync();
     }
 
-    public async Task<List<Bid>> getBidsPerListing(Guid guid)
+    public async Task<Result<Bid>> GetBidsPerListing(Guid guid)
     {
-        //TODO() find a more efficient operation
-        return await _dbContext.Bids.Where(b => b.ListingId == guid).ToListAsync();
+        return await GetMultipleItemsAsync(e => e.ListingId == guid);
     }
 
-    public async Task<Bid> getBidById(Guid id)
+    public async Task<Result<Bid>> GetBidById(Guid id)
     {
-        return await _dbContext.Bids.FirstOrDefaultAsync(b => b.BidId == id);
+        return await GetSingleItemAsync(e=>e.BidId == id);
     }
 
-    public async Task deleteBid(Bid bid)
+    public async Task<Result<Bid>> DeleteBid(Bid bid)
     {
-        _dbContext.Bids.Remove(bid);
-        await _dbContext.SaveChangesAsync();
+        return await DeleteItemAsync(bid);
     }
 
-    public async Task postBid(Bid bid)
+    public async Task<Result<Bid>> PostBid(Bid bid)
     {
-        await _dbContext.Bids.AddAsync(bid);
-        await _dbContext.SaveChangesAsync();
+        return await StoreItemAsync(bid);
     }
 
-    public async Task updateBidAmt(Bid request)
+    public async Task<Result<Bid>> UpdateBidAmt(Bid request)
     {
-        //TODO(find a more efficient way)
-        /*var bid = await getBidById(request.BidId);
-        bid.BidAmount = request.BidAmount;
-        bid.BidTime = request.BidTime;*/
-        await _dbContext.SaveChangesAsync();
+        return await UpdateItemAsync(request);
     }
 }
