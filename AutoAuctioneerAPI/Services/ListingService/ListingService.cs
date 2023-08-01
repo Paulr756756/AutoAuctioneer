@@ -21,12 +21,22 @@ public class ListingService : IListingService
 
     public async Task<List<Listing>> getAlListingsService()
     {
-        return await _listingRepository.GetAllListings();
+        var response = await _listingRepository.GetAllListings();
+        if (!response.IsSuccess)
+        {
+            throw new Exception();
+        }
+        return response.DataList;
     }
 
     public async Task<Listing> getListingyId(Guid guid)
     {
-        return await _listingRepository.GetListingById(guid);
+        var response = await _listingRepository.GetAllListings();
+        if (!response.IsSuccess)
+        {
+            throw new Exception();
+        }
+        return response.Data;
     }
 
     /*
@@ -55,12 +65,24 @@ public class ListingService : IListingService
 
     public async Task<bool> deleteListingService(ListingDeleteRequest request)
     {
-        var listing = await _listingRepository.GetListingById(request.ListingId);
-        if (listing == null)
+        var response = await _listingRepository.GetListingById(request.ListingId);
+        if (response.Data == null)
+        {
+            Console.WriteLine("No such listing exists");
             return false;
-        if (listing.UserId != request.UserId) return false;
+        }else if (response.Data.UserId != request.UserId)
+        {
+            Console.WriteLine("You are not the owner of this listing");
+            return false;
+        }
 
-        await _listingRepository.DeleteListing(listing);
+        var result = await _listingRepository.DeleteListing(response.Data);
+        if(!result.IsSuccess)
+        {
+            Console.WriteLine(result.ErrorMessage);
+            return false;
+        }
+        
         return true;
     }
 }

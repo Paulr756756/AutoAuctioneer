@@ -30,25 +30,26 @@ public class DatabaseContext : DbContext
             .WithOne(s => s.User)
             .OnDelete(DeleteBehavior.ClientCascade);
         modelBuilder
+            .Entity<Stamp>()
+            .HasOne(s => s.Listing)
+            .WithOne(l => l.Stamp)
+            .OnDelete(DeleteBehavior.ClientCascade);
+        modelBuilder
+            .Entity<Stamp>()
+            .HasOne(s => s.User)
+            .WithMany(u => u.Stamps)
+            .OnDelete(DeleteBehavior.ClientCascade);*/
+        
+        modelBuilder
             .Entity<User>()
             .HasMany(u => u.Listings)
             .WithOne(l => l.User)
             .OnDelete(DeleteBehavior.ClientCascade);
         modelBuilder
-            .Entity<Stamp>()
-            .HasOne(s => s.Listing)
-            .WithOne(l => l.Stamp)
-            .OnDelete(DeleteBehavior.ClientCascade);*/
-        /*modelBuilder
-            .Entity<Stamp>()
-            .HasOne(s => s.User)
-            .WithMany(u => u.Stamps)
-            .OnDelete(DeleteBehavior.ClientCascade);
-        modelBuilder
             .Entity<Listing>()
             .HasOne(u => u.User)
             .WithMany(l => l.Listings)
-            .OnDelete(DeleteBehavior.ClientCascade);*/
+            .OnDelete(DeleteBehavior.ClientCascade);
         modelBuilder
             .Entity<Bid>()
             .HasOne(e => e.Listing)

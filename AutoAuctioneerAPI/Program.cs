@@ -1,6 +1,9 @@
 using API_AutoAuctioneer.Services;
+using API_AutoAuctioneer.Services.CarPartService;
+using API_AutoAuctioneer.Services.CarService;
 using API_AutoAuctioneer.Services.ListingService;
 using API_AutoAuctioneer.Services.UserService;
+using DataAccessLayer_AutoAuctioneer.Models;
 using DataAccessLayer_AutoAuctioneer.Repositories;
 using DataAccessLibrary_AutoAuctioneer;
 using Microsoft.EntityFrameworkCore;
@@ -35,6 +38,13 @@ builder.Services
     .AddScoped<IListingService, ListingService>()
     .AddScoped<IBidService, BidService>()
     .AddScoped<IBidRepository, BidRepository>()
+    .AddScoped<ICarRepository, CarRepository>()
+    .AddScoped<ICarService, CarService>()
+    .AddScoped<ICarPartService, CarPartService>()
+    .AddScoped<ICarPartRepository, CarPartRepository>()
+    .AddScoped<IEngineRepository, EngineRepository>()
+    .AddScoped<ICustomizationCarPartRepository, CustomizationCarPartRepository>()
+    .AddScoped<IIndividualCarPartRepository, IndividualCarPartRepository>()
     
     .AddHttpContextAccessor()
     
