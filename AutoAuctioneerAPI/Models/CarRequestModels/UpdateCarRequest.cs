@@ -8,21 +8,21 @@ public class UpdateCarRequest
     public Guid CarId { get; set; }
     
     //Basic Attributes
-    public string? Make { get; set; }
-    public string? Model { get; set; }
-    public int? Year { get; set; }
-    public string? VIN { get; set; }
-    public int? Mileage { get; set; }
-    public string? Transmission { get; set; }
+    public string Make { get; set; }
+    public string Model { get; set; }
+    public int Year { get; set; }
+    public string VIN { get; set; }
+    public int Mileage { get; set; }
+    public string Transmission { get; set; }
 
     // Exterior Attributes
-    public string? Color { get; set; }
+    public string Color { get; set; }
     public string? BodyStyle { get; set; }
     public List<string>? ExteriorFeatures { get; set; }
 
     // Interior Attributes
     public string? InteriorColor { get; set; }
-    public int? SeatingCapacity { get; set; }
+    public int SeatingCapacity { get; set; }
     public List<string>? InteriorFeatures { get; set; }
 
     // Engine and Performance Attributes
@@ -41,7 +41,7 @@ public class UpdateCarRequest
     // History and Maintenance
     public int? NumberOfPreviousOwners { get; set; }
     public List<string>? OwnershipHistory { get; set; }
-    public bool? HasAccidentHistory { get; set; }
+    public bool HasAccidentHistory { get; set; }
     public List<string>? ServiceRecords { get; set; }
 
     // Additional Features

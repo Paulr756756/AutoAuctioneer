@@ -9,7 +9,7 @@ public interface ICarService
     Task<Car> GetCarById(Guid id);
     Task<List<Car>> GetOwnedCars(Guid id);
     Task<bool> StoreCar(AddCarRequest request);
-    Task<bool> UpdateCar(Car request);
+    Task<bool> UpdateCar(UpdateCarRequest request);
     Task<bool> DeleteCar(DeleteCarRequest request);
     
 }

@@ -49,9 +49,9 @@ public class CarController : Controller
     }
 
     [HttpPut("update"), Authorize(Roles = "Client")]
-    public async Task<IActionResult> UpdateCar([FromBody] Car car)
+    public async Task<IActionResult> UpdateCar([FromBody] UpdateCarRequest request)
     {
-        var response = await _carService.UpdateCar(car);
+        var response = await _carService.UpdateCar(request);
         if (response)
         {
             return Ok(response);

@@ -109,7 +109,7 @@ public class CarService : ICarService
         return true;
     }
 
-    public async Task<bool> UpdateCar(Car request)
+    public async Task<bool> UpdateCar(UpdateCarRequest request)
     {
         var userResponse = await _userRepository.GetUserById(request.UserId);
         if (!userResponse.IsSuccess)
@@ -140,7 +140,36 @@ public class CarService : ICarService
             return false;
         }
 
-        car =  request;
+        car.Color = request.Color;
+        car.Horsepower = request.Horsepower;
+        car.Make = request.Make;
+        car.Mileage = request.Mileage;
+        car.Model = request.Model;
+        car.Suspension = request.Suspension;
+        car.Torque = request.Torque;
+        car.Transmission = request.Transmission;
+        car.Year = request.Year;
+        car.User = userResponse.Data;
+        car.AftermarketUpgrades = request.AftermarketUpgrades;
+        car.BodyStyle = request.BodyStyle;
+        car.EngineDisplacement = request.EngineDisplacement;
+        car.EngineType = request.EngineType;
+        car.ExteriorFeatures = request.ExteriorFeatures;
+        car.FuelEfficiency = request.FuelEfficiency;
+        car.ImageUrls = request.ImageUrls;
+        car.InteriorColor = request.InteriorColor;
+        car.InteriorFeatures = request.InteriorFeatures;
+        car.OwnershipHistory = request.OwnershipHistory;
+        car.SafetyFeatures = request.SafetyFeatures;
+        car.SeatingCapacity = request.SeatingCapacity;
+        car.ServiceRecords = request.SafetyFeatures;
+        car.TechnologyFeatures = request.TechnologyFeatures;
+        car.AudioAndEntertainment = request.AudioAndEntertainment;
+        car.HasAccidentHistory = request.HasAccidentHistory;
+        car.WheelsAndTires = request.WheelsAndTires;
+        car.NumberOfPreviousOwners = request.NumberOfPreviousOwners;
+        car.VIN = request.VIN;
+        
         var result = await _carRepository.UpdateCar(car);
         if (!result.IsSuccess)
         {
