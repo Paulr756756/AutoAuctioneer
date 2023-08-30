@@ -6,7 +6,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace API_AutoAuctioneer.Controllers;
 
-public class CarController : Controller
+[ApiController, Route("api/[controller]")]
+public class CarController : ControllerBase
 {
     private readonly ICarService _carService;
 
@@ -23,14 +24,14 @@ public class CarController : Controller
     }
 
     [HttpGet("getowned"), Authorize(Roles = "Client")]
-    public async Task<IActionResult> GetOwnedCars([FromBody] Guid id)
+    public async Task<IActionResult> GetOwnedCars([FromQuery] Guid id)
     {
         var response = await _carService.GetOwnedCars(id);
         return Ok(response);
     }
 
     [HttpGet("getbyid")]
-    public async Task<IActionResult> GetCarById([FromBody] Guid guid)
+    public async Task<IActionResult> GetCarById( Guid guid)
     {
         var response = await _carService.GetCarById(guid);
         return Ok(response);
@@ -57,6 +58,15 @@ public class CarController : Controller
             return Ok(response);
         }
 
+        return BadRequest(response);
+    }
+
+    [HttpDelete("delete"), Authorize(Roles = "Client")]
+    public async Task<IActionResult> DeleteCar([FromBody] DeleteCarRequest request) {
+        var response = await _carService.DeleteCar(request);
+        if (response) {
+            return Ok(response);
+        }
         return BadRequest(response);
     }
 }

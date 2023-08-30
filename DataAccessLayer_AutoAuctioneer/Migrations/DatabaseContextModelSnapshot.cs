@@ -134,12 +134,29 @@ namespace DataAccessLayer_AutoAuctioneer.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
+                    b.Property<string>("CarMake")
+                        .HasColumnType("text");
+
+                    b.Property<string>("CarModel")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Category")
+                        .HasColumnType("text");
+
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string>("Discriminator")
-                        .IsRequired()
+                    b.Property<double?>("Displacement")
+                        .HasColumnType("double precision");
+
+                    b.Property<string>("EngineType")
+                        .HasColumnType("text");
+
+                    b.Property<int?>("Horsepower")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Manufacturer")
                         .HasColumnType("text");
 
                     b.Property<decimal?>("MarketPrice")
@@ -152,18 +169,20 @@ namespace DataAccessLayer_AutoAuctioneer.Migrations
                     b.Property<int>("PartType")
                         .HasColumnType("integer");
 
+                    b.Property<int?>("Torque")
+                        .HasColumnType("integer");
+
                     b.Property<Guid>("UserId")
                         .HasColumnType("uuid");
+
+                    b.Property<string>("Year")
+                        .HasColumnType("text");
 
                     b.HasKey("CarpartId");
 
                     b.HasIndex("UserId");
 
                     b.ToTable("CarParts");
-
-                    b.HasDiscriminator<string>("Discriminator").HasValue("CarPart");
-
-                    b.UseTphMappingStrategy();
                 });
 
             modelBuilder.Entity("DataAccessLayer_AutoAuctioneer.Models.Listing", b =>
@@ -270,60 +289,6 @@ namespace DataAccessLayer_AutoAuctioneer.Migrations
                     b.ToTable("Bids");
                 });
 
-            modelBuilder.Entity("DataAccessLayer_AutoAuctioneer.Models.CustomizationPart", b =>
-                {
-                    b.HasBaseType("DataAccessLayer_AutoAuctioneer.Models.CarPart");
-
-                    b.Property<string>("Category")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Manufacturer")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.HasDiscriminator().HasValue("CustomizationPart");
-                });
-
-            modelBuilder.Entity("DataAccessLayer_AutoAuctioneer.Models.Engine", b =>
-                {
-                    b.HasBaseType("DataAccessLayer_AutoAuctioneer.Models.CarPart");
-
-                    b.Property<double>("Displacement")
-                        .HasColumnType("double precision");
-
-                    b.Property<string>("EngineType")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<int>("Horsepower")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("Torque")
-                        .HasColumnType("integer");
-
-                    b.HasDiscriminator().HasValue("Engine");
-                });
-
-            modelBuilder.Entity("DataAccessLayer_AutoAuctioneer.Models.IndividualCarPart", b =>
-                {
-                    b.HasBaseType("DataAccessLayer_AutoAuctioneer.Models.CarPart");
-
-                    b.Property<string>("CarMake")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("CarModel")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Year")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.HasDiscriminator().HasValue("IndividualCarPart");
-                });
-
             modelBuilder.Entity("DataAccessLayer_AutoAuctioneer.Models.Car", b =>
                 {
                     b.HasOne("DataAccessLayer_AutoAuctioneer.Models.User", "User")
@@ -359,9 +324,9 @@ namespace DataAccessLayer_AutoAuctioneer.Migrations
                         .OnDelete(DeleteBehavior.ClientCascade);
 
                     b.HasOne("DataAccessLayer_AutoAuctioneer.Models.User", "User")
-                        .WithMany()
+                        .WithMany("Listings")
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.ClientCascade)
                         .IsRequired();
 
                     b.Navigation("Car");
@@ -390,39 +355,6 @@ namespace DataAccessLayer_AutoAuctioneer.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("DataAccessLayer_AutoAuctioneer.Models.CustomizationPart", b =>
-                {
-                    b.HasOne("DataAccessLayer_AutoAuctioneer.Models.CarPart", "CarPart")
-                        .WithOne("CustomizationPart")
-                        .HasForeignKey("DataAccessLayer_AutoAuctioneer.Models.CustomizationPart", "CarpartId")
-                        .OnDelete(DeleteBehavior.ClientCascade)
-                        .IsRequired();
-
-                    b.Navigation("CarPart");
-                });
-
-            modelBuilder.Entity("DataAccessLayer_AutoAuctioneer.Models.Engine", b =>
-                {
-                    b.HasOne("DataAccessLayer_AutoAuctioneer.Models.CarPart", "CarPart")
-                        .WithOne("Engine")
-                        .HasForeignKey("DataAccessLayer_AutoAuctioneer.Models.Engine", "CarpartId")
-                        .OnDelete(DeleteBehavior.ClientCascade)
-                        .IsRequired();
-
-                    b.Navigation("CarPart");
-                });
-
-            modelBuilder.Entity("DataAccessLayer_AutoAuctioneer.Models.IndividualCarPart", b =>
-                {
-                    b.HasOne("DataAccessLayer_AutoAuctioneer.Models.CarPart", "CarPart")
-                        .WithOne("IndividualCarPart")
-                        .HasForeignKey("DataAccessLayer_AutoAuctioneer.Models.IndividualCarPart", "CarpartId")
-                        .OnDelete(DeleteBehavior.ClientCascade)
-                        .IsRequired();
-
-                    b.Navigation("CarPart");
-                });
-
             modelBuilder.Entity("DataAccessLayer_AutoAuctioneer.Models.Car", b =>
                 {
                     b.Navigation("Listing");
@@ -430,12 +362,6 @@ namespace DataAccessLayer_AutoAuctioneer.Migrations
 
             modelBuilder.Entity("DataAccessLayer_AutoAuctioneer.Models.CarPart", b =>
                 {
-                    b.Navigation("CustomizationPart");
-
-                    b.Navigation("Engine");
-
-                    b.Navigation("IndividualCarPart");
-
                     b.Navigation("Listing");
                 });
 
@@ -451,6 +377,8 @@ namespace DataAccessLayer_AutoAuctioneer.Migrations
                     b.Navigation("CarParts");
 
                     b.Navigation("Cars");
+
+                    b.Navigation("Listings");
                 });
 #pragma warning restore 612, 618
         }

@@ -6,8 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace API_AutoAuctioneer.Controllers;
 
-[ApiController]
-[Route("api/[controller]")]
+[ApiController, Route("api/[controller]")]
 public class UserController : ControllerBase
 {
     private readonly IConfiguration _config;
@@ -58,7 +57,7 @@ public class UserController : ControllerBase
         return Ok("SuccessfullyResetted your password");
     }
 
-    [HttpDelete("delete-user")]
+    [HttpDelete("delete")]
     [Authorize(Roles = "Client")]
     public async Task<IActionResult> DeleteUser([FromBody]DeleteUserRequest request)
     {

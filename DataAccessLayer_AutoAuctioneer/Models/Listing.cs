@@ -19,5 +19,5 @@ public class Listing
 
 
     public Guid? CarPartId { get; set; }
-    public CarPart? CarPart { get; set; }
+    public Part? CarPart { get; set; }
 }

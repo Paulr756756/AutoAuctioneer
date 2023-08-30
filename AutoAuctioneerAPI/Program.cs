@@ -4,7 +4,8 @@ using API_AutoAuctioneer.Services.CarService;
 using API_AutoAuctioneer.Services.ListingService;
 using API_AutoAuctioneer.Services.UserService;
 using DataAccessLayer_AutoAuctioneer.Models;
-using DataAccessLayer_AutoAuctioneer.Repositories;
+using DataAccessLayer_AutoAuctioneer.Repositories.Implementations;
+using DataAccessLayer_AutoAuctioneer.Repositories.Interfaces;
 using DataAccessLibrary_AutoAuctioneer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -41,15 +42,13 @@ builder.Services
     .AddScoped<ICarRepository, CarRepository>()
     .AddScoped<ICarService, CarService>()
     .AddScoped<ICarPartService, CarPartService>()
-    .AddScoped<ICarPartRepository, CarPartRepository>()
-    .AddScoped<IEngineRepository, EngineRepository>()
+    .AddScoped<IPartRepository, PartRepository>()
+/*    .AddScoped<IEngineRepository, EngineRepository>()
     .AddScoped<ICustomizationCarPartRepository, CustomizationCarPartRepository>()
-    .AddScoped<IIndividualCarPartRepository, IndividualCarPartRepository>()
+    .AddScoped<IIndividualCarPartRepository, IndividualCarPartRepository>()*/
     
     .AddHttpContextAccessor()
     
-    .AddDbContext<DatabaseContext>(options => options
-        .UseNpgsql(builder.Configuration.GetConnectionString("BidStampDb")))
     
     .AddCors(c =>
     {

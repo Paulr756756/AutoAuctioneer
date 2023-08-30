@@ -10,11 +10,14 @@ public class Car
     public int Year { get; set; }
     public string VIN { get; set; }
     public int Mileage { get; set; }
-    public string Transmission { get; set; }
+    public string? TransmissionType { get; set; }
+    public int? TopSpeed { get;set; }
+    public double Acceleration { get; set; }
 
     // Exterior Attributes
     public string Color { get; set; }
-    public string? BodyStyle { get; set; }
+    public string? BodyType { get; set; }
+    public string? FuelType { get; set; }
     public List<string>? ExteriorFeatures { get; set; }
 
     // Interior Attributes

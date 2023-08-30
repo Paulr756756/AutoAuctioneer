@@ -6,8 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace API_AutoAuctioneer.Controllers;
 
-[ApiController]
-[Route("api/[controller]")]
+[ApiController, Route("api/[controller]")]
 public class BidController : ControllerBase
 {
     private readonly IBidService _bidService;

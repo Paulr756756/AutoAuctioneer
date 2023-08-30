@@ -1,5 +1,6 @@
 using API_AutoAuctioneer.Models.BidRequestModels;
 using DataAccessLayer_AutoAuctioneer.Repositories;
+using DataAccessLayer_AutoAuctioneer.Repositories.Interfaces;
 using DataAccessLibrary_AutoAuctioneer.Models;
 
 namespace API_AutoAuctioneer.Services;

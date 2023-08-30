@@ -3,7 +3,7 @@ using System.Security.Claims;
 using System.Security.Cryptography;
 using API_AutoAuctioneer.Models.UserRequestModels;
 using DataAccessLayer_AutoAuctioneer.Models;
-using DataAccessLayer_AutoAuctioneer.Repositories;
+using DataAccessLayer_AutoAuctioneer.Repositories.Interfaces;
 using Microsoft.IdentityModel.Tokens;
 
 namespace API_AutoAuctioneer.Services.UserService;
@@ -151,9 +151,9 @@ public class UserService : IUserService
             return false;
         }
 
-        user.PasswordResetToken = CreateRandomToken();
+        var token = CreateRandomToken();
 
-        var result = await _userRepository.ForgotPassword(user);
+        var result = await _userRepository.SetPasswordResetToken(token, user.UserId);
         if (result.IsSuccess)
         {
             return true;
@@ -201,7 +201,8 @@ public class UserService : IUserService
         var claims = new List<Claim>
         {
             new(ClaimTypes.Name, user.UserName),
-            new(ClaimTypes.Role, "Client")
+            new(ClaimTypes.Role, "Client"),
+            new(JwtRegisteredClaimNames.Sub, user.UserId.ToString())
         };
 
         var key = new SymmetricSecurityKey(Convert.FromBase64String(

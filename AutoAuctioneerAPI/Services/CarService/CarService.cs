@@ -1,6 +1,6 @@
 ﻿using API_AutoAuctioneer.Models.CarRequestModels;
 using DataAccessLayer_AutoAuctioneer.Models;
-using DataAccessLayer_AutoAuctioneer.Repositories;
+using DataAccessLayer_AutoAuctioneer.Repositories.Interfaces;
 
 namespace API_AutoAuctioneer.Services.CarService;
 
@@ -76,11 +76,11 @@ public class CarService : ICarService
             Model = request.Model,
             Suspension = request.Suspension,
             Torque = request.Torque,
-            Transmission = request.Transmission,
+            TransmissionType = request.Transmission,
             Year = request.Year,
             User = userResponse.Data,
             AftermarketUpgrades = request.AftermarketUpgrades,
-            BodyStyle = request.BodyStyle,
+            BodyType = request.BodyStyle,
             EngineDisplacement = request.EngineDisplacement,
             EngineType = request.EngineType,
             ExteriorFeatures = request.ExteriorFeatures,

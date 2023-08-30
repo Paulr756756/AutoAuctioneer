@@ -6,49 +6,55 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace API_AutoAuctioneer.Controllers;
 
+[ApiController]
+[Route("api/[controller]")]
 public class ListingController : ControllerBase
 {
-    private readonly DatabaseContext _dbContext;
     private readonly IListingService _listingService;
 
-    public ListingController(DatabaseContext dbContext, IListingService listingService)
+    public ListingController(IListingService listingService)
     {
-        _dbContext = dbContext;
         _listingService = listingService;
     }
 
-    [HttpGet("geteverylistings")]
+    [HttpGet("getall")]
     public async Task<IActionResult> GetAllListings()
     {
-        var response = await _listingService.getAlListingsService();
+        var response = await _listingService.GetAlListingsService();
         return Ok(response);
     }
 
-    [HttpGet("getlistingbyid")]
-    public async Task<IActionResult> getListingById(Guid id)
+    [HttpGet("getbyid"), Authorize(Roles ="Client")]
+    public async Task<IActionResult> GetListingById(Guid id)
     {
-        var response = await _listingService.getListingyId(id);
+        var response = await _listingService.GetListingyId(id);
         if (response == null) return BadRequest("No such listing");
 
         return Ok(response);
     }
 
+    [HttpGet("getowned"), Authorize(Roles ="Client")]
+    public async Task<IActionResult> GetOwnedListings([FromQuery] Guid id) {
+        var response = await _listingService.GetOwnedListings(id);
+        return Ok(response);
+    }
 
-    /*[HttpPost("addlisting")]
+
+    [HttpPost("add")]
     [Authorize(Roles = "Client")]
     public async Task<IActionResult> AddListing(ListingRegisterRequest request) {
-        var response = await _listingService.addListingService(request);
+        var response = await _listingService.AddListingService(request);
+        if (response) {
+            return Ok("New listing posted");
+        }
+        return BadRequest();
+    }
 
-        if (!response) return BadRequest("Error");
-        await _dbContext.SaveChangesAsync();#1#
-        return Ok("New listing posted.");
-    }*/
-
-    [HttpDelete("DeleteListing")]
+    [HttpDelete("delete")]
     [Authorize(Roles = "Client")]
     public async Task<IActionResult> DeleteListing(ListingDeleteRequest request)
     {
-        var response = await _listingService.deleteListingService(request);
+        var response = await _listingService.DeleteListingService(request);
         if (!response) return BadRequest("More error");
         return Ok($"Listing Removed with id:{request.ListingId}");
     }

@@ -1,31 +1,23 @@
 ﻿using API_AutoAuctioneer.Models.CarPartRequestModels;
 using DataAccessLayer_AutoAuctioneer.Models;
-using DataAccessLayer_AutoAuctioneer.Repositories;
+using DataAccessLayer_AutoAuctioneer.Repositories.Interfaces;
 
 namespace API_AutoAuctioneer.Services.CarPartService;
 
 public class CarPartService: ICarPartService
 {
-    private readonly ICarPartRepository _carPartRepository;
-    private readonly IEngineRepository _engineRepository;
-    private readonly ICustomizationCarPartRepository _customizationCarPartRepository;
-    private readonly IIndividualCarPartRepository _individualCarPartRepository;
+    private readonly IPartRepository _carPartRepository;
     private readonly IUserRepository _userRepository;
 
-    public CarPartService(ICarPartRepository carPartRepository, IEngineRepository engineRepository,
-        ICustomizationCarPartRepository customizationCarPartRepository, IIndividualCarPartRepository 
-            individualCarPartRepository, IUserRepository userRepository)
+    public CarPartService(IPartRepository carPartRepository, IUserRepository userRepository)
     {
         _carPartRepository = carPartRepository;
-        _engineRepository = engineRepository;
-        _customizationCarPartRepository = customizationCarPartRepository;
-        _individualCarPartRepository = individualCarPartRepository;
         _userRepository = userRepository;
     }
 
-    public async Task<List<CarPart>> GetAllCarPartsService()
+    public async Task<List<Part>> GetAllCarPartsService()
     {
-        var response = await _carPartRepository.GetAllCarParts();
+        var response = await _carPartRepository.GetAlParts();
         if (!response.IsSuccess)
         {
             Console.WriteLine(response.ErrorMessage);
@@ -35,7 +27,7 @@ public class CarPartService: ICarPartService
         return response.DataList;
     }
 
-    public async Task<List<CarPart>> GetOwnedCarPartsService(Guid guid)
+    public async Task<List<Part>> GetOwnedCarPartsService(Guid guid)
     {
         var userResponse = await _userRepository.GetUserById(guid);
         if (!userResponse.IsSuccess)
@@ -58,7 +50,7 @@ public class CarPartService: ICarPartService
         return response.DataList;
     }
 
-    public async Task<CarPart> GetCarPartById(Guid guid)
+    public async Task<Part> GetCarPartById(Guid guid)
     {
         var response = await _carPartRepository.GetCarPartById(guid);
         if (!response.IsSuccess)
@@ -83,7 +75,7 @@ public class CarPartService: ICarPartService
             throw new Exception();
         }
 
-        var part = new CarPart
+        var part = new Part
         {
             Name = request.Name,
             UserId = request.UserId,
@@ -91,7 +83,22 @@ public class CarPartService: ICarPartService
             PartType = request.PartType,
             Description = request.Description,
             MarketPrice = request.MarketPrice,
-            CarpartId = Guid.NewGuid(),
+            Id = Guid.NewGuid(),
+
+            //Engine
+            EngineType = request.EngineType,
+            Displacement = request.Displacement,
+            Horsepower = request.Horsepower,
+            Torque = request.Torque,
+
+            //CustomCarPart
+            Category = request.Category,
+            Manufacturer = request.Manufacturer,
+            
+            //IndividualCarPart
+            CarMake = request.CarMake,
+            CarModel = request.CarModel,
+            Year = request.Year
         };
 
         var response = await _carPartRepository.StoreCarPartAsync(part);
