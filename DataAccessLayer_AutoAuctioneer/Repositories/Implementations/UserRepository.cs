@@ -2,21 +2,25 @@
 using DataAccessLayer_AutoAuctioneer.Repositories.Interfaces;
 using DataAccessLayer_AutoAuctioneer.Util;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 
 namespace DataAccessLayer_AutoAuctioneer.Repositories.Implementations;
 
 public class UserRepository : BaseRepository, IUserRepository {
     private readonly IConfiguration _config;
-    public UserRepository(IConfiguration config) : base(config) {
+    private readonly ILogger _logger;
+    public UserRepository(IConfiguration config, ILogger logger) : base(config) {
         _config = config;
+        _logger = logger;
     }
 
-    public async Task<List<User>>? GetAllUsers() {
+    public async Task<List<User>?> GetAllUsers() {
         var sql = "select id, username from \"users\"";
         var response = await LoadData<User, dynamic>(sql, new { });
 
         if (!response.IsSuccess) {
             //Do some logging
+            _logger.LogCritical($"Response not a success : {response.ErrorMessage}");
         }
         return response.Data;
     }
@@ -34,7 +38,7 @@ public class UserRepository : BaseRepository, IUserRepository {
             " from \"users\" where email = @Email";
         var response = await LoadData<User, dynamic>(sql, new { Email = email });
         if (!response.IsSuccess) {
-            //Do some logging
+            _logger.LogCritical($"Response not a success : {response.ErrorMessage}");
         }
         var user = response.Data?.First();
         return user;
@@ -44,7 +48,7 @@ public class UserRepository : BaseRepository, IUserRepository {
         var sql = "select id, username from user where verificationtoken=@Token";
         var result = await LoadData<User, dynamic>(sql, new { Token = token });
         if (!result.IsSuccess) {
-            //DO some logging
+            _logger.LogCritical($"Response not a success {result.ErrorMessage}");
         }
 
         var user = result.Data?.First();
@@ -56,7 +60,7 @@ public class UserRepository : BaseRepository, IUserRepository {
         var result = await LoadData<User, dynamic>(sql, new { Token = token });
 
         if (!result.IsSuccess) {
-            //Log
+            _logger.LogCritical($"Response not a success : {result.ErrorMessage}");
         }
         var user = result.Data?.First();
         return user;
@@ -67,7 +71,7 @@ public class UserRepository : BaseRepository, IUserRepository {
         var result = await LoadData<User, dynamic>(sql, new { Id = id });
 
         if (!result.IsSuccess) {
-            //Log
+            _logger.LogCritical($"Response not a success: {result.ErrorMessage}");
         }
         var user = result.Data?.First();
         return user;
@@ -92,7 +96,7 @@ public class UserRepository : BaseRepository, IUserRepository {
         });
 
         if (!response.IsSuccess) {
-            //TODO()
+            _logger.LogCritical($"Response not a success : {response.ErrorMessage}");
             return false;
         }
 
@@ -115,7 +119,7 @@ public class UserRepository : BaseRepository, IUserRepository {
             });
 
         if (!result.IsSuccess) {
-            //Log
+            _logger.LogCritical($"Response not a success : {result.ErrorMessage}");
             return false;
         }
         return true;
@@ -127,7 +131,7 @@ public class UserRepository : BaseRepository, IUserRepository {
         var result = await SaveData(sql, new { Token = token, ExpireDate = date, UserId = userId });
 
         if (!result.IsSuccess) {
-            //Log
+            _logger.LogCritical($"Response not a success : {result.ErrorMessage}");
             return false;
         }
         return true;
@@ -138,13 +142,13 @@ public class UserRepository : BaseRepository, IUserRepository {
         var result = await SaveData(sql, new { PasswordHash = passwordHash, Id = id });
 
         if (!result.IsSuccess) {
-            //Log
+            _logger.LogCritical($"Response not a success : {result.ErrorMessage}");
             return false;
         }
         return true;
     }
 
-    public async Task<bool> DeleteUser(string id) {
+    public async Task<bool> DeleteUser(Guid id) {
         var sql = "delete from \"users\" where id=@Id";
         var result = await SaveData(sql, new { Id = id });
 

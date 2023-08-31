@@ -7,7 +7,6 @@ using DataAccessLayer_AutoAuctioneer.Models;
 using DataAccessLayer_AutoAuctioneer.Repositories.Implementations;
 using DataAccessLayer_AutoAuctioneer.Repositories.Interfaces;
 using DataAccessLibrary_AutoAuctioneer;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.Filters;
@@ -32,7 +31,7 @@ builder.Services.AddSwaggerGen(options =>
 });
 
 builder.Services    
-    .AddScoped(typeof(IBaseRepository<>), typeof(BaseRepository<>))
+    .AddScoped<IBaseRepository, BaseRepository>()
     .AddScoped<IUserService, UserService>()
     .AddScoped<IUserRepository, UserRepository>()
     .AddScoped<IListingRepository, ListingRepository>()

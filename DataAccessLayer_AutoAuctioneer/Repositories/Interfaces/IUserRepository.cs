@@ -4,8 +4,7 @@ namespace DataAccessLayer_AutoAuctioneer.Repositories.Interfaces
 {
     public interface IUserRepository : IBaseRepository
     {
-        Task<bool> DeleteUser(string id);
-        Task<List<User>>? GetAllUsers();
+        Task<List<User>?> GetAllUsers();
         Task<User?> GetUserByEmail(string email);
         Task<User?> GetUserById(Guid id);
         Task<User?> GetUserByPasswordToken(string token);
@@ -13,6 +12,7 @@ namespace DataAccessLayer_AutoAuctioneer.Repositories.Interfaces
         Task<bool> RegisterUser(User user);
         Task<bool> SetPasswordResetToken(string token, Guid userId);
         Task<bool> UpdatePassword(string passwordHash, string id);
-        Task<bool> UpdateUser(User user);
+        Task<bool> UpdateUser(User user, Guid id);
+        Task<bool> DeleteUser(Guid id);
     }
 }

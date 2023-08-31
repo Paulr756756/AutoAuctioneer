@@ -13,20 +13,23 @@ public class UserService : IUserService
     private readonly IConfiguration _config;
     private readonly IHttpContextAccessor _httpContextAccessor;
     private readonly IUserRepository _userRepository;
+    private readonly ILogger<UserService> _logger;
 
     public UserService(IHttpContextAccessor httpContextAccessor,
-        IUserRepository userRepository, IConfiguration config)
+        IUserRepository userRepository, IConfiguration config, ILogger<UserService> logger)
     {
         _httpContextAccessor = httpContextAccessor;
         _userRepository = userRepository;
         _config = config;
+        _logger = logger;
     }
 
 
     public async Task<bool> RegisterUser(UserRegisterRequest request)
     {
-        if (_userRepository.GetUserByEmail(request.Email).Result.Data != null)
+        if (await _userRepository.GetUserByEmail(request.Email) != null)
         {
+            _logger.LogError($"Email is already registered with another account");
             return false;
         }
         
@@ -39,9 +42,10 @@ public class UserService : IUserService
             VerificationToken = CreateRandomToken(),
             RegistrationDate = DateTime.UtcNow
         };
-        var response = await _userRepository.StoreUser(user);
-        if (response.IsSuccess)
+        var response = await _userRepository.RegisterUser(user);
+        if (response)
         {
+            _logger.LogInformation("New User is created");
             return true;
         }
 
@@ -73,23 +77,18 @@ public class UserService : IUserService
     
     public async Task<bool> VerifyUser(string token)
     {
-        var response = await _userRepository.GetUserByVToken(token);
-        if (!response.IsSuccess)
-        {
-            Console.WriteLine("Couldn't get user by Verification token" + response.ErrorMessage);
-            return false;
-        }
+        var user = await _userRepository.GetUserByVerificationToken(token); 
 
-        if (response.Data == null)
+        if (user == null)
         {
-            Console.WriteLine("No such user present");
+            _logger.LogInformation($"No such user present");
             return false;
         }
-        response.Data.VerifiedAt = DateTime.UtcNow;
-        response = _userRepository.UpdateUser(response.Data).Result;
-        if(!response.IsSuccess)
+        user.VerifiedAt = DateTime.UtcNow;
+        var response = await _userRepository.UpdateUser(user, user.UserId);
+        if(!response)
         {
-            Console.WriteLine("Couldn't update user :" + response.ErrorMessage);
+            _logger.LogInformation($"Unable to Update user ");
             return false;
         }
 
@@ -100,18 +99,22 @@ public class UserService : IUserService
     public async Task<string> LoginUser(UserLoginRequest request)
     {
         var response = await _userRepository.GetUserByEmail(request.Email);
-        var user = response.Data;
-        if (user == null)
+        var user = response;
+        if (user == null) {
+            _logger.LogInformation("User does not exist");
             return "User not found";
-        if (user.VerifiedAt == null)
+        }   
+        if (user.VerifiedAt == null) {
+            _logger.LogInformation("User not verified");
             return "User not verified";
-        if (!BCrypt.Net.BCrypt.EnhancedVerify(request.Password, user.PasswordHash))
-            return "User credentials not correct";
+        }
+        if (!BCrypt.Net.BCrypt.EnhancedVerify(request.Password, user.PasswordHash)) {
+            _logger.LogInformation("Incorrect User Creds");
+            return "User not found";
+        }
         return CreateJwtToken(user);
     }
 
-
-    
     public string GetMyName()
     {
         if (_httpContextAccessor.HttpContext != null)
@@ -123,28 +126,27 @@ public class UserService : IUserService
 
     public async Task<bool> DeleteUser(DeleteUserRequest request)
     {
-        var user = _userRepository.GetUserByEmail(request.Email).Result.Data;
+        var user = await _userRepository.GetUserByEmail(request.Email);
         if (user == null)
         {
-            Console.WriteLine("User does not exist");
+            _logger.LogInformation("User Does not exist");
             return false;
         }
         if (!BCrypt.Net.BCrypt.EnhancedVerify(request.Password, user.PasswordHash)) return false;
-        var response = await _userRepository.DeleteUser(user);
+        var response = await _userRepository.DeleteUser(user.UserId);
 
-        if (response.IsSuccess)
+        if (response)
         {
             return true;
         }
-        
-        Console.WriteLine(response.ErrorMessage);
+        _logger.LogError("Response false");
         return false;
     }
 
     public async Task<bool> ForgotPassword(string email)
     {
-        var response = await _userRepository.GetUserByEmail(email);
-        var user = response.Data;
+        var user = await _userRepository.GetUserByEmail(email);
+        
         if (user == null)
         {
             Console.WriteLine("User does not exist");
@@ -154,11 +156,11 @@ public class UserService : IUserService
         var token = CreateRandomToken();
 
         var result = await _userRepository.SetPasswordResetToken(token, user.UserId);
-        if (result.IsSuccess)
+        if (result)
         {
             return true;
         }
-        Console.WriteLine(result.ErrorMessage);
+
         return false;
     }
 
