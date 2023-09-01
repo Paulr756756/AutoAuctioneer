@@ -1,4 +1,4 @@
-﻿using DataAccessLayer_AutoAuctioneer.Models;
+﻿/*using DataAccessLayer_AutoAuctioneer.Models;
 using DataAccessLayer_AutoAuctioneer.Repositories.Implementations;
 using Microsoft.Extensions.Configuration;
 
@@ -22,7 +22,7 @@ public class Part_EngineRepository : BaseRepository, IPart_EngineRepository {
 
     }
 
-    /*(TODO)
+    *//*(TODO)
     public async Task<List<Part>?> GetAllEngines() {
         var sql = "select * from \"parts\";";
         var result = await LoadData<Part, dynamic>(sql, new { });

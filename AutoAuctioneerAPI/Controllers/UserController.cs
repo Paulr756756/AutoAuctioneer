@@ -25,7 +25,7 @@ public class UserController : ControllerBase
         return BadRequest("Error");
     }
 
-    [HttpPost("login")]
+   /* [HttpPost("login")]
     public async Task<IActionResult> Login([FromBody]UserLoginRequest request)
     {
         var token = await _userService.LoginUser(request);
@@ -72,5 +72,5 @@ public class UserController : ControllerBase
     {
         var userName = _userService.GetMyName();    
         return Ok(userName);
-    }
+    }*/
 }

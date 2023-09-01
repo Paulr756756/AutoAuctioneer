@@ -20,4 +20,8 @@
         <ProjectReference Include="..\DataAccessLayer_AutoAuctioneer\DataAccessLayer_AutoAuctioneer.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Docs\Stored Procedures\" />
+    </ItemGroup>
+
 </Project>

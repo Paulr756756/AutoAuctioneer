@@ -1,4 +1,4 @@
-﻿using API_AutoAuctioneer.Models.CarRequestModels;
+﻿/*using API_AutoAuctioneer.Models.CarRequestModels;
 using DataAccessLayer_AutoAuctioneer.Models;
 
 namespace API_AutoAuctioneer.Services.CarService;
@@ -12,4 +12,4 @@ public interface ICarService
     Task<bool> UpdateCar(UpdateCarRequest request);
     Task<bool> DeleteCar(DeleteCarRequest request);
     
-}
+}*/

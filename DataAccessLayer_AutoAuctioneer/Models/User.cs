@@ -4,7 +4,7 @@ namespace DataAccessLayer_AutoAuctioneer.Models;
 
 public class User
 {
-    public Guid UserId { get; set; }
+    public Guid? UserId { get; set; }
     public string? UserName { get; set; }
     public string? PasswordHash { get; set; }
     public string? VerificationToken { get; set; }
@@ -16,5 +16,6 @@ public class User
     public string? LastName { get; set; }
     public string? Address { get; set; }
     public string? Phone { get; set; }
+    public DateTime? DateOfBirth { get; set; }
     public DateTime? RegistrationDate { get; set; }
 }

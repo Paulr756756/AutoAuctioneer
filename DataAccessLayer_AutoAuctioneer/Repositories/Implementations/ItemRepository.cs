@@ -1,4 +1,4 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿/*using Microsoft.Extensions.Configuration;
 using DataAccessLayer_AutoAuctioneer.Models;
 
 namespace DataAccessLayer_AutoAuctioneer.Repositories.Implementations;
@@ -41,4 +41,4 @@ public class ItemRepository : BaseRepository {
         }
         return true;
     }
-}
+}*/

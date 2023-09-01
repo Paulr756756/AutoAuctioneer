@@ -1,4 +1,4 @@
-﻿using DataAccessLayer_AutoAuctioneer.Models;
+﻿/*using DataAccessLayer_AutoAuctioneer.Models;
 using DataAccessLayer_AutoAuctioneer.Repositories.Interfaces;
 using Microsoft.Extensions.Configuration;
 
@@ -87,4 +87,4 @@ public class PartRepository : BaseRepository, IPartRepository {
         }
         return true;
     }
-}
+}*/

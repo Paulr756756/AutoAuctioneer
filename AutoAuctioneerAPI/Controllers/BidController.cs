@@ -1,4 +1,4 @@
-﻿using API_AutoAuctioneer.Models.BidRequestModels;
+﻿/*using API_AutoAuctioneer.Models.BidRequestModels;
 using API_AutoAuctioneer.Services;
 using DataAccessLibrary_AutoAuctioneer;
 using Microsoft.AspNetCore.Authorization;
@@ -61,4 +61,4 @@ public class BidController : ControllerBase
         if (!response) return BadRequest("Error maximo");
         return Ok("Successo");
     }
-}
+}*/

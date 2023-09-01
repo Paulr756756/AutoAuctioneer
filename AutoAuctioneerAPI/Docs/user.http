@@ -1,0 +1,22 @@
+# For more info on HTTP files go to https://aka.ms/vs/httpfile
+@baseUrl = http://localhost:39723
+
+
+GET {{baseUrl}}/api/user/
+###
+POST {{baseUrl}}/api/user/register
+Content-Type: application/json
+
+{
+  "userName": "string",
+  "email": "user@example.com",
+  "password": "string",
+  "confirmPassword": "string",
+  "address": null,
+  "firstName": "string",
+  "lastName": "string",
+  "phone": "string",
+  "dateOfBirth": null
+}
+###
+

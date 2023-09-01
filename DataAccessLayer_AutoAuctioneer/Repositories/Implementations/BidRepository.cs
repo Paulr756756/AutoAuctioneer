@@ -1,4 +1,4 @@
-using DataAccessLayer_AutoAuctioneer.Repositories.Interfaces;
+/*using DataAccessLayer_AutoAuctioneer.Repositories.Interfaces;
 using DataAccessLibrary_AutoAuctioneer.Models;
 using Microsoft.Extensions.Configuration;
 
@@ -33,4 +33,4 @@ public class BidRepository : BaseRepository, IBidRepository {
     public async Task<bool> DeleteBid(Guid id) {
         throw new NotImplementedException();
     }
-}
+}*/

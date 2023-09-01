@@ -1,4 +1,4 @@
-﻿using API_AutoAuctioneer.Models.ListingRequestModels;
+﻿/*using API_AutoAuctioneer.Models.ListingRequestModels;
 using API_AutoAuctioneer.Services.ListingService;
 using DataAccessLibrary_AutoAuctioneer;
 using Microsoft.AspNetCore.Authorization;
@@ -58,4 +58,4 @@ public class ListingController : ControllerBase
         if (!response) return BadRequest("More error");
         return Ok($"Listing Removed with id:{request.ListingId}");
     }
-}
+}*/

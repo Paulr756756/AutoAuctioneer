@@ -1,4 +1,4 @@
-﻿using DataAccessLayer_AutoAuctioneer.Models;
+﻿/*using DataAccessLayer_AutoAuctioneer.Models;
 using DataAccessLayer_AutoAuctioneer.Repositories.Interfaces;
 using Microsoft.Extensions.Configuration;
 using System.Reflection.Metadata.Ecma335;
@@ -16,10 +16,10 @@ public class CarRepository : BaseRepository, ICarRepository
 
     public async Task<Car>? GetCarById(Guid guid)
     {
-        var sql = /*"select * from (" +*/
+        var sql = *//*"select * from (" +*//*
             "select \"cars\".id as primaryId, * from \"cars\" ;";
-        /*+ "inner join \"cars_performance_handlind\" " +
-        " on \"cars\".id = \"cars_performance_handling\".id) as car where \"car\".primaryId = @Id ";*/
+        *//*+ "inner join \"cars_performance_handlind\" " +
+        " on \"cars\".id = \"cars_performance_handling\".id) as car where \"car\".primaryId = @Id ";*//*
         var result = await LoadData<Car, dynamic>(sql, new { Id = guid });
 
         if (!result.IsSuccess)
@@ -33,7 +33,7 @@ public class CarRepository : BaseRepository, ICarRepository
     public async Task<List<Car>?> GetAllCars()
     {
         var sql = "select \"cars\".id as primaryId, * from \"cars\" ;";
-        /*+ " inner join \"cars_performance_handlind\" on \"cars\".id = \"cars_performance_handling\".id ;";*/
+        *//*+ " inner join \"cars_performance_handlind\" on \"cars\".id = \"cars_performance_handling\".id ;";*//*
         var result = await LoadData<Car, dynamic>(sql, new { });
 
         if (!result.IsSuccess)
@@ -43,12 +43,12 @@ public class CarRepository : BaseRepository, ICarRepository
         return result.Data;
     }
 
-    /*    public async Task<List<Car>?> GetCarsOfSingleUser(Guid guid)
+    *//*    public async Task<List<Car>?> GetCarsOfSingleUser(Guid guid)
         {
             var sql = "select * from (" +
             "select \"cars\".id as primaryId, * from \"cars\" inner join \"cars_performance_handlind\" " +
             "on \"cars\".id = \"cars_performance_handling\".id"
-        }*/
+        }*//*
 
     public async Task<bool> StoreCar(Car car)
     {
@@ -130,4 +130,4 @@ public class CarRepository : BaseRepository, ICarRepository
         }
         return true;
     }
-}
+}*/

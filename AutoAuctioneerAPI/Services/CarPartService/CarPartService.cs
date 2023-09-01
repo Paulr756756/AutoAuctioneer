@@ -1,4 +1,4 @@
-﻿using API_AutoAuctioneer.Models.CarPartRequestModels;
+﻿/*using API_AutoAuctioneer.Models.CarPartRequestModels;
 using DataAccessLayer_AutoAuctioneer.Models;
 using DataAccessLayer_AutoAuctioneer.Repositories.Interfaces;
 
@@ -196,4 +196,4 @@ public class CarPartService: ICarPartService
 
         return true;
     }
-}
+}*/

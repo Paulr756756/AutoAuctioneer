@@ -1,4 +1,4 @@
-﻿using API_AutoAuctioneer.Models.CarRequestModels;
+﻿/*using API_AutoAuctioneer.Models.CarRequestModels;
 using DataAccessLayer_AutoAuctioneer.Models;
 using DataAccessLayer_AutoAuctioneer.Repositories.Interfaces;
 
@@ -181,9 +181,9 @@ public class CarService : ICarService
     }
 
     public async Task<bool> DeleteCar(DeleteCarRequest request) {
-        /*var listing = await _dbContext.Listings.FirstOrDefaultAsync(l => l.Stamp.Equals(stamp));
+        *//*var listing = await _dbContext.Listings.FirstOrDefaultAsync(l => l.Stamp.Equals(stamp));
 
-        _dbContext.Stamps.Remove(stamp);*/
+        _dbContext.Stamps.Remove(stamp);*//*
         var car = await GetCarById(request.CarId);
         if (car == null)
         {
@@ -197,4 +197,4 @@ public class CarService : ICarService
         var response = await _carRepository.DeleteCar(car);
         return true;
     }
-}
+}*/

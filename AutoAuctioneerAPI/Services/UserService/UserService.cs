@@ -1,10 +1,7 @@
-﻿using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Security.Cryptography;
+﻿using System.Security.Cryptography;
 using API_AutoAuctioneer.Models.UserRequestModels;
 using DataAccessLayer_AutoAuctioneer.Models;
 using DataAccessLayer_AutoAuctioneer.Repositories.Interfaces;
-using Microsoft.IdentityModel.Tokens;
 
 namespace API_AutoAuctioneer.Services.UserService;
 
@@ -35,47 +32,29 @@ public class UserService : IUserService
         
         var user = new User
         {
-            UserId = Guid.NewGuid(),
             UserName = request.UserName,
             Email = request.Email.ToLower(),
             PasswordHash = BCrypt.Net.BCrypt.EnhancedHashPassword(request.Password),
             VerificationToken = CreateRandomToken(),
-            RegistrationDate = DateTime.UtcNow
+            RegistrationDate = DateTime.UtcNow.Date,
+            Phone = request.Phone,
+            FirstName = request.FirstName,
+            LastName = request.LastName,
+            DateOfBirth = request.DateOfBirth,
+            Address = request.Address
         };
-        var response = await _userRepository.RegisterUser(user);
-        if (response)
+        var id = await _userRepository.RegisterUser(user);
+        if (id!=null)
         {
-            _logger.LogInformation("New User is created");
+            _logger.LogInformation($"New User is created with id {id}");
+            user.UserId = id;
             return true;
         }
 
         return false;
-        /*try
-        {
-            if (_userRepository.CheckUserExists(request.Email).Result) return false;
-    
-            var user = new User
-            {
-                UserId = Guid.NewGuid(),
-                UserName = request.UserName,
-                Email = request.Email,
-                PasswordHash = BCrypt.Net.BCrypt.EnhancedHashPassword
-                    (request.Password),
-                /*PasswordSalt = passwordSalt,#1#
-                VerificationToken = CreateRandomToken(),
-                RegistrationDate = DateTime.UtcNow
-            };
-    
-            var response = await _userRepository.StoreUser<T>(user);
-            return true;
-        }
-        catch (Exception ex)
-        {
-            return false;
-        }*/
     }
     
-    public async Task<bool> VerifyUser(string token)
+/*    public async Task<bool> VerifyUser(string token)
     {
         var user = await _userRepository.GetUserByVerificationToken(token); 
 
@@ -93,10 +72,10 @@ public class UserService : IUserService
         }
 
         return true;
-    }
+    }*/
 
 
-    public async Task<string> LoginUser(UserLoginRequest request)
+/*    public async Task<string> LoginUser(UserLoginRequest request)
     {
         var response = await _userRepository.GetUserByEmail(request.Email);
         var user = response;
@@ -114,17 +93,17 @@ public class UserService : IUserService
         }
         return CreateJwtToken(user);
     }
-
-    public string GetMyName()
+*/
+/*    public string GetMyName()
     {
         if (_httpContextAccessor.HttpContext != null)
         {
             return _httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.Name);
         }
         return "Try logging in first";
-    }
+    }*/
 
-    public async Task<bool> DeleteUser(DeleteUserRequest request)
+/*    public async Task<bool> DeleteUser(DeleteUserRequest request)
     {
         var user = await _userRepository.GetUserByEmail(request.Email);
         if (user == null)
@@ -141,9 +120,9 @@ public class UserService : IUserService
         }
         _logger.LogError("Response false");
         return false;
-    }
+    }*/
 
-    public async Task<bool> ForgotPassword(string email)
+/*    public async Task<bool> ForgotPassword(string email)
     {
         var user = await _userRepository.GetUserByEmail(email);
         
@@ -162,9 +141,9 @@ public class UserService : IUserService
         }
 
         return false;
-    }
+    }*/
 
-    public async Task<bool> ResetPassword(ResetPasswordRequest request)
+/*    public async Task<bool> ResetPassword(ResetPasswordRequest request)
     {
         var response = await _userRepository.GetUserByPToken(request.Token);
         if (!response.IsSuccess)
@@ -196,9 +175,9 @@ public class UserService : IUserService
         
         Console.WriteLine("Couldn't reset password :" + result.ErrorMessage);
         return false;
-    }
+    }*/
 
-    private string CreateJwtToken(User user)
+/*    private string CreateJwtToken(User user)
     {
         var claims = new List<Claim>
         {
@@ -220,7 +199,7 @@ public class UserService : IUserService
         var jwt = new JwtSecurityTokenHandler().WriteToken(token);
 
         return jwt;
-    }
+    }*/
 
     private string CreateRandomToken()
     {

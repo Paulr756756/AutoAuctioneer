@@ -1,4 +1,4 @@
-﻿using API_AutoAuctioneer.Models.CarPartRequestModels;
+﻿/*using API_AutoAuctioneer.Models.CarPartRequestModels;
 using API_AutoAuctioneer.Services.CarPartService;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -60,4 +60,4 @@ public class PartsController : ControllerBase{
         }
         return BadRequest(response);
     }
-}
+}*/

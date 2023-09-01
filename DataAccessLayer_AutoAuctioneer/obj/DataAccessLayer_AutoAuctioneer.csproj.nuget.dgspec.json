@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Workstation\\AutoAuctioneer\\Server\\DataAccessLayer_AutoAuctioneer\\DataAccessLayer_AutoAuctioneer.csproj": {}
+    "C:\\Users\\paul7\\Documents\\WorkStation\\auc\\server\\DataAccessLayer_AutoAuctioneer\\DataAccessLayer_AutoAuctioneer.csproj": {}
   },
   "projects": {
-    "C:\\Workstation\\AutoAuctioneer\\Server\\DataAccessLayer_AutoAuctioneer\\DataAccessLayer_AutoAuctioneer.csproj": {
+    "C:\\Users\\paul7\\Documents\\WorkStation\\auc\\server\\DataAccessLayer_AutoAuctioneer\\DataAccessLayer_AutoAuctioneer.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Workstation\\AutoAuctioneer\\Server\\DataAccessLayer_AutoAuctioneer\\DataAccessLayer_AutoAuctioneer.csproj",
+        "projectUniqueName": "C:\\Users\\paul7\\Documents\\WorkStation\\auc\\server\\DataAccessLayer_AutoAuctioneer\\DataAccessLayer_AutoAuctioneer.csproj",
         "projectName": "DataAccessLayer_AutoAuctioneer",
-        "projectPath": "C:\\Workstation\\AutoAuctioneer\\Server\\DataAccessLayer_AutoAuctioneer\\DataAccessLayer_AutoAuctioneer.csproj",
-        "packagesPath": "C:\\Users\\paulr\\.nuget\\packages\\",
-        "outputPath": "C:\\Workstation\\AutoAuctioneer\\Server\\DataAccessLayer_AutoAuctioneer\\obj\\",
+        "projectPath": "C:\\Users\\paul7\\Documents\\WorkStation\\auc\\server\\DataAccessLayer_AutoAuctioneer\\DataAccessLayer_AutoAuctioneer.csproj",
+        "packagesPath": "C:\\Users\\paul7\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\paul7\\Documents\\WorkStation\\auc\\server\\DataAccessLayer_AutoAuctioneer\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\paulr\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\paul7\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [

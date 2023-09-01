@@ -1,4 +1,4 @@
-﻿using API_AutoAuctioneer.Models.CarRequestModels;
+﻿/*using API_AutoAuctioneer.Models.CarRequestModels;
 using API_AutoAuctioneer.Services.CarService;
 using DataAccessLayer_AutoAuctioneer.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -69,4 +69,4 @@ public class CarController : ControllerBase
         }
         return BadRequest(response);
     }
-}
+}*/

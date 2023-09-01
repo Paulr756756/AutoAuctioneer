@@ -1,4 +1,4 @@
-﻿using API_AutoAuctioneer.Models.ListingRequestModels;
+﻿/*using API_AutoAuctioneer.Models.ListingRequestModels;
 using DataAccessLayer_AutoAuctioneer.Models;
 using DataAccessLayer_AutoAuctioneer.Repositories.Interfaces;
 
@@ -115,4 +115,4 @@ public class ListingService : IListingService
         
         return true;
     }
-}
+}*/

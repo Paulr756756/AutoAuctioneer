@@ -1,15 +1,17 @@
-﻿using DataAccessLayer_AutoAuctioneer.Models;
+﻿using Dapper;
+using DataAccessLayer_AutoAuctioneer.Models;
 using DataAccessLayer_AutoAuctioneer.Repositories.Interfaces;
 using DataAccessLayer_AutoAuctioneer.Util;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using System.Data;
 
 namespace DataAccessLayer_AutoAuctioneer.Repositories.Implementations;
 
 public class UserRepository : BaseRepository, IUserRepository {
     private readonly IConfiguration _config;
-    private readonly ILogger _logger;
-    public UserRepository(IConfiguration config, ILogger logger) : base(config) {
+    private readonly ILogger<UserRepository> _logger;
+    public UserRepository(IConfiguration config, ILogger<UserRepository> logger) : base(config) {
         _config = config;
         _logger = logger;
     }
@@ -77,33 +79,32 @@ public class UserRepository : BaseRepository, IUserRepository {
         return user;
     }
 
-    public async Task<bool> RegisterUser(User user) {
-        var sql = "insert into \"users\" (id, username, email, verificationtoken, passwordhash, phoneno, " +
-            "address, registeredat, firstname, lastname) values" + "(@Id, @UserName, @Email, @VerificationToken, @PasswordHash,"
-            + "@Phone, @Address, @RegistrationDate, @FirstName, @LastName)";
+    public async Task<Guid?> RegisterUser(User user) {
+        var sql = "insert_user";
 
-        var response = await SaveData(sql, new {
-            Id = user.UserId,
-            user.Email,
-            user.PasswordHash,
-            user.Phone,
-            user.UserName,
-            Firstname = user.FirstName,
-            user.LastName,
-            user.Address,
-            user.RegistrationDate,
-            user.VerificationToken
-        });
+        var parameters = new DynamicParameters();
+        parameters.Add("_id", user.UserId, DbType.Guid, ParameterDirection.Output);
+        parameters.Add("_username", user.UserName);
+        parameters.Add("_email", user.Email);
+        parameters.Add("_verificationtoken", user.VerificationToken);
+        parameters.Add("_address", user.Address);
+        parameters.Add("_registeredat", user.RegistrationDate, DbType.Date);
+        parameters.Add("_phoneno", user.Phone);
+        parameters.Add("_firstname", user.FirstName);
+        parameters.Add("_lastname", user.LastName);
+        parameters.Add("_dateofbirth", user.DateOfBirth, DbType.Date);
+        parameters.Add("_passwordhash", user.PasswordHash);
 
+        var response = await SaveData(sql, parameters, cmdType : CommandType.StoredProcedure);
         if (!response.IsSuccess) {
             _logger.LogCritical($"Response not a success : {response.ErrorMessage}");
-            return false;
+            return null;
         }
-
-        return true;
+        user.UserId = parameters.Get<Guid>("_id");
+        return user.UserId;
     }
 
-    public async Task<bool> UpdateUser(User user, Guid id) {
+/*    public async Task<bool> UpdateUser(User user, Guid id) {
         var sql = "update \"users\" set username=@Username, email = @Email, firstname=@FirstName, " +
             "lastname=@LastName, address=@Address, phoneno=@Phone" +
             "where id=@Id";
@@ -123,9 +124,9 @@ public class UserRepository : BaseRepository, IUserRepository {
             return false;
         }
         return true;
-    }
+    }*/
 
-    public async Task<bool> SetPasswordResetToken(string token, Guid userId) {
+/*    public async Task<bool> SetPasswordResetToken(string token, Guid userId) {
         var sql = "update \"users\" set passwordresettoken=@Token, resettokenexpires=@ExpireDate where id=@UserId";
         var date = DateTime.UtcNow.AddDays(1);
         var result = await SaveData(sql, new { Token = token, ExpireDate = date, UserId = userId });
@@ -135,9 +136,9 @@ public class UserRepository : BaseRepository, IUserRepository {
             return false;
         }
         return true;
-    }
+    }*/
 
-    public async Task<bool> UpdatePassword(string passwordHash, string id) {
+/*    public async Task<bool> UpdatePassword(string passwordHash, string id) {
         var sql = "update \"users\" set passwordhash=@PasswordHash where id=@Id"
         var result = await SaveData(sql, new { PasswordHash = passwordHash, Id = id });
 
@@ -146,9 +147,9 @@ public class UserRepository : BaseRepository, IUserRepository {
             return false;
         }
         return true;
-    }
+    }*/
 
-    public async Task<bool> DeleteUser(Guid id) {
+/*    public async Task<bool> DeleteUser(Guid id) {
         var sql = "delete from \"users\" where id=@Id";
         var result = await SaveData(sql, new { Id = id });
 
@@ -157,5 +158,5 @@ public class UserRepository : BaseRepository, IUserRepository {
             return false;
         }
         return true;
-    }
+    }*/
 }

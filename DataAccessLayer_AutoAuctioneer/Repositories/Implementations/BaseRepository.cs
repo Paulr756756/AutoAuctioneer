@@ -13,7 +13,7 @@ public class BaseRepository : IBaseRepository
 {
 
     private readonly IConfiguration _config;
-    public string connectionStringName { get; set; } = "Default";
+    public string connectionStringName { get; set; } = "aucdb";
     public BaseRepository(IConfiguration config)
     {
         _config = config;
@@ -35,15 +35,15 @@ public class BaseRepository : IBaseRepository
             }
         }
     }
-
-    public async Task<Result<T>> SaveData<T>(string sql, T parameters)
+    
+    public async Task<Result<T>> SaveData<T>(string sql, T parameters, CommandType? cmdType)
     {
         var connectionString = _config.GetConnectionString(connectionStringName);
         using (IDbConnection connection = new NpgsqlConnection(connectionString))
         {
             try
             {
-                await connection.ExecuteAsync(sql, parameters);
+                await connection.ExecuteAsync(sql, parameters, null, null, cmdType);
                 return Result<T>.SuccessNoData();
             }
             catch (Exception e)

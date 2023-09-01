@@ -1,4 +1,4 @@
-using API_AutoAuctioneer.Models.BidRequestModels;
+/*using API_AutoAuctioneer.Models.BidRequestModels;
 using DataAccessLayer_AutoAuctioneer.Repositories;
 using DataAccessLayer_AutoAuctioneer.Repositories.Interfaces;
 using DataAccessLibrary_AutoAuctioneer.Models;
@@ -133,4 +133,4 @@ public class BidService : IBidService
         await _bidRepository.DeleteBid(response.Data);
         return true;
     }
-}
+}*/

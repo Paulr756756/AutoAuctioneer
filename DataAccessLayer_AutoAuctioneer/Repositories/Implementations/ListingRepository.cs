@@ -1,4 +1,4 @@
-using DataAccessLayer_AutoAuctioneer.Models;
+/*using DataAccessLayer_AutoAuctioneer.Models;
 using DataAccessLayer_AutoAuctioneer.Repositories.Interfaces;
 using Microsoft.Extensions.Configuration;
 
@@ -37,4 +37,4 @@ public class ListingRepository : BaseRepository, IListingRepository
     {
         throw new NotImplementedException();
     }
-}
+}*/
