@@ -4,6 +4,7 @@
 
 GET {{baseUrl}}/api/user/
 ###
+//Register User
 POST {{baseUrl}}/api/user/register
 Content-Type: application/json
 
@@ -19,4 +20,18 @@ Content-Type: application/json
   "dateOfBirth": null
 }
 ###
+//Update user
+POST {{baseUrl}}/api/user/update
+Content-Type: application/json
 
+{
+  "userId": "9a7405a2-96c3-4aa3-89df-baa1a9a8e5ff",
+  "userName": "PaulR",
+  "email": "paulr@gmail.com",
+  "password": null,
+  "address": null,
+  "firstName": "Rahul",
+  "lastName": "Paul",
+  "phone": "9319445315",
+  "dateOfBirth": null
+}

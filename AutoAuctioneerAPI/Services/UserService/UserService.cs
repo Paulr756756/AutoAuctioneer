@@ -44,13 +44,32 @@ public class UserService : IUserService
             Address = request.Address
         };
         var id = await _userRepository.RegisterUser(user);
-        if (id!=null)
+        if (id)
         {
             _logger.LogInformation($"New User is created with id {id}");
-            user.UserId = id;
             return true;
         }
+        return false;
+    }
 
+    public async Task<bool> UpdateUserInfo(UserUpdateRequest request) {
+        var user = await _userRepository.GetUserById(request.UserId);
+        if(user == null) {
+            _logger.LogError("User does not exist with ID : {id}", request.UserId);
+            return false;
+        }
+        if(request.UserName != null) user.UserName = request.UserName;
+        if (request.Email != null) user.Email = request.Email;
+        if (request.FirstName != null) user.FirstName = request.FirstName;
+        if (request.LastName != null) user.LastName = request.LastName;
+        if (request.Phone != null) user.Phone = request.Phone;
+        if (request.Address != null) user.Address = request.Address;
+        if (request.DateOfBirth != null) user.DateOfBirth = request.DateOfBirth;
+
+        var response = await _userRepository.UpdateUser(user);
+        if (response) {
+            return true;
+        }
         return false;
     }
     

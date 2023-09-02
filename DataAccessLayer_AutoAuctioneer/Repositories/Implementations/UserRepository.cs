@@ -69,7 +69,7 @@ public class UserRepository : BaseRepository, IUserRepository {
     }
 
     public async Task<User?> GetUserById(Guid id) {
-        var sql = "select * from users where id = @Id";
+        var sql = "select * from users where id = @Id ;";
         var result = await LoadData<User, dynamic>(sql, new { Id = id });
 
         if (!result.IsSuccess) {
@@ -79,16 +79,16 @@ public class UserRepository : BaseRepository, IUserRepository {
         return user;
     }
 
-    public async Task<Guid?> RegisterUser(User user) {
+    public async Task<bool> RegisterUser(User user) {
         var sql = "insert_user";
 
         var parameters = new DynamicParameters();
-        parameters.Add("_id", user.UserId, DbType.Guid, ParameterDirection.Output);
+        parameters.Add("_id", user.Id, DbType.Guid, ParameterDirection.Output);
         parameters.Add("_username", user.UserName);
         parameters.Add("_email", user.Email);
         parameters.Add("_verificationtoken", user.VerificationToken);
         parameters.Add("_address", user.Address);
-        parameters.Add("_registeredat", user.RegistrationDate, DbType.Date);
+        parameters.Add("_registrationdate", user.RegistrationDate, DbType.Date);
         parameters.Add("_phoneno", user.Phone);
         parameters.Add("_firstname", user.FirstName);
         parameters.Add("_lastname", user.LastName);
@@ -98,65 +98,68 @@ public class UserRepository : BaseRepository, IUserRepository {
         var response = await SaveData(sql, parameters, cmdType : CommandType.StoredProcedure);
         if (!response.IsSuccess) {
             _logger.LogCritical($"Response not a success : {response.ErrorMessage}");
-            return null;
+            return false;
         }
-        user.UserId = parameters.Get<Guid>("_id");
-        return user.UserId;
+        _logger.LogInformation("User created with ID : {userid}",parameters.Get<Guid>("_id"));
+        return true;
     }
 
-/*    public async Task<bool> UpdateUser(User user, Guid id) {
-        var sql = "update \"users\" set username=@Username, email = @Email, firstname=@FirstName, " +
-            "lastname=@LastName, address=@Address, phoneno=@Phone" +
-            "where id=@Id";
-        var result = await SaveData(sql,
-            new {
-                Id = id,
-                Username = user.UserName,
-                user.Email,
-                user.FirstName,
-                user.LastName,
-                user.Address,
-                user.Phone
-            });
+    public async Task<bool> UpdateUser(User user) {
+        var sql = "update_user";
+
+        var parameters = new DynamicParameters();
+        parameters.Add("_id", user.Id, DbType.Guid, ParameterDirection.InputOutput);
+        parameters.Add("_username", user.UserName);
+        parameters.Add("_email", user.Email);
+        parameters.Add("_address", user.Address);
+        parameters.Add("_phoneno", user.Phone);
+        parameters.Add("_firstname", user.FirstName);
+        parameters.Add("_lastname", user.LastName);
+        parameters.Add("_dateofbirth", user.DateOfBirth, DbType.Date);
+        parameters.Add("_passwordhash", user.PasswordHash);
+
+        var result = await SaveData(sql,parameters, cmdType: CommandType.StoredProcedure);
 
         if (!result.IsSuccess) {
             _logger.LogCritical($"Response not a success : {result.ErrorMessage}");
             return false;
         }
+
+        _logger.LogInformation("User updated with id : {userid}", parameters.Get<Guid>("_id"));
         return true;
-    }*/
+    }
 
-/*    public async Task<bool> SetPasswordResetToken(string token, Guid userId) {
-        var sql = "update \"users\" set passwordresettoken=@Token, resettokenexpires=@ExpireDate where id=@UserId";
-        var date = DateTime.UtcNow.AddDays(1);
-        var result = await SaveData(sql, new { Token = token, ExpireDate = date, UserId = userId });
+    /*    public async Task<bool> SetPasswordResetToken(string token, Guid userId) {
+            var sql = "update \"users\" set passwordresettoken=@Token, resettokenexpires=@ExpireDate where id=@UserId";
+            var date = DateTime.UtcNow.AddDays(1);
+            var result = await SaveData(sql, new { Token = token, ExpireDate = date, UserId = userId });
 
-        if (!result.IsSuccess) {
-            _logger.LogCritical($"Response not a success : {result.ErrorMessage}");
-            return false;
-        }
-        return true;
-    }*/
+            if (!result.IsSuccess) {
+                _logger.LogCritical($"Response not a success : {result.ErrorMessage}");
+                return false;
+            }
+            return true;
+        }*/
 
-/*    public async Task<bool> UpdatePassword(string passwordHash, string id) {
-        var sql = "update \"users\" set passwordhash=@PasswordHash where id=@Id"
-        var result = await SaveData(sql, new { PasswordHash = passwordHash, Id = id });
+    /*    public async Task<bool> UpdatePassword(string passwordHash, string id) {
+            var sql = "update \"users\" set passwordhash=@PasswordHash where id=@Id"
+            var result = await SaveData(sql, new { PasswordHash = passwordHash, Id = id });
 
-        if (!result.IsSuccess) {
-            _logger.LogCritical($"Response not a success : {result.ErrorMessage}");
-            return false;
-        }
-        return true;
-    }*/
+            if (!result.IsSuccess) {
+                _logger.LogCritical($"Response not a success : {result.ErrorMessage}");
+                return false;
+            }
+            return true;
+        }*/
 
-/*    public async Task<bool> DeleteUser(Guid id) {
-        var sql = "delete from \"users\" where id=@Id";
-        var result = await SaveData(sql, new { Id = id });
+    /*    public async Task<bool> DeleteUser(Guid id) {
+            var sql = "delete from \"users\" where id=@Id";
+            var result = await SaveData(sql, new { Id = id });
 
-        if (!result.IsSuccess) {
-            //Log
-            return false;
-        }
-        return true;
-    }*/
+            if (!result.IsSuccess) {
+                //Log
+                return false;
+            }
+            return true;
+        }*/
 }

@@ -9,10 +9,12 @@ namespace DataAccessLayer_AutoAuctioneer.Repositories.Interfaces
         Task<User?> GetUserById(Guid id);
         Task<User?> GetUserByPasswordToken(string token);
         Task<User?> GetUserByVerificationToken(string token);
-        Task<Guid?> RegisterUser(User user);
-/*        Task<bool> SetPasswordResetToken(string token, Guid userId);
-        Task<bool> UpdatePassword(string passwordHash, string id);
-        Task<bool> UpdateUser(User user, Guid id);
-        Task<bool> DeleteUser(Guid id);*/
+        Task<bool> RegisterUser(User user);
+        Task<bool> UpdateUser(User user);
+
+        /*        Task<bool> SetPasswordResetToken(string token, Guid userId);
+                Task<bool> UpdatePassword(string passwordHash, string id);
+
+                Task<bool> DeleteUser(Guid id);*/
     }
 }

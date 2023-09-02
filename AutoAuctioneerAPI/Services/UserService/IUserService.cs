@@ -6,6 +6,7 @@ public interface IUserService
 {
 /*    string GetMyName();*/
     Task<bool> RegisterUser(UserRegisterRequest request);
+    Task<bool> UpdateUserInfo(UserUpdateRequest request);
 /*    Task<bool> DeleteUser(DeleteUserRequest request);
     Task<string> LoginUser(UserLoginRequest request);
     Task<bool> VerifyUser(string token);

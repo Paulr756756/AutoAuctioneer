@@ -19,10 +19,15 @@ public class UserController : ControllerBase
     }
 
     [HttpPost("register")]
-    public async Task<IActionResult> Register([FromBody]UserRegisterRequest request)
-    {
-        if (await _userService.RegisterUser(request)) return Ok("User created");
-        return BadRequest("Error");
+    public async Task<IActionResult> Register([FromBody]UserRegisterRequest request) {
+        if (await _userService.RegisterUser(request)) return Ok("User created Successfully");
+        return BadRequest("User couldn't be created");
+    }
+
+    [HttpPost("update")]
+    public async Task<IActionResult> Update([FromBody] UserUpdateRequest request ) {
+        if (await _userService.UpdateUserInfo(request)) return Ok("User Updated Successfully");
+        return BadRequest("User Couldn't be updated");
     }
 
    /* [HttpPost("login")]
