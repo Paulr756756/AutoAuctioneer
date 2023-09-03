@@ -2,6 +2,12 @@
 using API_AutoAuctioneer.Models.UserRequestModels;
 using DataAccessLayer_AutoAuctioneer.Models;
 using DataAccessLayer_AutoAuctioneer.Repositories.Interfaces;
+using MimeKit;
+using MailKit;
+using MailKit.Net.Smtp;
+using System.Security.Claims;
+using System.IdentityModel.Tokens.Jwt;
+using Microsoft.IdentityModel.Tokens;
 
 namespace API_AutoAuctioneer.Services.UserService;
 
@@ -43,10 +49,49 @@ public class UserService : IUserService
             DateOfBirth = request.DateOfBirth,
             Address = request.Address
         };
-        var id = await _userRepository.RegisterUser(user);
-        if (id)
+        var isRegistered = await _userRepository.RegisterUser(user);
+        if (isRegistered)
         {
-            _logger.LogInformation($"New User is created with id {id}");
+            _logger.LogInformation($"New User is created.");
+            var sender = new EmailUser {
+                UserName = "Auto-Auctioneer",
+                Email = "wolfl756756@gmail.com",
+                Password = "iayjneoksmowcglg"
+            };
+            var recepient = new EmailUser {
+                UserName = user.UserName,
+                Email = user.Email.ToLower(),
+            };
+            var message = new MimeMessage();
+            message.From.Add(new MailboxAddress(sender.UserName, sender.Email)) ;
+            message.To.Add(new MailboxAddress(recepient.UserName, recepient.Email));
+            message.Subject = "Verify your Email account";
+            string href = "\"https://localhost:44388/user/verify\"";
+            message.Body = new TextPart("html") {
+                Text = $@"
+                <html>
+                    <h1>Hey {recepient.UserName}!</h1><br/>
+                    <h3>Verify Your email account</h3>
+                    <p>
+                        Copy the given token and paste it on the link given below
+                        <br/>
+                        <code>
+                        {user.VerificationToken}
+                        <code>
+                        <a href={href}>Verify</a>
+                    <p>
+                </html>
+                "
+            };
+            using (var client = new SmtpClient()) {
+                client.Connect("smtp.gmail.com", 587, false);
+                client.Authenticate(sender.Email, sender.Password);
+
+                client.Send(message);
+                _logger.LogInformation("Verification Email sent to id : {id}", recepient.Email);
+                client.Disconnect(true);
+
+            }
             return true;
         }
         return false;
@@ -72,36 +117,33 @@ public class UserService : IUserService
         }
         return false;
     }
-    
-/*    public async Task<bool> VerifyUser(string token)
-    {
-        var user = await _userRepository.GetUserByVerificationToken(token); 
 
-        if (user == null)
-        {
+    public async Task<bool> VerifyUser(string token, string email) {
+        var user = await _userRepository.GetUserByEmail(email);
+        if (user == null) {
             _logger.LogInformation($"No such user present");
             return false;
         }
+        if (user.VerificationToken!= token) {
+            _logger.LogError("Your token does not match");
+        }
         user.VerifiedAt = DateTime.UtcNow;
-        var response = await _userRepository.UpdateUser(user, user.UserId);
-        if(!response)
-        {
-            _logger.LogInformation($"Unable to Update user ");
+        var response = await _userRepository.VerifyUser(user);
+        if (!response) {
+            _logger.LogInformation($"Unable to Update user");
             return false;
         }
-
+        _logger.LogInformation($"User with id : {user.Id} updated");
         return true;
-    }*/
+    }
 
 
-/*    public async Task<string> LoginUser(UserLoginRequest request)
-    {
-        var response = await _userRepository.GetUserByEmail(request.Email);
-        var user = response;
+    public async Task<string> LoginUser(UserLoginRequest request) {
+        var user = await _userRepository.GetUserByEmail(request.Email);
         if (user == null) {
             _logger.LogInformation("User does not exist");
             return "User not found";
-        }   
+        }
         if (user.VerifiedAt == null) {
             _logger.LogInformation("User not verified");
             return "User not verified";
@@ -112,98 +154,122 @@ public class UserService : IUserService
         }
         return CreateJwtToken(user);
     }
-*/
-/*    public string GetMyName()
-    {
-        if (_httpContextAccessor.HttpContext != null)
-        {
-            return _httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.Name);
-        }
-        return "Try logging in first";
-    }*/
 
-/*    public async Task<bool> DeleteUser(DeleteUserRequest request)
-    {
-        var user = await _userRepository.GetUserByEmail(request.Email);
-        if (user == null)
+    public async Task<User?> GetUserById(Guid id) {
+        var user = await _userRepository.GetUserById(id);
+        if (user == null) { 
+            _logger.LogError("No such user present");
+            return null;
+        }
+        return user;
+    }
+
+    /*    public async Task<bool> DeleteUser(DeleteUserRequest request)
         {
-            _logger.LogInformation("User Does not exist");
+            var user = await _userRepository.GetUserByEmail(request.Email);
+            if (user == null)
+            {
+                _logger.LogInformation("User Does not exist");
+                return false;
+            }
+            if (!BCrypt.Net.BCrypt.EnhancedVerify(request.Password, user.PasswordHash)) return false;
+            var response = await _userRepository.DeleteUser(user.UserId);
+
+            if (response)
+            {
+                return true;
+            }
+            _logger.LogError("Response false");
             return false;
-        }
-        if (!BCrypt.Net.BCrypt.EnhancedVerify(request.Password, user.PasswordHash)) return false;
-        var response = await _userRepository.DeleteUser(user.UserId);
+        }*/
 
-        if (response)
-        {
-            return true;
-        }
-        _logger.LogError("Response false");
-        return false;
-    }*/
-
-/*    public async Task<bool> ForgotPassword(string email)
-    {
+    public async Task<bool> ForgotPassword(string email) {
         var user = await _userRepository.GetUserByEmail(email);
-        
-        if (user == null)
-        {
+
+        if (user == null) {
             Console.WriteLine("User does not exist");
             return false;
         }
 
         var token = CreateRandomToken();
 
-        var result = await _userRepository.SetPasswordResetToken(token, user.UserId);
-        if (result)
-        {
+        var result = await _userRepository.SetPasswordResetToken(token, (Guid)user.Id);
+        if (result) {
+            var sender = new EmailUser {
+                UserName = "Auto-Auctioneer",
+                Email = "wolfl756756@gmail.com",
+                Password = "iayjneoksmowcglg"
+            };
+            var recepient = new EmailUser {
+                UserName = user.UserName!,
+                Email = user.Email!.ToLower(),
+            };
+            var message = new MimeMessage();
+            message.From.Add(new MailboxAddress(sender.UserName, sender.Email));
+            message.To.Add(new MailboxAddress(recepient.UserName, recepient.Email));
+            message.Subject = "Reset your account Password";
+            string href = "\"https://localhost:44388/user/reset\"";
+            message.Body = new TextPart("html") {
+                Text = $@"
+                <html>
+                    <h1>Hey {recepient.UserName}!</h1><br/>
+                    <h3>Verify Change your account password</h3>
+                    <p>
+                        Copy the given token and paste it on the link given below to reset your account
+                        <br/>
+                        <code>
+                        {user.VerificationToken}
+                        <code>
+                        <a href={href}>Verify</a>
+                    <p>
+                </html>
+                "
+            };
+            using (var client = new SmtpClient()) {
+                client.Connect("smtp.gmail.com", 587, false);
+                client.Authenticate(sender.Email, sender.Password);
+
+                client.Send(message);
+                _logger.LogInformation("Verification Email sent to id : {id}", recepient.Email);
+                client.Disconnect(true);
+
+            }
+
             return true;
         }
 
         return false;
-    }*/
+    }
 
-/*    public async Task<bool> ResetPassword(ResetPasswordRequest request)
-    {
-        var response = await _userRepository.GetUserByPToken(request.Token);
-        if (!response.IsSuccess)
-        {
-            Console.WriteLine("Couldn't fetch password token :" + response.ErrorMessage);
-            return false;
-        }
-        
-        var user = response.Data;
+    public async Task<bool> ResetPassword(UserPasswordResetRequest request) {
+        var user = await _userRepository.GetUserByPasswordToken(request.Token);
 
-        if (user == null)
-        {
+        if (user == null) {
             Console.WriteLine("User does not exist");
             return false;
         }
-        if (user.ResetTokenExpires < DateTime.UtcNow)
-        {
+        if (user.ResetTokenExpires < DateTime.UtcNow) {
             Console.WriteLine("User reset token has expired");
         }
-        
+
         user.PasswordHash = BCrypt.Net.BCrypt.EnhancedHashPassword(request.Password);
-        user.ResetTokenExpires = null;
-        user.PasswordResetToken = null;
-        var result =await _userRepository.ResetPassword(user);
-        if (result.IsSuccess)
-        {
+        var result = await _userRepository.UpdatePassword(user.PasswordHash, (Guid)user.Id!);
+        if (result) {
+            _logger.LogInformation("Updated password of user with id: {id}", user.Id);
             return true;
         }
-        
-        Console.WriteLine("Couldn't reset password :" + result.ErrorMessage);
-        return false;
-    }*/
 
-/*    private string CreateJwtToken(User user)
-    {
+        _logger.LogError("Couldn't reset password." );
+        return false;
+    }
+
+    private string CreateJwtToken(User user) {
         var claims = new List<Claim>
         {
-            new(ClaimTypes.Name, user.UserName),
-            new(ClaimTypes.Role, "Client"),
-            new(JwtRegisteredClaimNames.Sub, user.UserId.ToString())
-        };
+                new(ClaimTypes.Name, user.UserName!),
+                new(ClaimTypes.Role, "Client"),
+                new(JwtRegisteredClaimNames.Sub, user.Id.ToString()!)
+            };
 
         var key = new SymmetricSecurityKey(Convert.FromBase64String(
             _config.GetSection("Authentication:Schemes:Bearer:SigningKeys:0:Value").Value!));
@@ -218,10 +284,16 @@ public class UserService : IUserService
         var jwt = new JwtSecurityTokenHandler().WriteToken(token);
 
         return jwt;
-    }*/
+    }
 
     private string CreateRandomToken()
     {
         return Convert.ToHexString(RandomNumberGenerator.GetBytes(64));
     }
+}
+
+public class EmailUser {
+    public string UserName { get; set; }
+    public string Email { get; set; }
+    public string? Password { get; set; }
 }

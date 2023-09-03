@@ -6,8 +6,7 @@ create or replace procedure update_user(
     _phoneno text,
     _firstname varchar(15),
     _lastname varchar(15),
-    _dateofbirth date,
-    _passwordhash text
+    _dateofbirth date
 )
 language plpgsql as $$
 begin 
@@ -18,8 +17,7 @@ begin
     phoneno = _phoneno,
     firstname = _firstname,
     lastname = _lastname,
-    dateofbirth = _dateofbirth,
-    passwordhash = _passwordhash
+    dateofbirth = _dateofbirth
     where id=_id;
 
     EXCEPTION

@@ -13,9 +13,9 @@ public class UserUpdateRequest {
     [Required]
     public string Email { get; set; } = string.Empty;
 
-    [DataType(DataType.Password)]
+/*    [DataType(DataType.Password)]
     [MinLength(6)]
-    public string? Password { get; set; } = string.Empty;
+    public string? Password { get; set; } = string.Empty;*/
     public string? Address { get; set; }
     public string? FirstName { get; set; }
     public string? LastName { get; set; }

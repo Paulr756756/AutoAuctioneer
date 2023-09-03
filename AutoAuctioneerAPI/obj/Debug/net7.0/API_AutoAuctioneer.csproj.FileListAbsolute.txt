@@ -233,3 +233,8 @@ C:\Users\paul7\Documents\WorkStation\auc\server\AutoAuctioneerAPI\obj\Debug\net7
 C:\Users\paul7\Documents\WorkStation\auc\server\AutoAuctioneerAPI\obj\Debug\net7.0\API_AutoAuctioneer.pdb
 C:\Users\paul7\Documents\WorkStation\auc\server\AutoAuctioneerAPI\obj\Debug\net7.0\API_AutoAuctioneer.genruntimeconfig.cache
 C:\Users\paul7\Documents\WorkStation\auc\server\AutoAuctioneerAPI\obj\Debug\net7.0\ref\API_AutoAuctioneer.dll
+C:\Users\paul7\Documents\WorkStation\auc\server\AutoAuctioneerAPI\bin\Debug\net7.0\BouncyCastle.Cryptography.dll
+C:\Users\paul7\Documents\WorkStation\auc\server\AutoAuctioneerAPI\bin\Debug\net7.0\MailKit.dll
+C:\Users\paul7\Documents\WorkStation\auc\server\AutoAuctioneerAPI\bin\Debug\net7.0\MimeKit.dll
+C:\Users\paul7\Documents\WorkStation\auc\server\AutoAuctioneerAPI\bin\Debug\net7.0\System.Security.Cryptography.Pkcs.dll
+C:\Users\paul7\Documents\WorkStation\auc\server\AutoAuctioneerAPI\bin\Debug\net7.0\runtimes\win\lib\net7.0\System.Security.Cryptography.Pkcs.dll

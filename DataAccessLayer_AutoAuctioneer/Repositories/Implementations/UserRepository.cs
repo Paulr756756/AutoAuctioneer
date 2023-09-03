@@ -18,17 +18,18 @@ public class UserRepository : BaseRepository, IUserRepository {
 
     public async Task<List<User>?> GetAllUsers() {
         var sql = "select id, username from \"users\"";
-        var response = await LoadData<User, dynamic>(sql, new { });
+        var result = await LoadData<User, dynamic>(sql, new { });
 
-        if (!response.IsSuccess) {
+        if (!result.IsSuccess) {
             //Do some logging
-            _logger.LogCritical($"Response not a success : {response.ErrorMessage}");
+            _logger.LogCritical($"Response not a success : {result.ErrorMessage}");
         }
-        return response.Data;
+        return result.Data;
     }
 
+
     public async Task<User?> GetUserByEmail(string email) {
-        var sql = "select" +
+       /* var sql = "select " +
             "id," +
             "username," +
             "email," +
@@ -36,13 +37,14 @@ public class UserRepository : BaseRepository, IUserRepository {
             "phoneno," +
             "firstname," +
             "lastname," +
-            "dateofbirth," +
+            "dateofbirth" +*/
+       var sql = "select *" + 
             " from \"users\" where email = @Email";
-        var response = await LoadData<User, dynamic>(sql, new { Email = email });
-        if (!response.IsSuccess) {
-            _logger.LogCritical($"Response not a success : {response.ErrorMessage}");
+        var result = await LoadData<User, dynamic>(sql, new { Email = email });
+        if (!result.IsSuccess) {
+            _logger.LogCritical($"Response not a success : {result.ErrorMessage}");
         }
-        var user = response.Data?.First();
+        var user = result.Data?.FirstOrDefault();
         return user;
     }
 
@@ -53,18 +55,18 @@ public class UserRepository : BaseRepository, IUserRepository {
             _logger.LogCritical($"Response not a success {result.ErrorMessage}");
         }
 
-        var user = result.Data?.First();
+        var user = result.Data?.FirstOrDefault();
         return user;
     }
 
     public async Task<User?> GetUserByPasswordToken(string token) {
-        var sql = "select id, username from user where passwordresettoken = @Token";
+        var sql = "select * from users where passwordresettoken = @Token";
         var result = await LoadData<User, dynamic>(sql, new { Token = token });
 
         if (!result.IsSuccess) {
             _logger.LogCritical($"Response not a success : {result.ErrorMessage}");
         }
-        var user = result.Data?.First();
+        var user = result.Data?.FirstOrDefault();
         return user;
     }
 
@@ -75,7 +77,7 @@ public class UserRepository : BaseRepository, IUserRepository {
         if (!result.IsSuccess) {
             _logger.LogCritical($"Response not a success: {result.ErrorMessage}");
         }
-        var user = result.Data?.First();
+        var user = result.Data?.FirstOrDefault();
         return user;
     }
 
@@ -95,9 +97,9 @@ public class UserRepository : BaseRepository, IUserRepository {
         parameters.Add("_dateofbirth", user.DateOfBirth, DbType.Date);
         parameters.Add("_passwordhash", user.PasswordHash);
 
-        var response = await SaveData(sql, parameters, cmdType : CommandType.StoredProcedure);
-        if (!response.IsSuccess) {
-            _logger.LogCritical($"Response not a success : {response.ErrorMessage}");
+        var result = await SaveData(sql, parameters, cmdType : CommandType.StoredProcedure);
+        if (!result.IsSuccess) {
+            _logger.LogCritical($"Response not a success : {result.ErrorMessage}");
             return false;
         }
         _logger.LogInformation("User created with ID : {userid}",parameters.Get<Guid>("_id"));
@@ -116,7 +118,6 @@ public class UserRepository : BaseRepository, IUserRepository {
         parameters.Add("_firstname", user.FirstName);
         parameters.Add("_lastname", user.LastName);
         parameters.Add("_dateofbirth", user.DateOfBirth, DbType.Date);
-        parameters.Add("_passwordhash", user.PasswordHash);
 
         var result = await SaveData(sql,parameters, cmdType: CommandType.StoredProcedure);
 
@@ -129,28 +130,38 @@ public class UserRepository : BaseRepository, IUserRepository {
         return true;
     }
 
-    /*    public async Task<bool> SetPasswordResetToken(string token, Guid userId) {
-            var sql = "update \"users\" set passwordresettoken=@Token, resettokenexpires=@ExpireDate where id=@UserId";
-            var date = DateTime.UtcNow.AddDays(1);
-            var result = await SaveData(sql, new { Token = token, ExpireDate = date, UserId = userId });
+    public async Task<bool> VerifyUser(User user) {
+        var sql = "update users set verifiedat= @VerifiedAt";
+        var result = await SaveData(sql, new { VerifiedAt = user.VerifiedAt }, null);
+        if(!result.IsSuccess) {
+            _logger.LogCritical("Failure : {message}", result.ErrorMessage);
+            return false;
+        }
+        return true;
+    }
 
-            if (!result.IsSuccess) {
-                _logger.LogCritical($"Response not a success : {result.ErrorMessage}");
-                return false;
-            }
-            return true;
-        }*/
+    public async Task<bool> SetPasswordResetToken(string token, Guid userId) {
+        var sql = "update \"users\" set passwordresettoken=@Token, resettokenexpires=@ExpireDate where id=@UserId";
+        var date = DateTime.UtcNow.AddDays(1);
+        var result = await SaveData(sql, new { Token = token, ExpireDate = date, UserId = userId }, null);
 
-    /*    public async Task<bool> UpdatePassword(string passwordHash, string id) {
-            var sql = "update \"users\" set passwordhash=@PasswordHash where id=@Id"
-            var result = await SaveData(sql, new { PasswordHash = passwordHash, Id = id });
+        if (!result.IsSuccess) {
+            _logger.LogCritical($"Response not a success : {result.ErrorMessage}");
+            return false;
+        }
+        return true;
+    }
 
-            if (!result.IsSuccess) {
-                _logger.LogCritical($"Response not a success : {result.ErrorMessage}");
-                return false;
-            }
-            return true;
-        }*/
+    public async Task<bool> UpdatePassword(string passwordHash, Guid id) {
+        var sql = "update \"users\" set passwordhash=@PasswordHash, resettokenexpires=null,passwordresettoken=null where id=@Id";
+            var result = await SaveData(sql, new { PasswordHash = passwordHash, Id = id }, null);
+
+        if (!result.IsSuccess) {
+            _logger.LogCritical($"Response not a success : {result.ErrorMessage}");
+            return false;
+        }
+        return true;
+    }
 
     /*    public async Task<bool> DeleteUser(Guid id) {
             var sql = "delete from \"users\" where id=@Id";

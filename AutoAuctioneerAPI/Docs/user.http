@@ -1,11 +1,14 @@
 # For more info on HTTP files go to https://aka.ms/vs/httpfile
-@baseUrl = http://localhost:39723
+@baseUrl = https://localhost:44362/api/
 
 
-GET {{baseUrl}}/api/user/
+GET {{baseUrl}}user/details?id=9a7405a2-96c3-4aa3-89df-baa1a9a8e5ff
+
+
+
 ###
 //Register User
-POST {{baseUrl}}/api/user/register
+POST {{baseUrl}}user/register
 Content-Type: application/json
 
 {
@@ -20,18 +23,57 @@ Content-Type: application/json
   "dateOfBirth": null
 }
 ###
-//Update user
-POST {{baseUrl}}/api/user/update
+
+POST {{baseUrl}}user/verify
 Content-Type: application/json
+
+{
+  "email": "paulr@gmail.com",
+  "token": "ED0113727275D767822181161EEF6A07F7637F07B1A8EFF248985AFBF4FEA59737620B8DD3CAEAEE1003167A58315EECFAB777491AC1132FBFAC7DD6DE089AD8"
+}
+
+###
+//Update user
+POST {{baseUrl}}user/update
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTUxMiIsInR5cCI6IkpXVCJ9
 
 {
   "userId": "9a7405a2-96c3-4aa3-89df-baa1a9a8e5ff",
   "userName": "PaulR",
-  "email": "paulr@gmail.com",
-  "password": null,
+  "email": "paulr756756@gmail.com",
   "address": null,
   "firstName": "Rahul",
   "lastName": "Paul",
   "phone": "9319445315",
   "dateOfBirth": null
 }
+###
+//Login user
+
+POST {{baseUrl}}user/login
+Content-Type: application/json
+
+{
+  "email": "paulr@gmail.com",
+  "password": "string"
+}
+###
+//Forgot Password
+POST {{baseUrl}}user/forgot-password
+Content-Type: application/json
+
+"paulr@gmail.com"
+
+###
+POST {{baseUrl}}user/reset-password
+Content-Type: application/json
+
+{
+  "token": "D30540BB85A6630DE520A0C5D00138D5816E3242ECFD2CE8CB0EB6ECC33F30203AAC8474632B779CA9A8FEE0E397A4E3D50437A83F35D1860303DA23B07260D1",
+  "password": "string",
+  "confirmPassword": "string"
+}
+
+###
+POST {{baseUrl}}user/
