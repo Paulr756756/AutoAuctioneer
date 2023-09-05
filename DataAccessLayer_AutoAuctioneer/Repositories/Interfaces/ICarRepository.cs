@@ -4,10 +4,11 @@ namespace DataAccessLayer_AutoAuctioneer.Repositories.Interfaces
 {
     public interface ICarRepository
     {
-        Task<bool> DeleteCar(Guid id);
         Task<List<Car>?> GetAllCars();
-        Task<Car>? GetCarById(Guid guid);
+        Task<Car?> GetCarById(Guid guid);
         Task<bool> StoreCar(Car car);
-        Task<bool> UpdateCar(Car car, Guid id);
+        Task<bool> UpdateCar(Car car);
+        Task<List<Car>?> GetCarsOfSingleUser(Guid userId);
+        Task<bool> DeleteCar(Guid id);
     }
 }

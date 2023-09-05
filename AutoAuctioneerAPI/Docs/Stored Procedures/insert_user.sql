@@ -1,4 +1,5 @@
-create or replace procedure insert_user(
+drop procedure if exists insert_user;
+create procedure insert_user(
     out _id uuid,
     _username varchar(25),
     _email varchar(50),

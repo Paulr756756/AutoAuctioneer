@@ -1,4 +1,5 @@
-create or replace procedure update_user(
+drop procedure if exists update_user;
+create procedure update_user(
     inout _id uuid,
     _username varchar(25),
     _email varchar(50),

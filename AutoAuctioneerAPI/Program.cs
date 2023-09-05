@@ -1,3 +1,4 @@
+using API_AutoAuctioneer.Services.CarService;
 using API_AutoAuctioneer.Services.UserService;
 using DataAccessLayer_AutoAuctioneer.Repositories.Implementations;
 using DataAccessLayer_AutoAuctioneer.Repositories.Interfaces;
@@ -26,14 +27,15 @@ builder.Services.AddSwaggerGen(options =>
 
 builder.Services    
     .AddScoped<IBaseRepository, BaseRepository>()
-    .AddScoped<IUserService, UserService>()
     .AddScoped<IUserRepository, UserRepository>()
-/*    .AddScoped<IListingRepository, ListingRepository>()
+    .AddScoped<ICarRepository, CarRepository>()
+    .AddScoped<IUserService, UserService>()
+    .AddScoped<ICarService, CarService>()
+    
+/*  .AddScoped<IListingRepository, ListingRepository>()
     .AddScoped<IListingService, ListingService>()
     .AddScoped<IBidService, BidService>()
     .AddScoped<IBidRepository, BidRepository>()
-    .AddScoped<ICarRepository, CarRepository>()
-    .AddScoped<ICarService, CarService>()
     .AddScoped<ICarPartService, CarPartService>()
     .AddScoped<IPartRepository, PartRepository>()*/
     .AddHttpContextAccessor()

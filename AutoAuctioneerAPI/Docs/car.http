@@ -1,0 +1,64 @@
+# For more info on HTTP files go to https://aka.ms/vs/httpfile
+@baseUrl = https://localhost:44362/api/
+@userId = insertuserid
+@jwtToken = eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTUxMiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoiUGF1bFIiLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOiJDbGllbnQiLCJzdWIiOiI5YTc0MDVhMi05NmMzLTRhYTMtODlkZi1iYWExYTlhOGU1ZmYiLCJleHAiOjE2OTM5MTc0NDV9.eNdoH-2AyIVtPlk9KyskqW-yxhrU9WM6erPdrvbISxULZBDDycdXn5Fq30D45suR6ieMMVxrrh0ASUObn7BChA
+@carid = carid
+
+
+//Get All cars in the database
+GET {{baseUrl}}car/getall
+
+###
+//Get owned cars in the database
+GET {{baseUrl}}car/getowned?id={{userId}}
+Authorization: Bearer {{jwtToken}}
+
+###
+//Store a car
+POST {{baseUrl}}car/store
+Authorization: Bearer {{jwtToken}}
+Content-Type: application/json
+
+{
+  userid: "{{userId}}",
+  make: "Toyota",
+  model: "Corolla",
+  year: "2002",
+  vin: null,
+  color: "Prussian Blue",
+  bodytype: "4 door sedan",
+  fueltype: "Petrol",
+  transmissiontype: null,
+  enginetype: null,
+  horsepower: null,
+  torque: null,
+  fuelefficiency: null,
+  acceleration: null,
+  topspeed: null,
+  imageurls: null
+}
+
+###
+PUT {{baseUrl}}car/update
+Authorization: Bearer {{jwtToken}}
+
+{
+  carid: "{{carid}}",
+  userid: "{{userId}}",
+  make: "Toyota",
+  model: "Corolla",
+  year: "2002",
+  vin: null,
+  color: "Prussian Blue",
+  bodytype: "4 door sedan",
+  fueltype: "Petrol",
+  transmissiontype: null,
+  enginetype: null,
+  horsepower: null,
+  torque: null,
+  fuelefficiency: null,
+  acceleration: null,
+  topspeed: null,
+  imageurls: null
+}
+

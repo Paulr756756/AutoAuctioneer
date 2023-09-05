@@ -13,6 +13,5 @@ public interface IUserService
     Task<bool> ForgotPassword(string email);
     Task<bool> ResetPassword(UserPasswordResetRequest request);
     Task<User?> GetUserById(Guid id);
-
-    //    Task<bool> DeleteUser(DeleteUserRequest request);
+    Task<bool> DeleteUser(UserDeleteRequest request);
 }

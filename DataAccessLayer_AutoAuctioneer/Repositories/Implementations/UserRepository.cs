@@ -163,14 +163,16 @@ public class UserRepository : BaseRepository, IUserRepository {
         return true;
     }
 
-    /*    public async Task<bool> DeleteUser(Guid id) {
-            var sql = "delete from \"users\" where id=@Id";
-            var result = await SaveData(sql, new { Id = id });
+    public async Task<bool> DeleteUser(Guid id) {
+        var sql = "delete_user";
+        var parameters = new DynamicParameters();
+        parameters.Add("_id", id);
+        var result = await SaveData(sql, parameters, cmdType:CommandType.StoredProcedure);
 
-            if (!result.IsSuccess) {
-                //Log
-                return false;
-            }
-            return true;
-        }*/
+        if (!result.IsSuccess) {
+            _logger.LogError("DeleteUser() Couldn't delete user:{e}", result.ErrorMessage);
+            return false;
+        }
+        return true;
+    }
 }

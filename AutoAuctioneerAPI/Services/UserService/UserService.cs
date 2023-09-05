@@ -14,14 +14,14 @@ namespace API_AutoAuctioneer.Services.UserService;
 public class UserService : IUserService
 {
     private readonly IConfiguration _config;
-    private readonly IHttpContextAccessor _httpContextAccessor;
+/*    private readonly IHttpContextAccessor _httpContextAccessor;*/
     private readonly IUserRepository _userRepository;
     private readonly ILogger<UserService> _logger;
 
     public UserService(IHttpContextAccessor httpContextAccessor,
         IUserRepository userRepository, IConfiguration config, ILogger<UserService> logger)
     {
-        _httpContextAccessor = httpContextAccessor;
+/*        _httpContextAccessor = httpContextAccessor;*/
         _userRepository = userRepository;
         _config = config;
         _logger = logger;
@@ -164,25 +164,6 @@ public class UserService : IUserService
         return user;
     }
 
-    /*    public async Task<bool> DeleteUser(DeleteUserRequest request)
-        {
-            var user = await _userRepository.GetUserByEmail(request.Email);
-            if (user == null)
-            {
-                _logger.LogInformation("User Does not exist");
-                return false;
-            }
-            if (!BCrypt.Net.BCrypt.EnhancedVerify(request.Password, user.PasswordHash)) return false;
-            var response = await _userRepository.DeleteUser(user.UserId);
-
-            if (response)
-            {
-                return true;
-            }
-            _logger.LogError("Response false");
-            return false;
-        }*/
-
     public async Task<bool> ForgotPassword(string email) {
         var user = await _userRepository.GetUserByEmail(email);
 
@@ -289,6 +270,22 @@ public class UserService : IUserService
     private string CreateRandomToken()
     {
         return Convert.ToHexString(RandomNumberGenerator.GetBytes(64));
+    }
+
+    public async Task<bool> DeleteUser(UserDeleteRequest request) {
+        var user = await _userRepository.GetUserByEmail(request.Email);
+        if (user == null) {
+            _logger.LogInformation("User Does not exist");
+            return false;
+        }
+        if (!BCrypt.Net.BCrypt.EnhancedVerify(request.Password, user.PasswordHash)) return false;
+        var response = await _userRepository.DeleteUser((Guid) user.Id!);
+
+        if (response) {
+            return true;
+        }
+        _logger.LogError("Response false DeleteUser()");
+        return false;
     }
 }
 

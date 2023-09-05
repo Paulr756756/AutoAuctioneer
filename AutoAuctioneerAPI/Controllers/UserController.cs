@@ -1,6 +1,5 @@
 ﻿using API_AutoAuctioneer.Models.UserRequestModels;
 using API_AutoAuctioneer.Services.UserService;
-using DataAccessLibrary_AutoAuctioneer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
@@ -26,8 +25,8 @@ public class UserController : ControllerBase
     }
 
     [HttpGet("details")]
-/*    [Authorize(Roles = "Client")]*/
-    public async Task<IActionResult> GetUserDetails([FromQuery] Guid id) {
+    [Authorize(Roles = "Client")]
+    public async Task<IActionResult> GetDetails([FromQuery] Guid id) {
         var user = await _userService.GetUserById(id);
         if (user == null) return BadRequest("No such user present");
 
@@ -77,13 +76,11 @@ public class UserController : ControllerBase
         return Ok("SuccessfullyResetted your password");
     }
 
-/*    [HttpDelete("delete")]
-    [Authorize(Roles = "Client")]
-    public async Task<IActionResult> DeleteUser([FromBody] DeleteUserRequest request) {
+    [HttpDelete("delete"), Authorize(Roles = "Client")]
+    public async Task<IActionResult> DeleteUser([FromBody] UserDeleteRequest request) {
         if (await _userService.DeleteUser(request)) return Ok("User deleted successfully");
-
         return BadRequest("Couldn't delete user!");
     }
 
-    */
+
 }

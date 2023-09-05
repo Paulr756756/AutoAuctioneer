@@ -1,4 +1,4 @@
-﻿/*using API_AutoAuctioneer.Models.CarRequestModels;
+﻿using API_AutoAuctioneer.Models.CarRequestModels;
 using API_AutoAuctioneer.Services.CarService;
 using DataAccessLayer_AutoAuctioneer.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -7,42 +7,35 @@ using Microsoft.AspNetCore.Mvc;
 namespace API_AutoAuctioneer.Controllers;
 
 [ApiController, Route("api/[controller]")]
-public class CarController : ControllerBase
-{
+public class CarController : ControllerBase {
     private readonly ICarService _carService;
 
-    public CarController(ICarService carService)
-    {
+    public CarController(ICarService carService) {
         _carService = carService;
     }
 
     [HttpGet("getall")]
-    public async Task<IActionResult> GetAllCars()
-    {
+    public async Task<IActionResult> GetAll() {
         var response = await _carService.GetAllCars();
         return Ok(response);
     }
 
     [HttpGet("getowned"), Authorize(Roles = "Client")]
-    public async Task<IActionResult> GetOwnedCars([FromQuery] Guid id)
-    {
+    public async Task<IActionResult> GetOwned([FromQuery] Guid id) {
         var response = await _carService.GetOwnedCars(id);
         return Ok(response);
     }
 
     [HttpGet("getbyid")]
-    public async Task<IActionResult> GetCarById( Guid guid)
-    {
+    public async Task<IActionResult> GetById(Guid guid) {
         var response = await _carService.GetCarById(guid);
         return Ok(response);
     }
 
-    [HttpPost("post"), Authorize(Roles = "Client")]
-    public async Task<IActionResult> PostCar([FromBody] AddCarRequest request)
-    {
+    [HttpPost("store"), Authorize(Roles = "Client")]
+    public async Task<IActionResult> Store([FromBody] AddCarRequest request) {
         var response = await _carService.StoreCar(request);
-        if (response)
-        {
+        if (response) {
             return Ok(response);
         }
 
@@ -50,11 +43,9 @@ public class CarController : ControllerBase
     }
 
     [HttpPut("update"), Authorize(Roles = "Client")]
-    public async Task<IActionResult> UpdateCar([FromBody] UpdateCarRequest request)
-    {
+    public async Task<IActionResult> Update([FromBody] UpdateCarRequest request) {
         var response = await _carService.UpdateCar(request);
-        if (response)
-        {
+        if (response) {
             return Ok(response);
         }
 
@@ -69,4 +60,4 @@ public class CarController : ControllerBase
         }
         return BadRequest(response);
     }
-}*/
+}

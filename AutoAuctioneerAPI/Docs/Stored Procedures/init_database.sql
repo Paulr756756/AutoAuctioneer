@@ -20,12 +20,12 @@ create table "users" (
 
 create table "items"(
     id uuid primary key,
-    userId uuid references "users"(id) not null,
+    userId uuid references "users"(id) on delete cascade,
     type int not null
 );
 
 create table "cars" (
-    id uuid primary key references "items"(id),
+    id uuid primary key references "items"(id) on delete cascade,
     serialNo serial,
     make text not null,
     model text not null,
@@ -45,7 +45,7 @@ create table "cars" (
 );
 
 create table "cars_features" (
-    id uuid primary key references "cars" (id), 
+    id uuid primary key references "cars" (id) on delete cascade, 
     seatingMaterial text,
     entertainmentSystem text,
     climateControl text,
@@ -54,7 +54,7 @@ create table "cars_features" (
 );
 
 create table "cars_technology_comfort" (
-    id uuid primary key references "cars"(id),
+    id uuid primary key references "cars"(id) on delete cascade,
     infotainmentNavigationSystem text,
     bluetoothConnectivity text,
     usbPortsCharging text,
@@ -64,7 +64,7 @@ create table "cars_technology_comfort" (
 );
 
 create table "cars_exterior_style" (
-    id uuid primary key references "cars"(id),
+    id uuid primary key references "cars"(id) on delete cascade,
     exteriorDesign text,
     roofStyle text,
     wheelTypeSize text,
@@ -72,7 +72,7 @@ create table "cars_exterior_style" (
 );
 
 create table "cars_performance_handling"(
-    id uuid primary key references "cars"(id),
+    id uuid primary key references "cars"(id) on delete cascade,
     suspensionType text,
     brakingSystem text,
     ecoFriendlyFeatures text,
@@ -80,14 +80,14 @@ create table "cars_performance_handling"(
 );
 
 create table "cars_space_practicality" (
-    id uuid primary key references "cars"(id),
+    id uuid primary key references "cars"(id) on delete cascade,
     vehicleDimensions text,
     cargoSpaceStorage text,
     roofRackCompatible boolean
 );
 
 create table "cars_fuel_maintenance" (
-    id uuid primary key references "cars"(id),
+    id uuid primary key references "cars"(id) on delete cascade,
     fuelEfficiency text,
     emissionsRating text,
     maintenanceSchedule text,
@@ -99,7 +99,7 @@ create table "cars_fuel_maintenance" (
 );
 
 create table "cars_customization_upgrades" (
-    id uuid primary key references "cars"(id),
+    id uuid primary key references "cars"(id) on delete cascade,
     optionalPackages text,
     individualUpgrades text,
     additionalAccessories text[]
@@ -107,7 +107,7 @@ create table "cars_customization_upgrades" (
 
 
 create table "parts" (
-    id uuid primary key references "items"(id),
+    id uuid primary key references "items"(id) on delete cascade,
     name text,
     description text,
     category text,
@@ -117,7 +117,7 @@ create table "parts" (
 );
 
 create table "parts_engine" (
-    id uuid primary key references "parts"(id),
+    id uuid primary key references "parts"(id) on delete cascade,
     engineType text not null,
     displacement real,
     horsepower int,
@@ -125,7 +125,7 @@ create table "parts_engine" (
 );
 
 create table "parts_specific"(
-    id uuid primary key references "parts"(id),
+    id uuid primary key references "parts"(id) on delete cascade,
     carMake text not null,
     carModel text not null,
     year date
@@ -133,14 +133,14 @@ create table "parts_specific"(
 
 create table "listings"(
     id uuid primary key,
-    userId uuid references "users"(id) not null,
-    itemId uuid references "items"(id) not null
+    userId uuid references "users"(id) on delete cascade,
+    itemId uuid references "items"(id) on delete cascade
 );
 
 create table "bids"(
     id uuid primary key,
-    userId uuid references "users"(id) not null,
-    listingId uuid references "listings"(id) not null,
+    userId uuid references "users"(id) on delete cascade,
+    listingId uuid references "listings"(id) on delete cascade,
     bidAmount bigint not null,
     bidTime timestamp not null
 );
