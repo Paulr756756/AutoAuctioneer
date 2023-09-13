@@ -17,10 +17,12 @@ public class CarRepository : BaseRepository, ICarRepository {
 
     public async Task<Car?> GetCarById(Guid carid) {
         var sql = "select * from cars where id=@Id";
+
         var result = await LoadData<Car, dynamic>(sql, new { Id = carid });
+        _logger.LogInformation("Sql statement executed: {e}", sql);
 
         if (!result.IsSuccess) {
-            _logger.LogInformation("Car fetched");
+            _logger.LogInformation("Unable to fetch car : {e}", result.ErrorMessage);
         }
 
         return result.Data!.FirstOrDefault();
@@ -28,7 +30,9 @@ public class CarRepository : BaseRepository, ICarRepository {
 
     public async Task<List<Car>?> GetAllCars() {
         var sql = "select * from cars";
+
         var result = await LoadData<Car, dynamic>(sql, new { });
+        _logger.LogInformation("Sql statement executed : {m}", sql);
 
         if (!result.IsSuccess) {
             _logger.LogError("GetAllCars() Error : {e}", result.ErrorMessage);
@@ -39,9 +43,12 @@ public class CarRepository : BaseRepository, ICarRepository {
     public async Task<List<Car>?> GetCarsOfSingleUser(Guid userId) {
         var sql = "get_carsofsingleuser";
         var result = await LoadData<Car, dynamic>(sql, new { _id = userId });
+        _logger.LogInformation("Stored procedure executed: {e}", sql);
+
         if (!result.IsSuccess) {
-            _logger.LogCritical("Unable to get cars of single user : {error}", result.ErrorMessage);
+            _logger.LogError("Unable to get cars of single user : {error}", result.ErrorMessage);
         }
+
         return result.Data;
     }
 
@@ -66,9 +73,10 @@ public class CarRepository : BaseRepository, ICarRepository {
         parameters.Add("_imageurls", car.ImageUrls);
 
         var result = await SaveData(sql, parameters, cmdType: CommandType.StoredProcedure);
+        _logger.LogInformation("Stored procedure executed: {e} for id : {id}", sql, parameters.Get<Guid>("_id"));
 
         if (!result.IsSuccess) {
-            _logger.LogInformation("Unable to store car : {}", result.ErrorMessage);
+            _logger.LogError("Unable to store car : {}", result.ErrorMessage);
             return false;
         }
         _logger.LogInformation("Stored car with id :{id}", car.Id);
@@ -96,6 +104,7 @@ public class CarRepository : BaseRepository, ICarRepository {
         parameters.Add("_imageurls", car.ImageUrls);
 
         var result = await SaveData(sql,parameters, cmdType:CommandType.StoredProcedure);
+        _logger.LogInformation("Stored procedure executed : {e} for id : {id}", sql, car.Id);
 
         if (!result.IsSuccess) {
             _logger.LogError("Unable to update car : {e}", result.ErrorMessage);
@@ -107,7 +116,9 @@ public class CarRepository : BaseRepository, ICarRepository {
         var sql = "delete_item";
         var parameters = new DynamicParameters();
         parameters.Add("_id", id);
+
         var result = await SaveData(sql, parameters, cmdType: CommandType.StoredProcedure);
+        _logger.LogInformation("Stored procedure executed : {e} for id : {id}", sql, id);
 
         if (!result.IsSuccess) {
             _logger.LogError($"Could not delete car {id}, DeleteCar", id);

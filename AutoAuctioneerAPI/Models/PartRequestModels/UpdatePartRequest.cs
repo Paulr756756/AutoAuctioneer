@@ -1,13 +1,16 @@
-﻿namespace API_AutoAuctioneer.Models.CarPartRequestModels;
+﻿namespace API_AutoAuctioneer.Models.PartRequestModels;
 
-public class UpdateCarPartRequest
+public class UpdatePartRequest
 {
-    public Guid CarpartId { get; set; }
+    public Guid Id { get; set; }
     public string Name { get; set; }
     public string Description { get; set; }
     public decimal? MarketPrice { get; set; }
     public Guid UserId { get; set; }
     public int PartType { get; set; }
+    public string? Manufacturer { get; set; }
+    public string? Category { get; set; }
+
 
     //Engine
     public string? EngineType { get; set; }
@@ -16,8 +19,6 @@ public class UpdateCarPartRequest
     public int? Torque { get; set; }
 
     //CustomizationPart
-    public string? Category { get; set; }
-    public string? Manufacturer { get; set; }
 
     //IndividualCarPart
     public string? CarMake { get; set; }

@@ -1,6 +1,7 @@
 drop procedure if exists update_part;
 create procedure update_part(
     _id uuid,
+    _name text,
     _description text,
     _category text,
     _marketprice bigint,
@@ -10,6 +11,7 @@ create procedure update_part(
 language plpgsql as $$
 begin
     update parts set
+        name = _name,
         description = _description,
         category = _category,
         marketprice = _marketprice,

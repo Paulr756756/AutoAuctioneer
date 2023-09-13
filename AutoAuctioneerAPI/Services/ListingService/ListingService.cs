@@ -1,4 +1,4 @@
-﻿/*using API_AutoAuctioneer.Models.ListingRequestModels;
+﻿using API_AutoAuctioneer.Models.ListingRequestModels;
 using DataAccessLayer_AutoAuctioneer.Models;
 using DataAccessLayer_AutoAuctioneer.Repositories.Interfaces;
 
@@ -7,112 +7,82 @@ namespace API_AutoAuctioneer.Services.ListingService;
 public class ListingService : IListingService
 {
     private readonly IListingRepository _listingRepository;
-    private readonly ICarRepository _carRepository;
-    private readonly IPartRepository _carPartRepository;
+    private readonly IItemRepository _itemRepository;
     private readonly IUserRepository _userRepository;
+    private readonly ILogger<ListingService> _logger;  
 
-    public ListingService(IListingRepository listingRepository, IUserRepository userRepository, 
-        ICarRepository carRepository, IPartRepository carPartRepository)
+    public ListingService(IListingRepository listingRepository, IUserRepository userRepository,
+        ILogger<ListingService> logger, IItemRepository itemRepository)
     {
         _listingRepository = listingRepository;
-        _carRepository = carRepository;
-        _carPartRepository = carPartRepository;
         _userRepository = userRepository;
+        _itemRepository = itemRepository;
+        _logger = logger;
     }
 
-    public async Task<List<Listing>> GetAlListingsService()
+    public async Task<List<Listing>?> GetAlListingsService()
     {
-        var response = await _listingRepository.GetAllListings();
-        if (!response.IsSuccess)
-        {
-            throw new Exception();
-        }
-        return response.DataList!;
+        var listings = await _listingRepository.GetAllListings();
+        return listings;
     }
 
-    public async Task<Listing> GetListingyId(Guid guid)
+    public async Task<Listing?> GetListingyId(Guid guid)
     {
-        var response = await _listingRepository.GetAllListings();
-        if (!response.IsSuccess)
-        {
-            throw new Exception();
+        var listing = await _listingRepository.GetListingById(guid);
+        if (listing == null) {
+            _logger.LogInformation("NO such listing present in the database with id : {id}", guid);
         }
-        return response.Data!;
+        return listing;
     }
 
-    public async Task<List<Listing>> GetOwnedListings(Guid guid) {
-        var response = await _listingRepository.GetOwnedListings(guid);
-        if(response.IsSuccess) {
-            Console.WriteLine(response.ErrorMessage);
-            throw new Exception();
+    public async Task<List<Listing>?> GetOwnedListings(Guid guid) {
+        var user = await _userRepository.GetUserById(guid); 
+        if (user == null) {
+            _logger.LogInformation("NO such user present in the database");
+            return null;
         }
-        return response.DataList!;
+        var listings = await _listingRepository.GetOwnedListings(guid);
+        return listings;
     }
 
 
-    public async Task<bool> AddListingService(ListingRegisterRequest request) {
+    public async Task<bool> AddListingService(AddListingRequest request) {
 
-        var user = (await _userRepository.GetUserById(request.UserId)).Data;
-        if (user == null) { return false; }
-
-        if(request.Type == 0) {
-            var car = (await _carRepository.GetCarById(request.ItemId)).Data;
-            if(car == null) return false;
-            var listing = new Listing {
-                ListingId = Guid.NewGuid(),
-                Car = car,
-                CarId = car.CarId,
-                User = user,
-                UserId = request.UserId
-            };
-            var response = await _listingRepository.PostListing(listing);
-            if (!response.IsSuccess) {
-                Console.WriteLine(response.ErrorMessage);
-                return false;
-            }
-            return true;
-
-        } else if(request.Type == 1){
-            var part = (await _carPartRepository.GetCarPartById(request.ItemId)).Data;
-            if (part == null) { return false; }
-            var listing = new Listing {
-                ListingId = Guid.NewGuid(),
-                CarPart = part,
-                CarPartId = part.CarpartId,
-                User = user,
-                UserId = request.UserId
-            };
-            var response = await _listingRepository.PostListing(listing);
-            if (!response.IsSuccess) {
-                Console.WriteLine(response.ErrorMessage);
-                return false;
-            }
-
+        var user = await _userRepository.GetUserById(request.UserId);
+        if (user == null) {
+            _logger.LogInformation("NO such user present in the database");
+            return false; 
         }
-        return false;
+        var item = await _itemRepository.GetItemById(request.ItemId);
+        if (item == null) {
+            _logger.LogInformation("No such item found in the database");
+            return false;
+        }
+        var listing = new Listing {
+            UserId = request.UserId,
+            ItemId = request.ItemId
+        };
+        var result = await _listingRepository.PostListing(listing);
+
+        return result;
     }
 
 
     public async Task<bool> DeleteListingService(ListingDeleteRequest request)
     {
-        var response = await _listingRepository.GetListingById(request.ListingId);
-        if (response.Data == null)
+        var listing = await _listingRepository.GetListingById(request.Id);
+        if (listing == null)
         {
-            Console.WriteLine("No such listing exists");
+            _logger.LogInformation("No such listing exists");
             return false;
-        }else if (response.Data.UserId != request.UserId)
+        }else if (listing.UserId != request.UserId)
         {
-            Console.WriteLine("You are not the owner of this listing");
+            _logger.LogInformation("You are not the owner of this listing");
             return false;
         }
 
-        var result = await _listingRepository.DeleteListing(response.Data);
-        if(!result.IsSuccess)
-        {
-            Console.WriteLine(result.ErrorMessage);
-            return false;
-        }
+        var result = await _listingRepository.DeleteListing(listing.Id);
         
-        return true;
+        return result;
     }
-}*/
+}

@@ -42,7 +42,7 @@ public class ListingController : ControllerBase
 
     [HttpPost("add")]
     [Authorize(Roles = "Client")]
-    public async Task<IActionResult> AddListing(ListingRegisterRequest request) {
+    public async Task<IActionResult> AddListing(AddListingRequest request) {
         var response = await _listingService.AddListingService(request);
         if (response) {
             return Ok("New listing posted");
@@ -56,6 +56,6 @@ public class ListingController : ControllerBase
     {
         var response = await _listingService.DeleteListingService(request);
         if (!response) return BadRequest("More error");
-        return Ok($"Listing Removed with id:{request.ListingId}");
+        return Ok($"Listing Removed with id:{request.Id}");
     }
 }*/

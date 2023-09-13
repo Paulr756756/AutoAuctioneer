@@ -1,4 +1,5 @@
 ﻿using DataAccessLibrary_AutoAuctioneer.Models;
+using System.Numerics;
 
 namespace DataAccessLayer_AutoAuctioneer.Repositories.Interfaces
 {
@@ -7,8 +8,8 @@ namespace DataAccessLayer_AutoAuctioneer.Repositories.Interfaces
         Task<bool> DeleteBid(Guid id);
         Task<List<Bid>?> GetAllBids();
         Task<Bid?> GetBidById(Guid id);
-        Task<List<Bid>> GetBidsPerListing(Guid guid);
+        Task<List<Bid>?> GetBidsPerListing(Guid guid);
         Task<bool> PostBid(Bid bid);
-        Task<bool> UpdateBidAmt(Bid bid, Guid id);
+        Task<bool> UpdateBidAmt(BigInteger amount, Guid id);
     }
 }

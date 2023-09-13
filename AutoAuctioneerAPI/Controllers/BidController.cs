@@ -21,14 +21,14 @@ public class BidController : ControllerBase
     [HttpGet("getallbids")]
     public async Task<IActionResult> GetAllBids()
     {
-        var response = await _bidService.GetAllBidsService();
+        var response = await _bidService.GetAllBids();
         return Ok(response);
     }
 
     [HttpGet("getbidbyid")]
     public async Task<IActionResult> GetBidById(Guid id)
     {
-        var response = await _bidService.GetBidByIdService(id);
+        var response = await _bidService.GetBidById(id);
         if (response == null) return BadRequest("Bid doesn't exist");
         return Ok(response);
     }
@@ -37,7 +37,7 @@ public class BidController : ControllerBase
     [Authorize(Roles = "Client")]
     public async Task<IActionResult> AddBid(AddBidRequest request)
     {
-        var response = await _bidService.PostBidService(request);
+        var response = await _bidService.PostBid(request);
         if (!response) return BadRequest("Error x2");
 
         return Ok();
@@ -57,7 +57,7 @@ public class BidController : ControllerBase
     [Authorize(Roles = "Client")]
     public async Task<IActionResult> UpdateBidAmt(UpdateBidRequest request)
     {
-        var response = await _bidService.UpdateBidAmtService(request);
+        var response = await _bidService.UpdateBidAmt(request);
         if (!response) return BadRequest("Error maximo");
         return Ok("Successo");
     }

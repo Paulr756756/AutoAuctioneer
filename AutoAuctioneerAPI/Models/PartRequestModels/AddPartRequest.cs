@@ -1,6 +1,6 @@
-﻿namespace API_AutoAuctioneer.Models.CarPartRequestModels;
+﻿namespace API_AutoAuctioneer.Models.PartRequestModels;
 
-public class AddCarPartRequest
+public class AddPartRequest
 {
     public string Name { get; set; }
     public string Description { get; set; }

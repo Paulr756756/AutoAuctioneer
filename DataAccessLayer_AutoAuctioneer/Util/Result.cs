@@ -3,7 +3,7 @@
 public class Result<T>
 {
     public bool IsSuccess { get; }
-    public List<T>? Data { get; set; }
+    public List<T>? Data = new List<T>();/*{ get; set; }*/
     public string? ErrorMessage { get; }
 
     private Result(bool isSuccess, List<T>? data, string? errorMessage)

@@ -1,40 +1,40 @@
-﻿/*using API_AutoAuctioneer.Models.CarPartRequestModels;
-using API_AutoAuctioneer.Services.CarPartService;
+﻿using API_AutoAuctioneer.Models.PartRequestModels;
+using API_AutoAuctioneer.Services.PartService;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API_AutoAuctioneer.Controllers;
 
 [ApiController, Route("api/[controller]")]
-public class PartsController : ControllerBase{
-    private readonly ICarPartService _carPartService;
-    
-    public PartsController(ICarPartService carPartService) {
+public class PartsController : ControllerBase {
+    private readonly IPartService _carPartService;
+
+    public PartsController(IPartService carPartService) {
         _carPartService = carPartService;
     }
 
     [HttpGet("getall")]
     public async Task<IActionResult> GetAllParts() {
-        var partsList = await _carPartService.GetAllCarPartsService();
+        var partsList = await _carPartService.GetAllParts();
         return Ok(partsList);
     }
 
     [HttpGet("getowned"), Authorize(Roles = "Client")]
     public async Task<IActionResult> GetOwnedParts([FromQuery] Guid id) {
 
-        var partsList = await _carPartService.GetOwnedCarPartsService(id);
+        var partsList = await _carPartService.GetOwnedPartsService(id);
         return Ok(partsList);
     }
 
     [HttpGet("getbyid")]
     public async Task<IActionResult> GetPartById(Guid guid) {
-        var response = await _carPartService.GetCarPartById(guid);
+        var response = await _carPartService.GetPartById(guid);
         return Ok(response);
     }
 
     [HttpPost("post"), Authorize(Roles = "Client")]
-    public async Task<IActionResult> PostCarPart([FromBody] AddCarPartRequest request) {
-        var response = await _carPartService.AddCarPart(request);
+    public async Task<IActionResult> PostCarPart([FromBody] AddPartRequest request) {
+        var response = await _carPartService.AddPart(request);
         if (response) {
             return Ok(response);
         }
@@ -43,8 +43,8 @@ public class PartsController : ControllerBase{
     }
 
     [HttpPut("update"), Authorize(Roles = "Client")]
-    public async Task<IActionResult> UpdatePart([FromBody] UpdateCarPartRequest request) {
-        var response = await _carPartService.UpdateCarPart(request);
+    public async Task<IActionResult> UpdatePart([FromBody] UpdatePartRequest request) {
+        var response = await _carPartService.UpdatePart(request);
         if (response) {
             return Ok(response);
         }
@@ -53,11 +53,11 @@ public class PartsController : ControllerBase{
     }
 
     [HttpDelete("delete"), Authorize(Roles = "Client")]
-    public async Task<IActionResult> DeleteCar([FromBody] DeleteCarPartRequest request) {
-        var response = await _carPartService.DeleteCarPart(request);
+    public async Task<IActionResult> DeleteCar([FromBody] DeletePartRequest request) {
+        var response = await _carPartService.DeletePart(request);
         if (response) {
             return Ok(response);
         }
         return BadRequest(response);
     }
-}*/
+}

@@ -1,10 +1,15 @@
+using API_AutoAuctioneer.Services.BidService;
 using API_AutoAuctioneer.Services.CarService;
+using API_AutoAuctioneer.Services.ListingService;
+using API_AutoAuctioneer.Services.PartService;
 using API_AutoAuctioneer.Services.UserService;
 using DataAccessLayer_AutoAuctioneer.Repositories.Implementations;
 using DataAccessLayer_AutoAuctioneer.Repositories.Interfaces;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.Filters;
+using System.CodeDom.Compiler;
+using System.Text.Json;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -31,18 +36,27 @@ builder.Services
     .AddScoped<ICarRepository, CarRepository>()
     .AddScoped<IUserService, UserService>()
     .AddScoped<ICarService, CarService>()
-    
-/*  .AddScoped<IListingRepository, ListingRepository>()
+    .AddScoped<IPartRepository, PartRepository>()
+    .AddScoped<IPartService, PartService>()
+    .AddScoped<IListingRepository, ListingRepository>()
     .AddScoped<IListingService, ListingService>()
     .AddScoped<IBidService, BidService>()
     .AddScoped<IBidRepository, BidRepository>()
-    .AddScoped<ICarPartService, CarPartService>()
-    .AddScoped<IPartRepository, PartRepository>()*/
+
+
     .AddHttpContextAccessor()
     .AddLogging(logging => {
         logging.ClearProviders();
-        logging.AddConsole();
+        /*logging.AddConsole();*/
+        logging.AddJsonConsole( options=> {
+            options.IncludeScopes = true;
+            options.TimestampFormat = "HH:mm:ss";
+            options.JsonWriterOptions = new JsonWriterOptions {
+                Indented= true,
+            };
+        });
     })
+
     .AddCors(c =>
     {
         c.AddPolicy("AllowOrigin", options =>

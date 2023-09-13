@@ -28,7 +28,7 @@ public class CarService : ICarService {
     public async Task<Car?> GetCarById(Guid id) {
         var car = await _carRepository.GetCarById(id);
         if (car==null) {
-            _logger.LogInformation("GetCarById() No such car present");
+            _logger.LogInformation("No such car present with id : {id}", id);
             return null;
         }
 
@@ -38,7 +38,7 @@ public class CarService : ICarService {
     public async Task<List<Car>?> GetOwnedCars(Guid id) {
         var user = _userRepository.GetUserById(id);
         if(user==null) {
-            _logger.LogInformation("GetOwnedCars() User is not present in the database");
+            _logger.LogInformation("No such user present with id : {id}", id);
             return null;
         }
         var carList = await _carRepository.GetCarsOfSingleUser(id);
@@ -49,7 +49,7 @@ public class CarService : ICarService {
     public async Task<bool> StoreCar(AddCarRequest request) {
         var user = await _userRepository.GetUserById(request.UserId);
         if (user == null) {
-            _logger.LogError("No such user is present");
+            _logger.LogInformation("No such user is present with id : {id}", request.UserId);
             return false;
         }
 
@@ -81,13 +81,13 @@ public class CarService : ICarService {
     public async Task<bool> UpdateCar(UpdateCarRequest request) {
         var user = await _userRepository.GetUserById(request.UserId);
         if (user == null) {
-            _logger.LogError("User is does not exist");
+            _logger.LogInformation("User does not exist with id : {id}", request.UserId);
             return false;
         }
 
         var car = await _carRepository.GetCarById(request.CarId);
         if (car == null) {
-            Console.WriteLine("no such car present in database UpdateCar()");
+            _logger.LogInformation("Car does not exist with id : {id}", request.CarId);
             return false;
         }
 
@@ -113,24 +113,20 @@ public class CarService : ICarService {
         if (request.ImageUrls != null) car.ImageUrls = request.ImageUrls;
 
         var result = await _carRepository.UpdateCar(car);
-        if (!result) {
-            _logger.LogError("Couldn't update car UpdateCar()");
-            return false;
-        }
 
-        return true;
+        return result;
     }
 
     public async Task<bool> DeleteCar(DeleteCarRequest request) {
         var user = await _userRepository.GetUserById(request.UserId);
         if(user != null) {
-            _logger.LogError("NO such user present in the database. DeleteCar()");
+            _logger.LogError("NO such user present with id : {id}", request.UserId);
             return false;
         }
 
         var car = await GetCarById(request.CarId);
         if (car == null) {
-            _logger.LogError("No such car is present in the database. DeleteCar()");
+            _logger.LogError("No such car present with id : {id}", request.CarId);
             return false;
         } 
         
@@ -140,6 +136,6 @@ public class CarService : ICarService {
 
         var response = await _carRepository.DeleteCar((Guid)car.Id!);
 
-        return true;
+        return response;
     }
 }
