@@ -10,7 +10,7 @@ create table "users" (
     passwordResetToken text,
     resetTokenExpires timestamp,
     address text,
-    registeredAt timestamp not null,
+    registrationDate timestamp not null,
     phoneNo text,
     firstName varchar(15),
     lastName varchar(15),

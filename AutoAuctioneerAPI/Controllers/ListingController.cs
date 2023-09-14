@@ -1,6 +1,5 @@
-﻿/*using API_AutoAuctioneer.Models.ListingRequestModels;
+﻿using API_AutoAuctioneer.Models.ListingRequestModels;
 using API_AutoAuctioneer.Services.ListingService;
-using DataAccessLibrary_AutoAuctioneer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -8,32 +7,28 @@ namespace API_AutoAuctioneer.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class ListingController : ControllerBase
-{
+public class ListingController : ControllerBase {
     private readonly IListingService _listingService;
 
-    public ListingController(IListingService listingService)
-    {
+    public ListingController(IListingService listingService) {
         _listingService = listingService;
     }
 
     [HttpGet("getall")]
-    public async Task<IActionResult> GetAllListings()
-    {
+    public async Task<IActionResult> GetAllListings() {
         var response = await _listingService.GetAlListingsService();
         return Ok(response);
     }
 
-    [HttpGet("getbyid"), Authorize(Roles ="Client")]
-    public async Task<IActionResult> GetListingById(Guid id)
-    {
+    [HttpGet("getbyid"), Authorize(Roles = "Client")]
+    public async Task<IActionResult> GetListingById([FromBody]Guid id) {
         var response = await _listingService.GetListingyId(id);
         if (response == null) return BadRequest("No such listing");
 
         return Ok(response);
     }
 
-    [HttpGet("getowned"), Authorize(Roles ="Client")]
+    [HttpGet("getowned"), Authorize(Roles = "Client")]
     public async Task<IActionResult> GetOwnedListings([FromQuery] Guid id) {
         var response = await _listingService.GetOwnedListings(id);
         return Ok(response);
@@ -42,20 +37,17 @@ public class ListingController : ControllerBase
 
     [HttpPost("add")]
     [Authorize(Roles = "Client")]
-    public async Task<IActionResult> AddListing(AddListingRequest request) {
+    public async Task<IActionResult> AddListing([FromBody]AddListingRequest request) {
         var response = await _listingService.AddListingService(request);
-        if (response) {
-            return Ok("New listing posted");
-        }
+        if (response) return Ok("New listing posted");
         return BadRequest();
     }
 
     [HttpDelete("delete")]
     [Authorize(Roles = "Client")]
-    public async Task<IActionResult> DeleteListing(ListingDeleteRequest request)
-    {
+    public async Task<IActionResult> DeleteListing([FromBody]ListingDeleteRequest request) {
         var response = await _listingService.DeleteListingService(request);
         if (!response) return BadRequest("More error");
         return Ok($"Listing Removed with id:{request.Id}");
     }
-}*/
+}

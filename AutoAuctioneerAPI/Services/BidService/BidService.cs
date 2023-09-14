@@ -62,36 +62,31 @@ public class BidService : IBidService {
     }
 
     public async Task<bool> UpdateBidAmt(UpdateBidRequest request) {
-        var response = await _bidRepository.GetBidById(request.BidId);
-        if (response.IsSuccess == false) {
-            Console.WriteLine(response.ErrorMessage);
+        var bid = await _bidRepository.GetBidById(request.BidId);
+        if (bid == null) {
+            _logger.LogInformation("No such bid exists");
             return false;
-        } else if (response.Data == null) {
-            Console.WriteLine("No such bid exists");
-            return false;
-        } else if (response.Data.UserId != request.UserId) {
-            Console.WriteLine("User does not own this bid");
+        } else if (bid.UserId != request.UserId) {
+            _logger.LogInformation("User does not own this bid");
             return false;
         }
-        response.Data.BidAmount = request.BidAmount;
-        await _bidRepository.UpdateBidAmt(response.Data);
+
+        bid.BidAmount = request.BidAmount;
+        await _bidRepository.UpdateBidAmt(bid.BidAmount, bid.Id);
         return true;
     }
 
     public async Task<bool> DeleteBidService(DeleteBidRequest request) {
-        var response = await _bidRepository.GetBidById(request.BidId);
-        if (response.IsSuccess == false) {
-            Console.WriteLine(response.ErrorMessage);
+        var bid = await _bidRepository.GetBidById(request.BidId);
+        if (bid == null) {
+            _logger.LogInformation("No such bid exists");
             return false;
-        } else if (response.Data == null) {
-            Console.WriteLine("No such bid exists");
-            return false;
-        } else if (response.Data.UserId != request.UserId) {
-            Console.WriteLine("User does not own this bid");
+        } else if (bid.UserId != request.UserId) {
+            _logger.LogInformation("User does not own this bid");
             return false;
         }
 
-        await _bidRepository.DeleteBid(response.Data);
+        await _bidRepository.DeleteBid(bid.Id);
         return true;
     }
 }

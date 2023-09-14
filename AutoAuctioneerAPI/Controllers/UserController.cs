@@ -3,6 +3,7 @@ using API_AutoAuctioneer.Services.UserService;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace API_AutoAuctioneer.Controllers;
 
@@ -61,16 +62,16 @@ public class UserController : ControllerBase
     }
 
 
-    [HttpPost("forgot-password"), Authorize(Roles ="Client")]
+    [HttpPost("forgot-password")]
     public async Task<IActionResult> ForgotPassword([FromBody, EmailAddress] string email) {
         if (!await _userService.ForgotPassword(email)) return BadRequest("User not found");
 
         return Ok("You may now reset your password");
     }
 
-    [HttpPost("reset-password"), Authorize(Roles = "Client")]
+    [HttpPost("reset-password")]
     public async Task<IActionResult> ResetPassword([FromBody] UserPasswordResetRequest request) {
-        if (!await _userService.ResetPassword(request))
+        if (!(await _userService.ResetPassword(request)))
             return BadRequest("Couldn't reset your password");
 
         return Ok("SuccessfullyResetted your password");
@@ -81,6 +82,4 @@ public class UserController : ControllerBase
         if (await _userService.DeleteUser(request)) return Ok("User deleted successfully");
         return BadRequest("Couldn't delete user!");
     }
-
-
 }

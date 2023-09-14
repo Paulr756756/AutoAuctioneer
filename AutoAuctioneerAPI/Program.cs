@@ -42,6 +42,7 @@ builder.Services
     .AddScoped<IListingService, ListingService>()
     .AddScoped<IBidService, BidService>()
     .AddScoped<IBidRepository, BidRepository>()
+    .AddScoped<IItemRepository, ItemRepository>()
 
 
     .AddHttpContextAccessor()

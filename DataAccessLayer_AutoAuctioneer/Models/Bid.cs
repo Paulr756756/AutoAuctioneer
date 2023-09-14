@@ -7,9 +7,7 @@ public class Bid
 {
     public Guid Id { get; set; }
     public Guid ListingId { get; set; }
-    public Listing Listing { get; set; }
     public Guid UserId { get; set; }
-    public User User { get; set; }
     public BigInteger BidAmount { get; set; }
-    public DateTime BidTime { get; set; }
+    public DateTime? BidTime { get; set; }
 }
