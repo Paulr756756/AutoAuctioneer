@@ -13,29 +13,36 @@ public class BidController : ControllerBase {
         _bidService = bidService;
     }
 
-    [HttpGet("getallbids")]
+    [HttpGet("getall")]
     public async Task<IActionResult> GetAllBids() {
         var response = await _bidService.GetAllBids();
         return Ok(response);
     }
 
-    [HttpGet("getbidbyid")]
+    [HttpGet("getbyid")]
     public async Task<IActionResult> GetBidById(Guid id) {
         var response = await _bidService.GetBidById(id);
         if (response == null) return BadRequest("Bid doesn't exist");
         return Ok(response);
     }
+    
+    [HttpGet("getowned")]
+    [Authorize(Roles = "Client")]
+    public async Task<IActionResult> GetOwned([FromQuery] Guid id) {
+        var response = await _bidService.GetOwned(id);
+        return Ok(response);
+    }
 
-    [HttpPost("addbid")]
+    [HttpPost("add")]
     [Authorize(Roles = "Client")]
     public async Task<IActionResult> AddBid([FromBody] AddBidRequest request) {
         var response = await _bidService.PostBid(request);
         if (!response) return BadRequest("Error x2");
 
-        return Ok();
+        return Ok("Posted Bid");
     }
 
-    [HttpDelete("deleteBid")]
+    [HttpDelete("delete")]
     [Authorize(Roles = "Client")]
     public async Task<IActionResult> DeleteBid([FromBody]DeleteBidRequest request) {
         var response = await _bidService.DeleteBidService(request);
@@ -44,13 +51,10 @@ public class BidController : ControllerBase {
         return Ok("Success");
     }
 
-    [HttpPatch("updateBid")]
+    [HttpPatch("update")]
     [Authorize(Roles = "Client")]
     public async Task<IActionResult> UpdateBidAmt([FromBody]UpdateBidRequest request) {
         var response = await _bidService.UpdateBidAmt(request);
-        if (!response) return BadRequest("Error maximo");
-        return Ok("Successo");
+        return Ok(response);
     }
-
-    //TODO("Get by ownership)
 }

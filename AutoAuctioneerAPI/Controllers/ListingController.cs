@@ -21,7 +21,7 @@ public class ListingController : ControllerBase {
     }
 
     [HttpGet("getbyid"), Authorize(Roles = "Client")]
-    public async Task<IActionResult> GetListingById([FromBody]Guid id) {
+    public async Task<IActionResult> GetListingById([FromQuery] Guid id) {
         var response = await _listingService.GetListingyId(id);
         if (response == null) return BadRequest("No such listing");
 
@@ -45,7 +45,7 @@ public class ListingController : ControllerBase {
 
     [HttpDelete("delete")]
     [Authorize(Roles = "Client")]
-    public async Task<IActionResult> DeleteListing([FromBody]ListingDeleteRequest request) {
+    public async Task<IActionResult> DeleteListing([FromBody]DeleteListingRequest request) {
         var response = await _listingService.DeleteListingService(request);
         if (!response) return BadRequest("More error");
         return Ok($"Listing Removed with id:{request.Id}");

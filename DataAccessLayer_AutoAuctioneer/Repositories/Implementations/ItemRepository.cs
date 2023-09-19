@@ -25,7 +25,7 @@ public class ItemRepository : BaseRepository, IItemRepository {
         return result.Data;
     }
     public async Task<Item?> GetItemById(Guid id) {
-        var sql = "select * from items where id = @Id";
+        var sql = "select * from items where id=@Id";
         var result = await LoadData<Item, dynamic>(sql, new { Id = id });
 
         if (!result.IsSuccess) {
@@ -33,7 +33,7 @@ public class ItemRepository : BaseRepository, IItemRepository {
             return null;
         }
 
-        return result.Data.FirstOrDefault();
+        return result.Data!.FirstOrDefault();
     }
 
     public async Task<bool> DeleteItem(Guid id) {

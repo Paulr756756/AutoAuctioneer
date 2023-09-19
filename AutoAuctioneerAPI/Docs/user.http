@@ -1,13 +1,12 @@
-# For more info on HTTP files go to https://aka.ms/vs/httpfile
+//Tested
 @baseUrl = https://localhost:44362/api/
-@jwtToken = eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTUxMiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoiUGF1bFIiLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOiJDbGllbnQiLCJzdWIiOiI5YTc0MDVhMi05NmMzLTRhYTMtODlkZi1iYWExYTlhOGU1ZmYiLCJleHAiOjE2OTM5MTc0NDV9.eNdoH-2AyIVtPlk9KyskqW-yxhrU9WM6erPdrvbISxULZBDDycdXn5Fq30D45suR6ieMMVxrrh0ASUObn7BChA
-@userId = userid
+@jwtToken = eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTUxMiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoiUGF1bFIiLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOiJDbGllbnQiLCJzdWIiOiI5MDMzNzM5YS05ZWJlLTQ2MjQtODdlYi0xMjY5YTIxZjAyYmIiLCJleHAiOjE2OTc3MTQxMTZ9.UIFk95aoV47aHnM9cHhM9sY_izTMe_skKp2zmCuBoIPVkoN0vMOZW4Dn4EvaO_H7XwJwRe7tL8Ouo5Uj1fHliA
+@userId = 9033739a-9ebe-4624-87eb-1269a21f02bb
 
-#Tested
+#Tested except delete
    
 GET {{baseUrl}}user/details?id=9033739a-9ebe-4624-87eb-1269a21f02bb
-Authorization: Bearer eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTUxMiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoiUGF1bFIiLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOiJDbGllbnQiLCJzdWIiOiI5MDMzNzM5YS05ZWJlLTQ2MjQtODdlYi0xMjY5YTIxZjAyYmIiLCJleHAiOjE2OTQ3OTM5OTF9.vLOHuWr6rUyxF3z9cPR3bIYyOyMWN8EEy6yJVcWuG4SLCevVVtVlUmtR18PUmZXPPR9MyVtKBM9OEFjSn7E1VA
-
+Authorization: Bearer {{jwtToken}}
 ###
 //Register User
 POST {{baseUrl}}user/register
@@ -42,13 +41,13 @@ Content-Type: application/json
 
 {
   "email": "paulr756756@gmail.com",
-  "password": "HUGHjackman756"
+  "password": "string"
 }
 ###
 //Update user
-POST {{baseUrl}}user/update
+PUT {{baseUrl}}user/update
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTUxMiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoiUGF1bFIiLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOiJDbGllbnQiLCJzdWIiOiI5MDMzNzM5YS05ZWJlLTQ2MjQtODdlYi0xMjY5YTIxZjAyYmIiLCJleHAiOjE2OTQ3OTM5OTF9.vLOHuWr6rUyxF3z9cPR3bIYyOyMWN8EEy6yJVcWuG4SLCevVVtVlUmtR18PUmZXPPR9MyVtKBM9OEFjSn7E1VA
+Authorization: Bearer {{jwtToken}}
 
 {
   "userId": "9033739a-9ebe-4624-87eb-1269a21f02bb",
@@ -79,3 +78,12 @@ Content-Type: application/json
 }
 
 ###
+DELETE {{baseUrl}}user/delete
+Content-Type: application/json
+Authorization: Bearer {{jwtToken}}
+
+{
+  "email": "paulr756756@gmail.com",
+  "password": "string",
+  "confirmPassword": "string"
+}

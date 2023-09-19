@@ -54,6 +54,8 @@ public class CarService : ICarService {
         }
 
         Car car = new Car { 
+            UserId = request.UserId,
+            Type = request.Type,
             Make = request.Make,
             Model = request.Model,
             Year = request.Year,

@@ -20,13 +20,13 @@ public class PartService : IPartService {
         return parts;
     }
 
-    public async Task<List<Part>?> GetOwnedPartsService(Guid guid) {
-        var user= await _userRepository.GetUserById(guid);
+    public async Task<List<Part>?> GetOwned(Guid id) {
+        var user= await _userRepository.GetUserById(id);
         if (user == null) {
             _logger.LogInformation("No such user present in the database");
             return null;
         }
-        var parts = await _partRepository.GetPartsOfSingleUser(guid);
+        var parts = await _partRepository.GetPartsOfSingleUser(id);
 
         return parts;
     }
@@ -45,6 +45,7 @@ public class PartService : IPartService {
         }
 
         var part = new Part {
+            UserId = request.UserId,
             Name = request.Name,
             PartType = request.PartType,
             Description = request.Description,

@@ -41,16 +41,16 @@ public class ListingRepository : BaseRepository, IListingRepository {
         return result.Data;
     }
 
-    public async Task<Listing?> GetListingById(Guid guid) {
-        var sql = "select * from listings where id = @Id";
-        var result = await LoadData<Listing, dynamic>(sql, new {Id= guid});
+    public async Task<Listing?> GetListingById(Guid id) {
+        var sql = "select * from listings where id = @Id;";
+        var result = await LoadData<Listing, dynamic>(sql, new {Id= id});
         _logger.LogInformation("Executed Sql Statement : {sql}", sql);
 
         if (!result.IsSuccess) {
             _logger.LogError("Couldn't get the listing by ID : {e}", result.ErrorMessage);
             return null;
         }
-        return result.Data.FirstOrDefault();
+        return result.Data!.FirstOrDefault();
     }
 
     public async Task<bool> PostListing(Listing listing) {

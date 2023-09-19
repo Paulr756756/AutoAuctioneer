@@ -8,6 +8,6 @@ public class AddBidRequest
 
     [Required] public Guid UserId { get; set; }
 
-    [Required] public int BidAmount { get; set; }
+    [Required] public long BidAmount { get; set; }
     /*public DateTime BidTime { get; set; }*/
 }

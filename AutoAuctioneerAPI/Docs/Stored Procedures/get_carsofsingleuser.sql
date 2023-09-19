@@ -1,3 +1,4 @@
+-- Does not work as intended, problem with returning the query output
 drop procedure if exists get_carsofsingleuser;
 create procedure get_carsofsingleuser(
     _id uuid

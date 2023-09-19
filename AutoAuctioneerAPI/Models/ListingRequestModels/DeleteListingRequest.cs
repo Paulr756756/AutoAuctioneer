@@ -2,7 +2,7 @@
 
 namespace API_AutoAuctioneer.Models.ListingRequestModels;
 
-public class ListingDeleteRequest
+public class DeleteListingRequest
 {
     [Required] public Guid Id { get; set; }
 

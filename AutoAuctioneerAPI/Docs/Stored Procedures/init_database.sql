@@ -20,7 +20,7 @@ create table "users" (
 
 create table "items"(
     id uuid primary key,
-    userId uuid references "users"(id) on delete cascade,
+    userId uuid references "users"(id) on delete cascade not null,
     type int not null
 );
 
@@ -133,14 +133,14 @@ create table "parts_specific"(
 
 create table "listings"(
     id uuid primary key,
-    userId uuid references "users"(id) on delete cascade,
-    itemId uuid references "items"(id) on delete cascade
+    userId uuid references "users"(id) on delete cascade not null,
+    itemId uuid references "items"(id) on delete cascade not null
 );
 
 create table "bids"(
     id uuid primary key,
-    userId uuid references "users"(id) on delete cascade,
-    listingId uuid references "listings"(id) on delete cascade,
+    userId uuid references "users"(id) on delete cascade not null,
+    listingId uuid references "listings"(id) on delete cascade not null,
     bidAmount bigint not null,
     bidTime timestamp not null
 );

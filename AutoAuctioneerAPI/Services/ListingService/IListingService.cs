@@ -9,5 +9,5 @@ public interface IListingService {
     Task<Listing?> GetListingyId(Guid guid);
     Task<List<Listing>?> GetOwnedListings(Guid guid);
     Task<bool> AddListingService(AddListingRequest request);
-    Task<bool> DeleteListingService(ListingDeleteRequest request);
+    Task<bool> DeleteListingService(DeleteListingRequest request);
 }

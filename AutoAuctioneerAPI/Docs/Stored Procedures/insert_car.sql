@@ -34,7 +34,6 @@ begin
         );
         insert into cars (
             id,
-            userid,
             make,
             model,
             year,
@@ -52,7 +51,6 @@ begin
             imageurls
         ) values (
             _id,
-            _useruid,
             _make,
             _model,
             _year,

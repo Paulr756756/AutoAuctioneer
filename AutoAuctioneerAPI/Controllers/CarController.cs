@@ -27,8 +27,8 @@ public class CarController : ControllerBase {
     }
 
     [HttpGet("getbyid")]
-    public async Task<IActionResult> GetById(Guid guid) {
-        var response = await _carService.GetCarById(guid);
+    public async Task<IActionResult> GetById([FromQuery]Guid id) {
+        var response = await _carService.GetCarById(id);
         return Ok(response);
     }
 

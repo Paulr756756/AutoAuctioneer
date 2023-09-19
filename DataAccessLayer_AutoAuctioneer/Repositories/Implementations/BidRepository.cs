@@ -29,6 +29,18 @@ public class BidRepository : BaseRepository, IBidRepository {
         return result.Data;
     }
 
+    public async Task<List<Bid>?> GetOwned(Guid id) {
+        var sql = "select * from bids where userid=@Id";
+        var result = await LoadData<Bid, dynamic>(sql, new { Id = id });
+        _logger.LogInformation("Executed sql statement: {sql}", sql);
+
+        if(!result.IsSuccess) {
+            _logger.LogError("Couldn't get owned bids: {e}", result.ErrorMessage);
+            return null;
+        }
+        return result.Data;
+    }
+
     public async Task<List<Bid>?> GetBidsPerListing(Guid guid) {
         var sql = "select * from bids where listingid = @Id";
         var result = await LoadData<Bid, dynamic>(sql, new {Id=guid});
@@ -49,16 +61,17 @@ public class BidRepository : BaseRepository, IBidRepository {
             _logger.LogError("Couldn't fetch bid by id: {e}", result.ErrorMessage);
             return null;
         }
-        return result.Data.FirstOrDefault();
+        return result.Data!.FirstOrDefault();
     }
 
     public async Task<bool> PostBid(Bid bid) {
         var sql = "insert_bid";
         var parameters = new DynamicParameters();
         parameters.Add("_id", bid.Id, DbType.Guid, ParameterDirection.Output);
-        parameters.Add("_userid", bid.UserId);
+        parameters.Add("_userid", bid.UserId, DbType.Guid);
+        parameters.Add("_listingid", bid.ListingId, DbType.Guid);
         parameters.Add("_bidamount", bid.BidAmount);
-        parameters.Add("_bidtime", bid.BidTime);
+        parameters.Add("_bidtime", bid.BidTime, DbType.DateTime, ParameterDirection.Output);
         
         var result = await SaveData(sql, parameters, cmdType:CommandType.StoredProcedure);
         _logger.LogInformation("Executed Stored Procedure :{sql}", sql);
@@ -67,11 +80,11 @@ public class BidRepository : BaseRepository, IBidRepository {
             _logger.LogError("Couldn't post bid : {e}", result.ErrorMessage);
             return false;
         }
-        _logger.LogInformation("Bid created with id {id}", parameters.Get<Guid>("_id"));
+        _logger.LogInformation("Bid created with id {id} \t at timestamp: {t}", parameters.Get<Guid>("_id"), parameters.Get<DateTime>("_bidtime"));
         return true;
     }
 
-    public async Task<bool> UpdateBidAmt(BigInteger amount, Guid id) {
+    public async Task<bool> UpdateBidAmt(long amount, Guid id) {
         var sql = "update bids set bidamount=@Amount where id=@Id";
         var result = await SaveData(sql, new { Amount = amount, Id = id }, null);
         _logger.LogInformation("Sql statement executed : {sql}", sql);
@@ -81,13 +94,13 @@ public class BidRepository : BaseRepository, IBidRepository {
             return false;
         }
 
-        return false;
+        return true;
     }
 
     public async Task<bool> DeleteBid(Guid id) {
         var sql = "delete_bid";
         var parameters = new DynamicParameters();
-        parameters.Add("_id", id);
+        parameters.Add("_id", id, DbType.Guid);
 
         var result = await SaveData(sql, parameters, cmdType:CommandType.StoredProcedure);
         _logger.LogInformation("Executed stored procedure : {sp}", sql);

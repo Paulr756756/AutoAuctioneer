@@ -7,9 +7,11 @@ public class Car
 {
     public Guid? Id { get; set; }
 
-/*    [JsonPropertyName("userid")]
-    [Required]
-    public Guid UserId { get; set; }*/
+    [JsonPropertyName("userid")]
+    public Guid UserId { get; set; }
+
+    [JsonPropertyName("type")]
+    public int Type { get; set; }
 
     //Basic Attributes
     [Required]
@@ -21,7 +23,7 @@ public class Car
     public string Model { get; set; }
 
     [JsonPropertyName("year")]
-    public int? Year { get; set; }
+    public DateTime? Year { get; set; }
 
     [JsonPropertyName("vin")]
     public string? VIN { get; set; }

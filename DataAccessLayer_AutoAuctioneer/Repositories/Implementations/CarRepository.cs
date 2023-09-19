@@ -41,8 +41,8 @@ public class CarRepository : BaseRepository, ICarRepository {
     }
 
     public async Task<List<Car>?> GetCarsOfSingleUser(Guid userId) {
-        var sql = "get_carsofsingleuser";
-        var result = await LoadData<Car, dynamic>(sql, new { _id = userId });
+        var sql = "select cars.* from cars inner join items on cars.id = items.id where items.userid = @Id;";
+        var result = await LoadData<Car, dynamic>(sql, new { @Id = userId });
         _logger.LogInformation("Stored procedure executed: {e}", sql);
 
         if (!result.IsSuccess) {
@@ -55,12 +55,14 @@ public class CarRepository : BaseRepository, ICarRepository {
     public async Task<bool> StoreCar(Car car) {
         var sql = "insert_car";
         var parameters = new DynamicParameters();
-        parameters.Add("_id", 0, DbType.Guid, ParameterDirection.Output);
+        parameters.Add("_id", Guid.NewGuid(),DbType.Guid, ParameterDirection.Output);
+        parameters.Add("_userid", car.UserId);
+        parameters.Add("_type", car.Type);
         parameters.Add("_make", car.Make);
         parameters.Add("_model", car.Model);
-        parameters.Add("_year", car.Year);
-        parameters.Add("_vin", car.VIN);
+        parameters.Add("_year", car.Year, DbType.Date);
         parameters.Add("_color", car.Color);
+        parameters.Add("_vin", car.VIN);
         parameters.Add("_bodytype", car.BodyType);
         parameters.Add("_fueltype", car.FuelType);
         parameters.Add("_transmissiontype", car.TransmissionType);

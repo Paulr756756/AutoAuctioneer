@@ -12,16 +12,14 @@ public class UpdateCarRequest
     public Guid UserId { get; set; }
 
     //Basic Attributes
-    [Required]
     [JsonPropertyName("make")]
     public string? Make { get; set; }
 
-    [Required]
     [JsonPropertyName("model")]
     public string? Model { get; set; }
 
     [JsonPropertyName("year")]
-    public int? Year { get; set; }
+    public DateTime? Year { get; set; }
 
     [JsonPropertyName("vin")]
     public string? VIN { get; set; }

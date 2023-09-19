@@ -1,0 +1,55 @@
+//Tested
+@baseUrl = https://localhost:44362/api/part/
+@userId = d1d86d27-be4c-4b21-9a4f-45ca0f16f32e
+@jwtToken = eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTUxMiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoiUGF1bFIiLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOiJDbGllbnQiLCJzdWIiOiI5MDMzNzM5YS05ZWJlLTQ2MjQtODdlYi0xMjY5YTIxZjAyYmIiLCJleHAiOjE2OTc3MTQxMTZ9.UIFk95aoV47aHnM9cHhM9sY_izTMe_skKp2zmCuBoIPVkoN0vMOZW4Dn4EvaO_H7XwJwRe7tL8Ouo5Uj1fHliA
+@partId = 2d0d741b-b66c-450d-adf6-eea86e7557cb
+
+GET {{baseUrl}}getall
+###
+GET {{baseUrl}}getbyid?id={{partId}}
+
+###
+GET {{baseUrl}}getowned?id={{userId}}
+Authorization: Bearer {{jwtToken}}
+
+###
+POST {{baseUrl}}post
+Authorization: Bearer {{jwtToken}}
+Content-Type: application/json
+
+{
+  "userId": "{{userId}}",
+  "name": "Twin-Turbo Rotary engine",
+  "category": "Engine",
+  "description": "1308 cc 13B-REW twin-turbo twin-rotor. Power Output: 345hp",
+  "marketPrice": 20000,
+  "partType": 1,
+  "manufacturer": "Mazda"
+}
+
+###
+//Edit Part 
+PUT {{baseUrl}}update
+Authorization: Bearer {{jwtToken}}
+Content-Type: application/json
+
+{
+  "id": "{{partId}}",
+  "userId": "{{userId}}",
+  "name": "Twin-Turbo Rotary engine",
+  "category": "Engine",
+  "description": "1308 cc 13B-REW twin-turbo twin-rotor. Power Output: 345hp",
+  "marketPrice": 19000,
+  "partType": 1,
+  "manufacturer": "Mazda"
+}
+###
+//DELETE Part
+DELETE {{baseUrl}}delete
+Authorization: Bearer {{jwtToken}}
+Content-Type: application/json
+
+{
+  "id": "36e412b8-f3ac-4ed2-ac00-a15674a07f71",
+  "userId": "{{userId}}"
+}

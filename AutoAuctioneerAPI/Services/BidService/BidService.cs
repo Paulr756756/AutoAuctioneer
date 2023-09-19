@@ -28,6 +28,17 @@ public class BidService : IBidService {
         var bid = await _bidRepository.GetBidById(id);
         return bid;
     }
+    
+    public async Task<List<Bid>?> GetOwned(Guid id) {
+        var user = _userRepository.GetUserById(id);
+        if (user == null) {
+            _logger.LogInformation("No such user present in the database");
+            return null;
+        }
+
+        var bids = await _bidRepository.GetOwned(id);
+        return bids;
+    }
 
     public async Task<List<Bid>?> GetBidsPerListing(Guid id) {
         var bids = await _bidRepository.GetBidsPerListing(id);
@@ -54,7 +65,8 @@ public class BidService : IBidService {
             UserId = request.UserId,
             ListingId = request.ListingId,
             BidAmount = request.BidAmount,
-            BidTime = DateTime.UtcNow
+            /*BidTime = DateTime.Now*/
+            /*BidTime = DateTime.UtcNow*/
         };
 
         await _bidRepository.PostBid(bid);

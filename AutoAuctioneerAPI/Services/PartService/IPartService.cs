@@ -5,7 +5,7 @@ namespace API_AutoAuctioneer.Services.PartService;
 
 public interface IPartService {
     Task<List<Part>?> GetAllParts();
-    Task<List<Part>?> GetOwnedPartsService(Guid guid);
+    Task<List<Part>?> GetOwned(Guid guid);
     Task<Part?> GetPartById(Guid guid);
     Task<bool> AddPart(AddPartRequest request);
     Task<bool> UpdatePart(UpdatePartRequest request);

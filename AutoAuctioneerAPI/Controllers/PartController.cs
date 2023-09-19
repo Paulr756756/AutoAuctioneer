@@ -6,10 +6,10 @@ using Microsoft.AspNetCore.Mvc;
 namespace API_AutoAuctioneer.Controllers;
 
 [ApiController, Route("api/[controller]")]
-public class PartsController : ControllerBase {
+public class PartController : ControllerBase {
     private readonly IPartService _carPartService;
 
-    public PartsController(IPartService carPartService) {
+    public PartController(IPartService carPartService) {
         _carPartService = carPartService;
     }
 
@@ -20,15 +20,15 @@ public class PartsController : ControllerBase {
     }
 
     [HttpGet("getowned"), Authorize(Roles = "Client")]
-    public async Task<IActionResult> GetOwnedParts([FromQuery] Guid id) {
+    public async Task<IActionResult> GetOwned([FromQuery] Guid id) {
 
-        var partsList = await _carPartService.GetOwnedPartsService(id);
+        var partsList = await _carPartService.GetOwned(id);
         return Ok(partsList);
     }
 
     [HttpGet("getbyid")]
-    public async Task<IActionResult> GetPartById(Guid guid) {
-        var response = await _carPartService.GetPartById(guid);
+    public async Task<IActionResult> GetPartById([FromQuery] Guid id) {
+        var response = await _carPartService.GetPartById(id);
         return Ok(response);
     }
 

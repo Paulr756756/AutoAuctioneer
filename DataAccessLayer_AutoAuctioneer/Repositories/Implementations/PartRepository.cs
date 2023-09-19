@@ -4,6 +4,7 @@ using DataAccessLayer_AutoAuctioneer.Repositories.Interfaces;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using System.Data;
+using System.Numerics;
 using System.Reflection.Metadata.Ecma335;
 
 namespace DataAccessLayer_AutoAuctioneer.Repositories.Implementations;
@@ -15,8 +16,8 @@ public class PartRepository : BaseRepository, IPartRepository {
         _logger = logger;
     }
 
-    public async Task<Part?> GetPartById(Guid guid) {
-        var sql = "select * from \"parts\" where id = @Id;";
+    public async Task<Part?> GetPartById(Guid? guid) {
+        var sql = "select * from parts where id = @Id;";
         var result = await LoadData<Part, dynamic>(sql, new { Id = guid });
         _logger.LogInformation("Executed sql statement : {sql}", sql);
 
@@ -40,8 +41,10 @@ public class PartRepository : BaseRepository, IPartRepository {
     }
 
     public async Task<List<Part>?> GetPartsOfSingleUser(Guid id) {
-        var sql = "get_partsofsingleuser";
-        var result = await LoadData<Part, dynamic>(sql, new { _id = id });
+        var sql = "select parts.* from parts inner join items  on parts.id = items.id where items.userid = @Id;";
+
+
+        var result = await LoadData<Part, dynamic>(sql, new { @Id = id });
         _logger.LogInformation("Executed Stored procedure {sp}", sql);
 
         if (!result.IsSuccess) {
@@ -53,7 +56,9 @@ public class PartRepository : BaseRepository, IPartRepository {
     public async Task<bool> StorePart(Part part) {
         var sql = "insert_part";
         var parameters = new DynamicParameters();
-        parameters.Add("_id", null, DbType.Guid, ParameterDirection.Output);
+        parameters.Add("_id", part.Id, DbType.Guid, ParameterDirection.Output);
+        parameters.Add("_userid", part.UserId, DbType.Guid, ParameterDirection.Input);
+        parameters.Add("_type", 1);
         parameters.Add("_name", part.Name);
         parameters.Add("_description", part.Description);
         parameters.Add("_category", part.Category);
@@ -63,7 +68,7 @@ public class PartRepository : BaseRepository, IPartRepository {
 
 
         var result = await SaveData(sql, parameters, cmdType:CommandType.StoredProcedure);
-        _logger.LogInformation("Executed stored procedure : {sp}", sql);
+        _logger.LogInformation("Executed stored procedure : {sp}{params}", sql, parameters);
 
         if (!result.IsSuccess) {
             _logger.LogError("Unable to store part : {e}", result.ErrorMessage);

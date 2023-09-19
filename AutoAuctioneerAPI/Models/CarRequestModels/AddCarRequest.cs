@@ -11,6 +11,9 @@ public class AddCarRequest
     [Required]
     public Guid UserId { get; set; }
 
+    [JsonPropertyName("type")]
+    public int Type { get; set; }
+
     //Basic Attributes
     [Required]
     [JsonPropertyName("make")]
@@ -21,7 +24,7 @@ public class AddCarRequest
     public string Model { get; set; }
 
     [JsonPropertyName("year")]
-    public int? Year { get; set; }
+    public DateTime? Year { get; set; }
 
     [JsonPropertyName("vin")]
     public string? VIN { get; set; }

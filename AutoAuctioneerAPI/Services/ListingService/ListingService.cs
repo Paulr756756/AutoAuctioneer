@@ -68,7 +68,7 @@ public class ListingService : IListingService
     }
 
 
-    public async Task<bool> DeleteListingService(ListingDeleteRequest request)
+    public async Task<bool> DeleteListingService(DeleteListingRequest request)
     {
         var listing = await _listingRepository.GetListingById(request.Id);
         if (listing == null)

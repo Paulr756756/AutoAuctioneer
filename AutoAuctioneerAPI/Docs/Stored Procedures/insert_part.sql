@@ -3,6 +3,7 @@ create procedure insert_part(
     out _id uuid,
     _userid uuid,
     _type int,
+    _name text,
     _description text,
     _category text,
     _marketprice bigint,
@@ -22,7 +23,7 @@ begin
             _userid,
             _type
         );
-        insert into cars (
+        insert into parts (
             id,
             name,
             description,
