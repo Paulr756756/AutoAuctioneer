@@ -1,0 +1,36 @@
+//Tested
+@baseUrl = https://localhost:44362/api/listing/
+@userId = d1d86d27-be4c-4b21-9a4f-45ca0f16f32e
+@jwtToken = eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTUxMiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoiUGF1bFIiLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOiJDbGllbnQiLCJzdWIiOiI5MDMzNzM5YS05ZWJlLTQ2MjQtODdlYi0xMjY5YTIxZjAyYmIiLCJleHAiOjE2OTc3MTQxMTZ9.UIFk95aoV47aHnM9cHhM9sY_izTMe_skKp2zmCuBoIPVkoN0vMOZW4Dn4EvaO_H7XwJwRe7tL8Ouo5Uj1fHliA
+@listingId = d9b1f4cd-5019-44ef-9bb4-de6c5c23fc9b
+@itemId = 2d0d741b-b66c-450d-adf6-eea86e7557cb
+
+
+GET {{baseUrl}}getall
+
+###
+GET {{baseUrl}}getowned?id={{userId}}
+
+###
+GET {{baseUrl}}getbyid?id={{listingId}}
+Authorization: Bearer {{jwtToken}}
+
+###
+POST {{baseUrl}}add
+Authorization: Bearer {{jwtToken}}
+Content-Type: application/json
+
+{
+  "userId": "{{userId}}",
+  "itemId": "{{itemId}}"
+}
+
+###
+DELETE {{baseUrl}}delete
+Authorization: Bearer {{jwtToken}}
+Content-Type: application/json
+
+{
+  "id": "{{listingId}}",
+  "userId": "{{userId}}"
+}

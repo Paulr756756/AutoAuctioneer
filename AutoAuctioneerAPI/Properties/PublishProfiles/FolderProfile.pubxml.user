@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--
+https://go.microsoft.com/fwlink/?LinkID=208121.
+-->
+<Project>
+  <PropertyGroup>
+    <TimeStampOfAssociatedLegacyPublishXmlFile />
+    <_PublishTargetUrl>C:\Users\paulr\Documents\published\BidStampAPI</_PublishTargetUrl>
+    <History>True|2023-06-12T08:37:45.7869391Z;False|2023-06-12T14:06:30.1918809+05:30;True|2023-06-12T13:38:50.8924656+05:30;</History>
+    <LastFailureDetails />
+  </PropertyGroup>
+  <ItemGroup>
+    <DestinationConnectionStrings Include="BidStampDb">
+      <Value>Server=DESKTOP-9NPH13V%3bDatabase=BidStampDb%3bTrusted_Connection=True%3bTrustServerCertificate=True</Value>
+    </DestinationConnectionStrings>
+  </ItemGroup>
+  <ItemGroup>
+    <EFMigrations Include="DataAccessLibrary_BidStamp.BidStampApiDbContext">
+      <Value>Server=DESKTOP-9NPH13V%3bDatabase=BidStampDb%3bTrusted_Connection=True%3bTrustServerCertificate=True</Value>
+    </EFMigrations>
+  </ItemGroup>
+</Project>

@@ -1,0 +1,89 @@
+//Tested
+@baseUrl = https://localhost:44362/api/
+@jwtToken = eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTUxMiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoiUGF1bFIiLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOiJDbGllbnQiLCJzdWIiOiI5MDMzNzM5YS05ZWJlLTQ2MjQtODdlYi0xMjY5YTIxZjAyYmIiLCJleHAiOjE2OTc3MTQxMTZ9.UIFk95aoV47aHnM9cHhM9sY_izTMe_skKp2zmCuBoIPVkoN0vMOZW4Dn4EvaO_H7XwJwRe7tL8Ouo5Uj1fHliA
+@userId = 9033739a-9ebe-4624-87eb-1269a21f02bb
+
+#Tested except delete
+   
+GET {{baseUrl}}user/details?id=9033739a-9ebe-4624-87eb-1269a21f02bb
+Authorization: Bearer {{jwtToken}}
+###
+//Register User
+POST {{baseUrl}}user/register
+Content-Type: application/json
+
+{
+  "userName": "PaulR",
+  "email": "paulr756756@gmail.com",
+  "password": "HUGHjackman756",
+  "confirmPassword": "HUGHjackman756",
+  "address": null,
+  "firstName": "Rahul",
+  "lastName": "Paul",
+  "phone": "9319445315",
+  "dateOfBirth": null
+}
+###
+
+POST {{baseUrl}}user/verify
+Content-Type: application/json
+
+{
+  "email": "paulr756756@gmail.com",
+  "token": "76B03BCE2CB8E994E96ED9DC3E0682633210F6B0AFAD8A6964A9BD48AB2F1F3CB450602A83B90CF8C308262B7E62093E01297D5CD9DA6E750091937A2D1C3A67D1345DC1C487CB43F86444903914ED1B1901CC752F85942666C6A7C46566BA4BB839020E8066F2FAE4ECE9CBC81E87B17C57EC50ACAF26D5ABED1164F28979DA"
+}
+
+###
+//Login user
+
+POST {{baseUrl}}user/login
+Content-Type: application/json
+
+{
+  "email": "paulr756756@gmail.com",
+  "password": "string"
+}
+###
+//Update user
+PUT {{baseUrl}}user/update
+Content-Type: application/json
+Authorization: Bearer {{jwtToken}}
+
+{
+  "userId": "9033739a-9ebe-4624-87eb-1269a21f02bb",
+  "userName": "PaulR",
+  "email": "paulr756756@gmail.com",
+  "address": "B-1407, Amrapali Green, Vaibhav Khand @; Indirapuram, Ghaziabad, Uttar Pradesh-201014",
+  "firstName": null,
+  "lastName": null,
+  "phone": null,
+  "dateOfBirth": null
+}
+###
+//Forgot Password
+POST {{baseUrl}}user/forgot-password
+Content-Type: application/json
+
+
+"paulr756756@gmail.com"
+
+###
+POST {{baseUrl}}user/reset-password
+Content-Type: application/json
+
+{
+  "token": "8C43D84FF419DBDD72B3414C4ADBB50BF3120D57F56D2CEBC943B9B4DD763BC5B7FB3FAE48D9411EC638E6A89353E422CD86D1B7E94807D0004186EF4A27DB05",
+  "password": "string",
+  "confirmPassword": "string"
+}
+
+###
+DELETE {{baseUrl}}user/delete
+Content-Type: application/json
+Authorization: Bearer {{jwtToken}}
+
+{
+  "email": "paulr756756@gmail.com",
+  "password": "string",
+  "confirmPassword": "string"
+}

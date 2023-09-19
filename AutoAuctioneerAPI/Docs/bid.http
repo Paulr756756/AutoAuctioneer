@@ -1,0 +1,46 @@
+//Tested
+@baseUrl = https://localhost:44362/api/bid/
+@userId = 9033739a-9ebe-4624-87eb-1269a21f02bb
+@jwtToken = eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTUxMiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoiUGF1bFIiLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOiJDbGllbnQiLCJzdWIiOiI5MDMzNzM5YS05ZWJlLTQ2MjQtODdlYi0xMjY5YTIxZjAyYmIiLCJleHAiOjE2OTc3MTQxMTZ9.UIFk95aoV47aHnM9cHhM9sY_izTMe_skKp2zmCuBoIPVkoN0vMOZW4Dn4EvaO_H7XwJwRe7tL8Ouo5Uj1fHliA
+@bidId= 5c77e1d6-81d8-4ddd-b83e-56af60ef14bb
+@listingId = d9b1f4cd-5019-44ef-9bb4-de6c5c23fc9b
+
+GET {{baseUrl}}getall
+
+###
+GET {{baseUrl}}getowned?id={{userId}}
+Authorization: Bearer {{jwtToken}}
+
+###
+GET {{baseUrl}}getbyid?id={{bidId}}
+
+###
+POST {{baseUrl}}add
+Content-Type: application/json
+Authorization: Bearer {{jwtToken}}
+
+{
+  "listingId": "{{listingId}}",
+  "userId": "{{userId}}",
+  "bidAmount": 24000
+}
+
+###
+DELETE {{baseUrl}}delete
+Content-Type: application/json
+Authorization: Bearer {{jwtToken}}
+
+{
+  "userId": "{{userId}}",
+  "bidId": "{{bidId}}"
+}
+###
+PATCH {{baseUrl}}update
+Content-Type:application/json
+Authorization: Bearer {{jwtToken}}
+
+{
+  "bidId": "{{bidId}}",
+  "userId": "{{userId}}",
+  "bidAmount": 26000
+}
