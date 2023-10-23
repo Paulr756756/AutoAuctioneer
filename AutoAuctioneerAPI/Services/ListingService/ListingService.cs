@@ -1,4 +1,4 @@
-﻿using API_AutoAuctioneer.Models.ListingRequestModels;
+﻿using API_AutoAuctioneer.Models.RequestModels;
 using DataAccessLayer_AutoAuctioneer.Models;
 using DataAccessLayer_AutoAuctioneer.Repositories.Interfaces;
 
@@ -20,13 +20,13 @@ public class ListingService : IListingService
         _logger = logger;
     }
 
-    public async Task<List<Listing>?> GetAlListingsService()
+    public async Task<List<ListingEntity>?> GetAlListingsService()
     {
         var listings = await _listingRepository.GetAllListings();
         return listings;
     }
 
-    public async Task<Listing?> GetListingyId(Guid guid)
+    public async Task<ListingEntity?> GetListingyId(Guid guid)
     {
         var listing = await _listingRepository.GetListingById(guid);
         if (listing == null) {
@@ -35,7 +35,7 @@ public class ListingService : IListingService
         return listing;
     }
 
-    public async Task<List<Listing>?> GetOwnedListings(Guid guid) {
+    public async Task<List<ListingEntity>?> GetOwnedListings(Guid guid) {
         var user = await _userRepository.GetUserById(guid); 
         if (user == null) {
             _logger.LogInformation("NO such user present in the database");
@@ -58,7 +58,7 @@ public class ListingService : IListingService
             _logger.LogInformation("No such item found in the database");
             return false;
         }
-        var listing = new Listing {
+        var listing = new ListingEntity {
             UserId = request.UserId,
             ItemId = request.ItemId
         };

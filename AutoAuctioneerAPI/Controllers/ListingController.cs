@@ -1,4 +1,4 @@
-﻿using API_AutoAuctioneer.Models.ListingRequestModels;
+﻿using API_AutoAuctioneer.Models.RequestModels;
 using API_AutoAuctioneer.Services.ListingService;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -48,6 +48,6 @@ public class ListingController : ControllerBase {
     public async Task<IActionResult> DeleteListing([FromBody]DeleteListingRequest request) {
         var response = await _listingService.DeleteListingService(request);
         if (!response) return BadRequest("More error");
-        return Ok($"Listing Removed with id:{request.Id}");
+        return Ok($"ListingEntity Removed with id:{request.Id}");
     }
 }

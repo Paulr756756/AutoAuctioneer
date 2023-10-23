@@ -1,0 +1,5 @@
+###
+
+GET {{baseUrl}}item/getById?id={{itemid}}
+Authorization: Bearer {{jwtToken}}
+###

@@ -1,9 +1,8 @@
-﻿using API_AutoAuctioneer.Models.UserRequestModels;
+﻿using API_AutoAuctioneer.Models.RequestModels;
 using API_AutoAuctioneer.Services.UserService;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
-using System.Text.Json.Serialization;
 
 namespace API_AutoAuctioneer.Controllers;
 
@@ -20,9 +19,9 @@ public class UserController : ControllerBase
     }
 
     [HttpPost("register")]
-    public async Task<IActionResult> Register([FromBody]UserRegisterRequest request) {
-        if (await _userService.RegisterUser(request)) return Ok("User created Successfully");
-        return BadRequest("User couldn't be created");
+    public async Task<IActionResult> Register([FromBody]RegisterUserRequestModel request) {
+        if (await _userService.RegisterUser(request)) return Ok(true);
+        return BadRequest(false);
     }
 
     [HttpGet("details")]
@@ -44,19 +43,19 @@ public class UserController : ControllerBase
     }
 
     [HttpPost("update"), Authorize(Roles = "Client")]
-    public async Task<IActionResult> Update([FromBody] UserUpdateRequest request ) {
-        if (await _userService.UpdateUserInfo(request)) return Ok("User Updated Successfully");
-        return BadRequest("User Couldn't be updated");
+    public async Task<IActionResult> Update([FromBody] UpdateUserRequest request ) {
+        if (await _userService.UpdateUserInfo(request)) return Ok("UserEntity Updated Successfully");
+        return BadRequest("UserEntity Couldn't be updated");
     }
 
     [HttpPost("verify")]
-    public async Task<IActionResult> Verify([FromBody] UserVerifyRequest request) {
-        if (await _userService.VerifyUser(request.token,request.email)) return Ok("User verified successfully");
-        return BadRequest("User not verified");
+    public async Task<IActionResult> Verify([FromBody] VerifyUserRequest request) {
+        if (await _userService.VerifyUser(request.token,request.email)) return Ok("UserEntity verified successfully");
+        return BadRequest("UserEntity not verified");
     }
 
     [HttpPost("login")]
-    public async Task<IActionResult> Login([FromBody] UserLoginRequest request) {
+    public async Task<IActionResult> Login([FromBody] LoginUserRequest request) {
         var token = await _userService.LoginUser(request);
         return Ok(token);
     }
@@ -64,13 +63,13 @@ public class UserController : ControllerBase
 
     [HttpPost("forgot-password")]
     public async Task<IActionResult> ForgotPassword([FromBody, EmailAddress] string email) {
-        if (!await _userService.ForgotPassword(email)) return BadRequest("User not found");
+        if (!await _userService.ForgotPassword(email)) return BadRequest("UserEntity not found");
 
         return Ok("You may now reset your password");
     }
 
     [HttpPost("reset-password")]
-    public async Task<IActionResult> ResetPassword([FromBody] UserPasswordResetRequest request) {
+    public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordRequest request) {
         if (!(await _userService.ResetPassword(request)))
             return BadRequest("Couldn't reset your password");
 
@@ -78,8 +77,8 @@ public class UserController : ControllerBase
     }
 
     [HttpDelete("delete"), Authorize(Roles = "Client")]
-    public async Task<IActionResult> DeleteUser([FromBody] UserDeleteRequest request) {
-        if (await _userService.DeleteUser(request)) return Ok("User deleted successfully");
+    public async Task<IActionResult> DeleteUser([FromBody] DeleteUserRequest request) {
+        if (await _userService.DeleteUser(request)) return Ok("UserEntity deleted successfully");
         return BadRequest("Couldn't delete user!");
     }
 }

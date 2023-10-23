@@ -1,4 +1,4 @@
-﻿using API_AutoAuctioneer.Models.PartRequestModels;
+﻿using API_AutoAuctioneer.Models.RequestModels;
 using API_AutoAuctioneer.Services.PartService;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -32,8 +32,8 @@ public class PartController : ControllerBase {
         return Ok(response);
     }
 
-    [HttpPost("post"), Authorize(Roles = "Client")]
-    public async Task<IActionResult> PostCarPart([FromBody] AddPartRequest request) {
+    [HttpPost("add"), Authorize(Roles = "Client")]
+    public async Task<IActionResult> AddPart([FromBody] AddPartRequest request) {
         var response = await _carPartService.AddPart(request);
         if (response) {
             return Ok(response);
@@ -53,7 +53,7 @@ public class PartController : ControllerBase {
     }
 
     [HttpDelete("delete"), Authorize(Roles = "Client")]
-    public async Task<IActionResult> DeleteCar([FromBody] DeletePartRequest request) {
+    public async Task<IActionResult> DeletePart([FromBody] DeletePartRequest request) {
         var response = await _carPartService.DeletePart(request);
         if (response) {
             return Ok(response);

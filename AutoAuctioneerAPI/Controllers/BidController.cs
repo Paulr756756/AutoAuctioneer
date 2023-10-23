@@ -1,4 +1,4 @@
-﻿using API_AutoAuctioneer.Models.BidRequestModels;
+﻿using API_AutoAuctioneer.Models.RequestModels;
 using API_AutoAuctioneer.Services.BidService;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -37,7 +37,7 @@ public class BidController : ControllerBase {
     [Authorize(Roles = "Client")]
     public async Task<IActionResult> AddBid([FromBody] AddBidRequest request) {
         var response = await _bidService.PostBid(request);
-        if (!response) return BadRequest("Error x2");
+        if (!response) return BadRequest("Couldn't Add bid");
 
         return Ok("Posted Bid");
     }
@@ -46,7 +46,7 @@ public class BidController : ControllerBase {
     [Authorize(Roles = "Client")]
     public async Task<IActionResult> DeleteBid([FromBody]DeleteBidRequest request) {
         var response = await _bidService.DeleteBidService(request);
-        if (!response) return BadRequest("Error times three");
+        if (!response) return BadRequest("Couldn't delete bid");
 
         return Ok("Success");
     }

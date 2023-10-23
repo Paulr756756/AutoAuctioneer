@@ -1,5 +1,4 @@
 ﻿using System.Security.Cryptography;
-using API_AutoAuctioneer.Models.UserRequestModels;
 using DataAccessLayer_AutoAuctioneer.Models;
 using DataAccessLayer_AutoAuctioneer.Repositories.Interfaces;
 using MimeKit;
@@ -8,6 +7,7 @@ using MailKit.Net.Smtp;
 using System.Security.Claims;
 using System.IdentityModel.Tokens.Jwt;
 using Microsoft.IdentityModel.Tokens;
+using API_AutoAuctioneer.Models.RequestModels;
 
 namespace API_AutoAuctioneer.Services.UserService;
 
@@ -28,7 +28,7 @@ public class UserService : IUserService
     }
 
 
-    public async Task<bool> RegisterUser(UserRegisterRequest request)
+    public async Task<bool> RegisterUser(RegisterUserRequestModel request)
     {
         if (await _userRepository.GetUserByEmail(request.Email) != null)
         {
@@ -36,7 +36,7 @@ public class UserService : IUserService
             return false;
         }
         
-        var user = new User
+        var user = new UserEntity
         {
             UserName = request.UserName,
             Email = request.Email.ToLower(),
@@ -52,7 +52,7 @@ public class UserService : IUserService
         var isRegistered = await _userRepository.RegisterUser(user);
         if (isRegistered)
         {
-            _logger.LogInformation($"New User is created.");
+            _logger.LogInformation($"New UserEntity is created.");
             var sender = new EmailUser {
                 UserName = "Auto-Auctioneer",
                 Email = "wolfl756756@gmail.com",
@@ -97,10 +97,10 @@ public class UserService : IUserService
         return false;
     }
 
-    public async Task<bool> UpdateUserInfo(UserUpdateRequest request) {
+    public async Task<bool> UpdateUserInfo(UpdateUserRequest request) {
         var user = await _userRepository.GetUserById(request.UserId);
         if(user == null) {
-            _logger.LogError("User does not exist with ID : {id}", request.UserId);
+            _logger.LogError("UserEntity does not exist with ID : {id}", request.UserId);
             return false;
         }
         if(request.UserName != null) user.UserName = request.UserName;
@@ -133,29 +133,29 @@ public class UserService : IUserService
             _logger.LogInformation($"Unable to Update user");
             return false;
         }
-        _logger.LogInformation($"User with id : {user.Id} updated");
+        _logger.LogInformation($"UserEntity with id : {user.Id} updated");
         return true;
     }
 
 
-    public async Task<string> LoginUser(UserLoginRequest request) {
+    public async Task<string> LoginUser(LoginUserRequest request) {
         var user = await _userRepository.GetUserByEmail(request.Email);
         if (user == null) {
-            _logger.LogInformation("User does not exist");
-            return "User not found";
+            _logger.LogInformation("UserEntity does not exist");
+            return "UserEntity not found";
         }
         if (user.VerifiedAt == null) {
-            _logger.LogInformation("User not verified");
-            return "User not verified";
+            _logger.LogInformation("UserEntity not verified");
+            return "UserEntity not verified";
         }
         if (!BCrypt.Net.BCrypt.EnhancedVerify(request.Password, user.PasswordHash)) {
-            _logger.LogInformation("Incorrect User Creds");
-            return "User not found";
+            _logger.LogInformation("Incorrect UserEntity Creds");
+            return "UserEntity not found";
         }
         return CreateJwtToken(user);
     }
 
-    public async Task<User?> GetUserById(Guid id) {
+    public async Task<UserEntity?> GetUserById(Guid id) {
         var user = await _userRepository.GetUserById(id);
         if (user == null) { 
             _logger.LogError("No such user present");
@@ -168,7 +168,7 @@ public class UserService : IUserService
         var user = await _userRepository.GetUserByEmail(email);
 
         if (user == null) {
-            Console.WriteLine("User does not exist");
+            Console.WriteLine("UserEntity does not exist");
             return false;
         }
 
@@ -222,15 +222,15 @@ public class UserService : IUserService
         return false;
     }
 
-    public async Task<bool> ResetPassword(UserPasswordResetRequest request) {
+    public async Task<bool> ResetPassword(ResetPasswordRequest request) {
         var user = await _userRepository.GetUserByPasswordToken(request.Token);
 
         if (user == null) {
-            Console.WriteLine("User does not exist");
+            Console.WriteLine("UserEntity does not exist");
             return false;
         }
         if (user.ResetTokenExpires < DateTime.UtcNow) {
-            Console.WriteLine("User reset token has expired");
+            Console.WriteLine("UserEntity reset token has expired");
         }
 
         user.PasswordHash = BCrypt.Net.BCrypt.EnhancedHashPassword(request.Password);
@@ -244,7 +244,7 @@ public class UserService : IUserService
         return false;
     }
 
-    private string CreateJwtToken(User user) {
+    private string CreateJwtToken(UserEntity user) {
         var claims = new List<Claim>
         {
                 new(ClaimTypes.Name, user.UserName!),
@@ -272,10 +272,10 @@ public class UserService : IUserService
         return Convert.ToHexString(RandomNumberGenerator.GetBytes(64));
     }
 
-    public async Task<bool> DeleteUser(UserDeleteRequest request) {
+    public async Task<bool> DeleteUser(DeleteUserRequest request) {
         var user = await _userRepository.GetUserByEmail(request.Email);
         if (user == null) {
-            _logger.LogInformation("User Does not exist");
+            _logger.LogInformation("UserEntity Does not exist");
             return false;
         }
         if (!BCrypt.Net.BCrypt.EnhancedVerify(request.Password, user.PasswordHash)) return false;

@@ -1,13 +1,13 @@
-using API_AutoAuctioneer.Models.ListingRequestModels;
+using API_AutoAuctioneer.Models.RequestModels;
 using DataAccessLayer_AutoAuctioneer.Models;
 
 namespace API_AutoAuctioneer.Services.ListingService;
 
 public interface IListingService {
-    Task<List<Listing>?> GetAlListingsService();
+    Task<List<ListingEntity>?> GetAlListingsService();
 
-    Task<Listing?> GetListingyId(Guid guid);
-    Task<List<Listing>?> GetOwnedListings(Guid guid);
+    Task<ListingEntity?> GetListingyId(Guid guid);
+    Task<List<ListingEntity>?> GetOwnedListings(Guid guid);
     Task<bool> AddListingService(AddListingRequest request);
     Task<bool> DeleteListingService(DeleteListingRequest request);
 }

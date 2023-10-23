@@ -1,7 +1,8 @@
-using API_AutoAuctioneer.Models.BidRequestModels;
-using DataAccessLayer_AutoAuctioneer.Repositories;
+using API_AutoAuctioneer.Models.DTOs;
+using API_AutoAuctioneer.Models.RequestModels;
 using DataAccessLayer_AutoAuctioneer.Repositories.Interfaces;
 using DataAccessLibrary_AutoAuctioneer.Models;
+using System.Diagnostics;
 
 namespace API_AutoAuctioneer.Services.BidService;
 
@@ -19,17 +20,24 @@ public class BidService : IBidService {
         _logger = logger;
     }
 
-    public async Task<List<Bid>?> GetAllBids() {
+    public async Task<List<BidDTO>?> GetAllBids() {
         var bids = await _bidRepository.GetAllBids();
-        return bids;
+        var dtos = bids?.Select(bid => new BidDTO {
+            Id = bid.Id,
+            UserId = bid.UserId,
+            ListingId = bid.ListingId,
+            BidAmount = bid.BidAmount,
+            BidTime = bid.BidTime
+        }).ToList();
+        return dtos;
     }
 
-    public async Task<Bid?> GetBidById(Guid id) {
-        var bid = await _bidRepository.GetBidById(id);
+    public async Task<BidDTO?> GetBidById(Guid id) {
+        var bid =(BidDTO?) await _bidRepository.GetBidById(id);
         return bid;
     }
     
-    public async Task<List<Bid>?> GetOwned(Guid id) {
+    public async Task<List<BidDTO>?> GetOwned(Guid id) {
         var user = _userRepository.GetUserById(id);
         if (user == null) {
             _logger.LogInformation("No such user present in the database");
@@ -37,68 +45,79 @@ public class BidService : IBidService {
         }
 
         var bids = await _bidRepository.GetOwned(id);
-        return bids;
+        var dtos = bids?.Select(bid => new BidDTO {
+            Id = bid.Id,
+            UserId = bid.UserId,
+            ListingId = bid.ListingId,
+            BidAmount = bid.BidAmount,
+            BidTime = bid.BidTime
+        }).ToList();
+        return dtos;
     }
 
-    public async Task<List<Bid>?> GetBidsPerListing(Guid id) {
+    public async Task<List<BidDTO>?> GetBidsPerListing(Guid id) {
         var bids = await _bidRepository.GetBidsPerListing(id);
-        return bids;
+        var dtos = bids?.Select(bid => new BidDTO {
+            Id = bid.Id,
+            UserId = bid.UserId,
+            ListingId = bid.ListingId,
+            BidAmount = bid.BidAmount,
+            BidTime = bid.BidTime
+        }).ToList();
+        return dtos;
     }
 
     public async Task<bool> PostBid(AddBidRequest request) {
-        var user = await _userRepository.GetUserById(request.UserId);
+        var user = (UserDTO?) await _userRepository.GetUserById(request.UserId);
         if (user == null) {
             _logger.LogInformation("No such user present");
             return false;
         }
 
-        var listing = await _listingRepository.GetListingById(request.ListingId);
+        var listing = (ListingDTO?) await _listingRepository.GetListingById(request.ListingId);
         if (listing== null) {
             _logger.LogInformation("No such listing exists");
             return false;
         } else if (listing.UserId == request.UserId) {
-            _logger.LogInformation("User trying to post on his own listing");
+            _logger.LogInformation("UserEntity trying to post on his own listing");
             return false;
         }
-
-        var bid = new Bid {
+        var dto = (BidDTO)request;
+/*        var dto = new BidEntity {
             UserId = request.UserId,
             ListingId = request.ListingId,
             BidAmount = request.BidAmount,
-            /*BidTime = DateTime.Now*/
-            /*BidTime = DateTime.UtcNow*/
-        };
-
-        await _bidRepository.PostBid(bid);
+        };*/
+        await _bidRepository.PostBid(dto);
         return true;
     }
 
     public async Task<bool> UpdateBidAmt(UpdateBidRequest request) {
-        var bid = await _bidRepository.GetBidById(request.BidId);
-        if (bid == null) {
-            _logger.LogInformation("No such bid exists");
+        var dto = (BidDTO?) await _bidRepository.GetBidById(request.BidId);
+        if (dto == null) {
+            _logger.LogInformation("No such dto exists");
             return false;
-        } else if (bid.UserId != request.UserId) {
-            _logger.LogInformation("User does not own this bid");
+        } else if (dto.UserId != request.UserId) {
+            _logger.LogInformation("UserEntity does not own this dto");
             return false;
         }
 
-        bid.BidAmount = request.BidAmount;
-        await _bidRepository.UpdateBidAmt(bid.BidAmount, bid.Id);
+        dto.BidAmount = request.BidAmount;
+        await _bidRepository.UpdateBidAmt(dto);
         return true;
     }
 
     public async Task<bool> DeleteBidService(DeleteBidRequest request) {
-        var bid = await _bidRepository.GetBidById(request.BidId);
-        if (bid == null) {
-            _logger.LogInformation("No such bid exists");
+        var dto = (BidDTO?) await _bidRepository.GetBidById(request.BidId);
+        if (dto == null) {
+            _logger.LogInformation("No such dto exists");
             return false;
-        } else if (bid.UserId != request.UserId) {
-            _logger.LogInformation("User does not own this bid");
+        } else if (dto.UserId != request.UserId) {
+            _logger.LogInformation("UserEntity does not own this dto");
             return false;
         }
 
-        await _bidRepository.DeleteBid(bid.Id);
+        await _bidRepository.DeleteBid(dto);
         return true;
     }
 }

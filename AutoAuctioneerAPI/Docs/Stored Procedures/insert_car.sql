@@ -5,7 +5,7 @@ create procedure insert_car(
     _type int,
     _make text,
     _model text,
-    _year date,
+    _year varchar(4),
     _color varchar(20),
     _vin text,
     _bodytype varchar(30),

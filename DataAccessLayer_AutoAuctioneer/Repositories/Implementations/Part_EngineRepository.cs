@@ -23,9 +23,9 @@ public class Part_EngineRepository : BaseRepository, IPart_EngineRepository {
     }
 
     *//*(TODO)
-    public async Task<List<Part>?> GetAllEngines() {
+    public async Task<List<PartEntity>?> GetAllEngines() {
         var sql = "select * from \"parts\";";
-        var result = await LoadData<Part, dynamic>(sql, new { });
+        var result = await LoadData<PartEntity, dynamic>(sql, new { });
 
         if (!result.IsSuccess) {
             //Log
@@ -33,9 +33,9 @@ public class Part_EngineRepository : BaseRepository, IPart_EngineRepository {
         return result.Data;
     }
 
-    public async Task<List<Part>?> GetEnginesOfSingleUser(Guid guid) {
+    public async Task<List<PartEntity>?> GetEnginesOfSingleUser(Guid guid) {
         var sql = "select * from \"parts\" where id = (select id from \"items\" where userid = @UserId)";
-        var result = await LoadData<Part, dynamic>(sql, new { UserId = guid });
+        var result = await LoadData<PartEntity, dynamic>(sql, new { UserId = guid });
 
         if (!result.IsSuccess) {
             //Log
@@ -43,10 +43,10 @@ public class Part_EngineRepository : BaseRepository, IPart_EngineRepository {
         return result.Data;
     }
 
-    public async Task<bool> StoreEngine(Part part) {
+    public async Task<bool> StoreEngine(PartEntity part) {
         var sql = "insert into \"parts\" (id, name, description, category, marketprice, parttype, manufacturer)"
             + "values (@Id, @Name, @Description, @Category, @MarketPrice, @PartType, @Manufacturer)";
-        var result = await LoadData<Part, dynamic>(sql, new {
+        var result = await LoadData<PartEntity, dynamic>(sql, new {
             part.Id,
             part.Name,
             part.Description,
@@ -63,7 +63,7 @@ public class Part_EngineRepository : BaseRepository, IPart_EngineRepository {
 
         return true;
     }
-    public async Task<bool> UpdateEngine(Part part) {
+    public async Task<bool> UpdateEngine(PartEntity part) {
         var sql = "update \"parts\" set name=@Name, description=@Description, category=@Category" +
             "marketprice=@MarketPrice, parttype = @PartType, manufacturer = @Manufacturer";
         var result = await SaveData<dynamic>(sql, new {

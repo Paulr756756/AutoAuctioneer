@@ -4,8 +4,8 @@ namespace DataAccessLayer_AutoAuctioneer.Repositories.Interfaces
 {
     public interface IItemRepository
     {
-        Task<Item?> GetItemById(Guid id);
-        Task<List<Item>?> GetOwnedItems(Guid id);
+        Task<ItemEntity?> GetItemById(Guid id);
+        Task<List<ItemEntity>?> GetOwnedItems(Guid id);
         Task<bool> DeleteItem(Guid id);
     }
 }

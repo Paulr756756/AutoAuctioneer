@@ -1,5 +1,4 @@
 ﻿using System.Data;
-using System.Linq.Expressions;
 using DataAccessLayer_AutoAuctioneer.Util;
 using Microsoft.Extensions.Configuration;
 using Npgsql;
@@ -48,6 +47,23 @@ public class BaseRepository : IBaseRepository
             }
             catch (Exception e)
             {
+                return Result<T>.Failure(e.ToString());
+            }
+        }
+    }
+
+    public async Task<Result<T>> SaveData<T>(NpgsqlCommand command) {
+        var connectionString = _config.GetConnectionString(connectionStringName);
+        await using (var connection = new NpgsqlConnection(connectionString)) {
+            command.Connection = connection;
+            await command.Connection.OpenAsync();
+            try {                
+                await command.ExecuteNonQueryAsync();
+                await command.Connection.CloseAsync();
+                return Result<T>.SuccessNoData();
+            }
+            catch (Exception e) {
+                await command.Connection.CloseAsync();
                 return Result<T>.Failure(e.ToString());
             }
         }

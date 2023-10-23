@@ -10,6 +10,7 @@ using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.Filters;
 using System.CodeDom.Compiler;
 using System.Text.Json;
+using API_AutoAuctioneer.Services.ItemService;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -30,7 +31,7 @@ builder.Services.AddSwaggerGen(options =>
     options.OperationFilter<SecurityRequirementsOperationFilter>();
 });
 
-builder.Services    
+builder.Services
     .AddScoped<IBaseRepository, BaseRepository>()
     .AddScoped<IUserRepository, UserRepository>()
     .AddScoped<ICarRepository, CarRepository>()
@@ -43,8 +44,8 @@ builder.Services
     .AddScoped<IBidService, BidService>()
     .AddScoped<IBidRepository, BidRepository>()
     .AddScoped<IItemRepository, ItemRepository>()
-
-
+    .AddScoped<IItemService, ItemService>()
+    
     .AddHttpContextAccessor()
     .AddLogging(logging => {
         logging.ClearProviders();

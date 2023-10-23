@@ -3,6 +3,8 @@ using DataAccessLayer_AutoAuctioneer.Models;
 using DataAccessLayer_AutoAuctioneer.Repositories.Interfaces;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using Npgsql;
+using NpgsqlTypes;
 using System.Data;
 
 namespace DataAccessLayer_AutoAuctioneer.Repositories.Implementations;
@@ -16,9 +18,9 @@ public class ListingRepository : BaseRepository, IListingRepository {
         _logger = logger;
     }
 
-    public async Task<List<Listing>?> GetAllListings() {
+    public async Task<List<ListingEntity>?> GetAllListings() {
         var sql = "select * from listings";
-        var result = await LoadData<Listing, dynamic>(sql, new { });
+        var result = await LoadData<ListingEntity, dynamic>(sql, new { });
         _logger.LogInformation("Executed Sql Statement : {sql}", sql);
 
         if (!result.IsSuccess) {
@@ -29,9 +31,9 @@ public class ListingRepository : BaseRepository, IListingRepository {
     }
 
 
-    public async Task<List<Listing>?> GetOwnedListings(Guid guid) {
+    public async Task<List<ListingEntity>?> GetOwnedListings(Guid guid) {
         var sql = "select * from listings where userid = @UserId";
-        var result = await LoadData<Listing, dynamic>(sql, new {UserId = guid});
+        var result = await LoadData<ListingEntity, dynamic>(sql, new {UserId = guid});
         _logger.LogInformation("Executed Sql Statement : {sql}", sql);
 
         if (!result.IsSuccess) {
@@ -41,9 +43,9 @@ public class ListingRepository : BaseRepository, IListingRepository {
         return result.Data;
     }
 
-    public async Task<Listing?> GetListingById(Guid id) {
+    public async Task<ListingEntity?> GetListingById(Guid id) {
         var sql = "select * from listings where id = @Id;";
-        var result = await LoadData<Listing, dynamic>(sql, new {Id= id});
+        var result = await LoadData<ListingEntity, dynamic>(sql, new {Id= id});
         _logger.LogInformation("Executed Sql Statement : {sql}", sql);
 
         if (!result.IsSuccess) {
@@ -53,14 +55,17 @@ public class ListingRepository : BaseRepository, IListingRepository {
         return result.Data!.FirstOrDefault();
     }
 
-    public async Task<bool> PostListing(Listing listing) {
+    public async Task<bool> PostListing(ListingEntity listing) {
         var sql = "insert_listing";
-        var parameters = new DynamicParameters();
-        parameters.Add("_id", null, DbType.Guid, ParameterDirection.Output);
-        parameters.Add("_userid", listing.UserId);
-        parameters.Add("_itemid", listing.ItemId);
+        var command = new NpgsqlCommand() {
+            CommandType = CommandType.StoredProcedure,
+            CommandText = sql,
+        };
+        command.Parameters.AddWithValue("_id", NpgsqlDbType.Uuid, DBNull.Value).Direction=ParameterDirection.Output;
+        command.Parameters.AddWithValue("_userid", NpgsqlDbType.Uuid, listing.UserId);
+        command.Parameters.AddWithValue("_itemid", NpgsqlDbType.Uuid, listing.ItemId);
 
-        var result = await SaveData(sql, parameters, cmdType:CommandType.StoredProcedure);
+        var result = await SaveData<ListingEntity>(command);
         _logger.LogInformation("Executed Sql Statement : {sql}", sql);
 
         if (!result.IsSuccess) {
@@ -72,9 +77,12 @@ public class ListingRepository : BaseRepository, IListingRepository {
 
     public async Task<bool> DeleteListing(Guid id) {
         var sql = "delete_listing";
-        var parameters = new DynamicParameters();
-        parameters.Add("_id", id);
-        var result = await SaveData(sql, parameters, cmdType:CommandType.StoredProcedure);
+        var command = new NpgsqlCommand() {
+            CommandText = sql,
+            CommandType = CommandType.StoredProcedure,
+        };
+        command.Parameters.AddWithValue("_id", NpgsqlDbType.Uuid, id);
+        var result = await SaveData<ListingEntity>(command);
         _logger.LogInformation("Executed Sql Statement : {sql}", sql);
         
         if(!result.IsSuccess) {

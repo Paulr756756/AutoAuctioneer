@@ -5,9 +5,9 @@ namespace DataAccessLayer_AutoAuctioneer.Repositories.Interfaces
     public interface IListingRepository
     {
         Task<bool> DeleteListing(Guid id);
-        Task<List<Listing>?> GetAllListings();
-        Task<Listing?> GetListingById(Guid guid);
-        Task<List<Listing>?> GetOwnedListings(Guid guid);
-        Task<bool> PostListing(Listing listing);
+        Task<List<ListingEntity>?> GetAllListings();
+        Task<ListingEntity?> GetListingById(Guid guid);
+        Task<List<ListingEntity>?> GetOwnedListings(Guid guid);
+        Task<bool> PostListing(ListingEntity listing);
     }
 }

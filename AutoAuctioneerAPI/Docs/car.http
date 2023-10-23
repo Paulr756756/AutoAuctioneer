@@ -1,10 +1,10 @@
 //Tested
-@baseUrl = https://localhost:44362/api/
-@userId = d1d86d27-be4c-4b21-9a4f-45ca0f16f32e
-@jwtToken = eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTUxMiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoiUGF1bFIiLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOiJDbGllbnQiLCJzdWIiOiI5MDMzNzM5YS05ZWJlLTQ2MjQtODdlYi0xMjY5YTIxZjAyYmIiLCJleHAiOjE2OTc3MTQxMTZ9.UIFk95aoV47aHnM9cHhM9sY_izTMe_skKp2zmCuBoIPVkoN0vMOZW4Dn4EvaO_H7XwJwRe7tL8Ouo5Uj1fHliA
-@carid = 6d2ee9a9-488b-4a41-8955-89dd7b69d31e
+@baseUrl = https://localhost:7162/api/
+@userId = ba678a48-cb52-40ba-bb18-ac7a1de4f80f
+@jwtToken = eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTUxMiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoiUGF1bFIiLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOiJDbGllbnQiLCJzdWIiOiJiYTY3OGE0OC1jYjUyLTQwYmEtYmIxOC1hYzdhMWRlNGY4MGYiLCJleHAiOjE3MDA1NjA5ODd9.Vp0LzVf-ZGZVqkzEasv3hJKS0raySdq7rdQkyPH1w4v7pFyKklhK01IabU3873fKhIu0n1HOdzF9lXGEwccBVQ
+@carid = 7906d674-b4f6-4679-ab60-f22e42fd1f10
 
-
+###
 GET {{baseUrl}}car/getall
 ###
 GET {{baseUrl}}car/getbyid?id={{carid}}
@@ -23,7 +23,7 @@ Content-Type: application/json
   "type": 0,
   "make": "Toyota",
   "model": "Corolla",
-  "year": null,
+  "year": "2008",
   "vin": null,
   "color": "Prussian Blue",
   "bodytype": "4 door sedan",
@@ -44,10 +44,10 @@ Content-Type: application/json
 Authorization: Bearer {{jwtToken}}
 
 {
-  "carid": "{{carid}}",
+  "carid": "c22b7b4b-df98-4d65-b7eb-0e88f7c57d03",
   "userid": "{{userId}}",
-  "make": null,
-  "model": null,
+  "make": "Toyota",
+  "model": "Corolla",
   "year": null,
   "vin": null,
   "color": null,
@@ -62,5 +62,12 @@ Authorization: Bearer {{jwtToken}}
   "topspeed": 117,
   "imageurls": null
 }
+###
+DELETE {{baseUrl}}car/delete
+Content-Type: application/json
+Authorization: Bearer {{jwtToken}}
 
-
+{
+  "userId": "{{userId}}",
+  "carId": "{{carid}}"
+}
