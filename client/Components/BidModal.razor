@@ -1,0 +1,28 @@
+﻿<Modal ButtonText="Bid Now" ButtonColor="btn-success" @ref="_modalRef" ElementId="@ElementId">
+    <ChildContent>
+        <EditForm method="dialog" Model="@BidRequest" OnValidSubmit="@Add">
+            <DataAnnotationsValidator/>
+            <div class="form-control w-full max-w-xs">
+                <label class="label">
+                    <span class="label-text">Enter valid bid Amount:</span>
+                </label>
+                <InputText type="number" placeholder="420" class="input input-bordered input-primary w-full max-w-xs" @bind-Value="_bidamt"/>
+                <ValidationMessage For="@(() => BidRequest.BidAmount)" class="text-red-700"/>
+            </div>
+            @*<div class="form-control w-full max-w-xs">
+                <label class="label">
+                    <span class="label-text">Password?</span>
+                </label>
+                <InputText type="password" placeholder="Type Here" class="input input-bordered input-primary w-full max-w-xs" @bind-Value="_userLogin.Password"/>
+                <ValidationMessage For="(() => _userLogin.Password)" class="text-red-700"/>
+            </div>*@
+            <div class="modal-bottom pt-10">
+                <button type="submit" class="btn btn-primary">Post Bid</button>
+                <button class="btn btn-ghost" @onclick="Cancel">Cancel</button>
+            </div>
+        </EditForm>
+    </ChildContent>
+</Modal>
+
+
+@*<Snackbar Type="success" ClassAttributes="@_toast">Logged in Successfully</Snackbar>*@

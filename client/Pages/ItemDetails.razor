@@ -1,0 +1,51 @@
+﻿@page "/item/details/{StringIdParam?}"
+
+<AuthorizeView>
+    <NotAuthorized>
+        <Alert Style="alert-warning">
+            <ChildContent>Sorry, you are not authorized. Please sign in first</ChildContent>
+        </Alert>
+    </NotAuthorized>
+    <Authorized>
+        <div class="card lg:card-side bg-base-100 shadow-xl">
+            @if (_item != null) {
+                switch (_item.Type) {
+                    case 0:
+                        <figure><img src=@_car!.ImageUrls?[0] alt="Img" /></figure>
+                        <div class="card-body">
+                            <h2 class="card-title">@_car.Make, @_car.Model/</h2>
+
+                            <div class="flex justify-between">
+                                <ul class="list-none">
+
+                                </ul>
+                                <ul class="list-none">
+
+                                </ul>
+                            </div>
+
+                            <div class="card-actions justify-end">
+                                <button class="btn btn-primary">Listen</button>
+                            </div>
+                        </div>
+                        break;
+                    case 1:
+                        break;
+                    default:
+                        break;
+                }
+            } else {
+
+            }
+            <figure><img src="/images/stock/photo-1494232410401-ad00d5433cfa.jpg" alt="Album" /></figure>
+            <div class="card-body">
+                <h2 class="card-title">@StringIdParam</h2>
+                <p>Click the button to listen on Spotiwhy app.</p>
+                <div class="card-actions justify-end">
+                    <button class="btn btn-primary">Listen</button>
+                </div>
+            </div>
+        </div>
+    </Authorized>
+</AuthorizeView>
+

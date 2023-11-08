@@ -1,0 +1,169 @@
+{
+  "format": 1,
+  "restore": {
+    "C:\\Users\\paul7\\Documents\\WorkStation\\AutoAuctioneer\\server\\AutoAuctioneerAPI\\API_AUC.csproj": {}
+  },
+  "projects": {
+    "C:\\Users\\paul7\\Documents\\WorkStation\\AutoAuctioneer\\server\\AutoAuctioneerAPI\\API_AUC.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\paul7\\Documents\\WorkStation\\AutoAuctioneer\\server\\AutoAuctioneerAPI\\API_AUC.csproj",
+        "projectName": "API_AUC",
+        "projectPath": "C:\\Users\\paul7\\Documents\\WorkStation\\AutoAuctioneer\\server\\AutoAuctioneerAPI\\API_AUC.csproj",
+        "packagesPath": "C:\\Users\\paul7\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\paul7\\Documents\\WorkStation\\AutoAuctioneer\\server\\AutoAuctioneerAPI\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\paul7\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net7.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net7.0": {
+            "targetAlias": "net7.0",
+            "projectReferences": {
+              "C:\\Users\\paul7\\Documents\\WorkStation\\AutoAuctioneer\\server\\DataAccessLayer_AutoAuctioneer\\DataAccessLayer_API.csproj": {
+                "projectPath": "C:\\Users\\paul7\\Documents\\WorkStation\\AutoAuctioneer\\server\\DataAccessLayer_AutoAuctioneer\\DataAccessLayer_API.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net7.0": {
+          "targetAlias": "net7.0",
+          "dependencies": {
+            "BCrypt.Net-Next": {
+              "target": "Package",
+              "version": "[4.0.3, )"
+            },
+            "MailKit": {
+              "target": "Package",
+              "version": "[4.2.0, )"
+            },
+            "Microsoft.AspNetCore.Authentication.JwtBearer": {
+              "target": "Package",
+              "version": "[7.0.7, )"
+            },
+            "Microsoft.AspNetCore.OpenApi": {
+              "target": "Package",
+              "version": "[7.0.5, )"
+            },
+            "Npgsql": {
+              "target": "Package",
+              "version": "[7.0.4, )"
+            },
+            "Swashbuckle.AspNetCore": {
+              "target": "Package",
+              "version": "[6.4.0, )"
+            },
+            "Swashbuckle.AspNetCore.Filters": {
+              "target": "Package",
+              "version": "[7.0.6, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.AspNetCore.App": {
+              "privateAssets": "none"
+            },
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.403\\RuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "C:\\Users\\paul7\\Documents\\WorkStation\\AutoAuctioneer\\server\\DataAccessLayer_AutoAuctioneer\\DataAccessLayer_API.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\paul7\\Documents\\WorkStation\\AutoAuctioneer\\server\\DataAccessLayer_AutoAuctioneer\\DataAccessLayer_API.csproj",
+        "projectName": "DataAccessLayer_API",
+        "projectPath": "C:\\Users\\paul7\\Documents\\WorkStation\\AutoAuctioneer\\server\\DataAccessLayer_AutoAuctioneer\\DataAccessLayer_API.csproj",
+        "packagesPath": "C:\\Users\\paul7\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\paul7\\Documents\\WorkStation\\AutoAuctioneer\\server\\DataAccessLayer_AutoAuctioneer\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\paul7\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net7.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net7.0": {
+            "targetAlias": "net7.0",
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net7.0": {
+          "targetAlias": "net7.0",
+          "dependencies": {
+            "Dapper": {
+              "target": "Package",
+              "version": "[2.0.151, )"
+            },
+            "Microsoft.Extensions.Configuration.Abstractions": {
+              "target": "Package",
+              "version": "[7.0.0, )"
+            },
+            "Npgsql": {
+              "target": "Package",
+              "version": "[7.0.4, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.403\\RuntimeIdentifierGraph.json"
+        }
+      }
+    }
+  }
+}

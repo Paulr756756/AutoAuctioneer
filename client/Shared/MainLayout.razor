@@ -1,0 +1,20 @@
+﻿@inherits LayoutComponentBase
+@using Blazored.Toast.Configuration
+
+<BlazoredToasts Position="ToastPosition.BottomCenter"
+                TimeOut="@{5}"
+                ErrorClass="alert alert-warning"
+                SuccessClass="alert alert-success"
+                MaxToastCount="2"
+                ShowCloseButton="true"
+                ShowProgressBar="true"
+                PauseProgressOnHover="true"/>
+<div class="page">
+    <main>
+        <NavMenu/>
+
+        <article class="md:container md:mx-auto mx-auto my-auto px-4 py-4">
+            @Body
+        </article>
+    </main>
+</div>

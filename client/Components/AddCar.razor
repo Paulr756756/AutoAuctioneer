@@ -1,0 +1,128 @@
+﻿@inject HttpClient _httpClient
+@inject ILocalStorageService _localStorageService
+@inject IToastService _toastService
+
+<EditForm Model="@CarRequest" method="dialogue" OnValidSubmit="@OnFormSubmit">
+  <div class="space-y-12 py-4">
+    <div class="border-b border-gray-900/10 pb-12">
+      <h2 class="text-base font-semibold leading-7 text-gray-900">Provide item information</h2>
+      <p class="mt-1 text-sm leading-6 text-gray-600">You can leave the following fields blank unless they are marked by a *</p>
+
+      <div class="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
+        <div class="sm:col-span-3 form-control">
+          <label class=" label">
+            <span class="label-text">Make</span>
+          </label>
+          <div class="mt-2">
+            <InputText type="text" placeholder="eg.- Mazda" class="input input-bordered w-full" @bind-Value="CarRequest.Make"/>
+            <ValidationMessage For="@(() => CarRequest.Make)"/>
+          </div>
+        </div>
+
+        <div class="sm:col-span-3 form-control">
+          <label class="label"><span class="label-text">Model</span></label>
+          <div class="mt-2">
+            <InputText type="text" placeholder="eg.- Rx7" class="input input-bordered w-full" @bind-Value="CarRequest.Model"/>
+            <ValidationMessage For="@(() => CarRequest.Model)"/>
+          </div>
+        </div>
+        
+        <div class="sm:col-span-3 form-control">
+          <label class="text"><span class="label-text">Year</span></label>
+          <div class="mt-2">
+            <InputText type="number" placeholder="eg.- 2002" class="input input-bordered w-full" @bind-Value="CarRequest.Year"/>
+            <ValidationMessage For="@(()=> CarRequest.Year)"/>
+          </div>
+        </div>
+        
+        <div class="sm:col-span-3 form-control">
+          <label class="text"><span class="label-text">Transmission Type</span></label>
+          <div class="mt-2">
+            <InputText type="text" placeholder="eg.- 5-Speed Manual transmission" class="input input-bordered w-full" @bind-Value="CarRequest.TransmissionType"/>
+            <ValidationMessage For="@(()=> CarRequest.TransmissionType)"/>
+          </div>
+        </div>
+        
+        <div class="sm:col-span-3 form-control">
+          <label class="text"><span class="label-text">Fuel Type</span></label>
+          <div class="mt-2">
+            <InputText type="text" placeholder="eg.- Petrol" class="input input-bordered w-full" @bind-Value="CarRequest.FuelType"/>
+            <ValidationMessage For="@(()=> CarRequest.FuelType)"/>
+          </div>
+        </div>
+        
+        <div class="sm:col-span-4 form-control">
+          <label class="text"><span class="label-text">Body-Type</span></label>
+          <div class="mt-2">
+            <InputText type="text" placeholder="eg.- 2 Seater 2-door hatchback coupe" class="input input-bordered w-full" @bind-Value="CarRequest.BodyType"/>
+            <ValidationMessage For="@(()=> CarRequest.BodyType)"/>
+          </div>
+        </div>
+        
+        <div class="sm:col-span-4 form-control">
+          <label class="text"><span class="label-text">Engine Type</span></label>
+          <div class="mt-2">
+            <InputText type="text" placeholder="eg.- Wankel Rotary Engine" class="input input-bordered w-full" @bind-Value="CarRequest.EngineType"/>
+            <ValidationMessage For="@(()=> CarRequest.EngineType)"/>
+          </div>
+        </div>
+        
+        <div class="sm:col-span-2 form-control sm:col-start-1">
+          <label class="text"><span class="label-text">Horsepower</span></label>
+          <div class="mt-2">
+            <InputText type="number" placeholder="eg.- 182 hp" class="input input-bordered w-full" @bind-Value="Horsepower"/>
+            <ValidationMessage For="@(()=> CarRequest.Horsepower)"/>
+          </div>
+        </div>
+        
+        <div class="sm:col-span-2 form-control">
+          <label class="text"><span class="label-text">Torque</span></label>
+          <div class="mt-2">
+            <InputText type="number" placeholder="eg.- 3,500 rpm" class="input input-bordered w-full" @bind-Value="Torque"/>
+            <ValidationMessage For="@(()=> CarRequest.Torque)"/>
+          </div>
+        </div>
+        
+        <div class="sm:col-span-2 form-control">
+          <label class="text"><span class="label-text">Top Speed</span></label>
+          <div class="mt-2">
+            <InputText type="number" placeholder="eg.- 161 mph" class="input input-bordered w-full" @bind-Value="TopSpeed"/>
+            <ValidationMessage For="@(()=> CarRequest.TopSpeed)"/>
+          </div>
+        </div>
+      
+        
+        <div class="sm:col-span-2 form-control">
+          <label class="text"><span class="label-text">Fuel Efficiency</span></label>
+          <div class="mt-2">
+            <InputText type="number" placeholder="eg.- 16 (PS per l/100 km)" class="input input-bordered w-full" @bind-Value="FuelEfficiency"/>
+            <ValidationMessage For="@(()=> CarRequest.FuelEfficiency)"/>
+          </div>
+        </div>
+        
+        <div class="sm:col-span-2 form-control">
+          <label class="text"><span class="label-text">Acceleration</span></label>
+          <div class="mt-2">
+            <InputText type="number" placeholder="eg.- 5.2 s (0-60 mph)" class="input input-bordered w-full" @bind-Value="Acceleration"/>
+            <ValidationMessage For="@(()=> CarRequest.Acceleration)"/>
+          </div>
+        </div>
+        
+        <div class="sm:col-span-4 form-control">
+          <label class="text"><span class="label-text">ImageUrls</span></label>
+          <div class="mt-2">
+            <InputText type="text" placeholder="eg.- Just place a google images link for now" class="input input-bordered w-full" @bind-Value="MainImage"/>
+            <ValidationMessage For="@(()=> CarRequest.ImageUrls)"/>
+          </div>
+        </div>
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="mt-6 flex items-center justify-end gap-x-6">
+    <button type="button" class="btn btn-ghost btn-active " @onclick="Cancel">Cancel</button>
+    <button type="submit" class="btn btn-primary btn-active">Save</button>
+  </div>
+</EditForm>
+

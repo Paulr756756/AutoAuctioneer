@@ -1,0 +1,36 @@
+﻿@inject ILocalStorageService _localStorageService
+@inject AuthenticationStateProvider _authStateProvider
+@inject HttpClient _httpClient
+@inject IToastService _toast
+
+<Modal ButtonText="Login" ButtonColor="btn-neutral" @ref="_modalRef" ElementId="loginModal">
+  <ChildContent>
+    <EditForm method="dialog" Model="@_userLogin" OnValidSubmit="@Login">
+      <DataAnnotationsValidator/>
+      <div class="form-control w-full max-w-xs">
+        <label class="label">
+          <span class="label-text">Email Address?</span>
+        </label>
+        <InputText type="email" placeholder="Eg: paulr756756@gmail.com" class="input input-bordered input-primary w-full max-w-xs" @bind-Value="_userLogin.Email"/>
+        <ValidationMessage For="@(() => _userLogin.Email)" class="text-red-700"/>
+      </div>
+
+      <div class="form-control w-full max-w-xs">
+        <label class="label">
+          <span class="label-text">Password?</span>
+        </label>
+        <InputText type="password" placeholder="Type Here" class="input input-bordered input-primary w-full max-w-xs" @bind-Value="_userLogin.Password"/>
+        <ValidationMessage For="(() => _userLogin.Password)" class="text-red-700"/>
+      </div>
+      <div class="modal-bottom pt-10">
+        <button type="submit" class="btn btn-primary">Log in</button>
+        <button class="btn btn-ghost" @onclick="Cancel">Cancel</button>
+      </div>
+    </EditForm>
+  </ChildContent>
+</Modal>
+
+
+@* TODO(Not working as expected)
+<Toast Type="success" ClassAttributes="@_toast">Logged in Successfully</Toast>
+*@

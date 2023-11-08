@@ -1,0 +1,209 @@
+﻿@page "/Garage"
+@inject IJSRuntime JsRuntime
+@inherits Fluxor.Blazor.Web.Components.FluxorComponent
+@inject GenericMethods GenericMethods
+@inject IToastService ToastService
+
+<div class="align-content-around p-4">
+    <div class="join">
+        <div>
+            <div>
+                <input class="input input-bordered join-item" placeholder="Search"/>
+            </div>
+        </div>
+        <select class="select select-bordered join-item" @onchange="SelectChanged">
+            <option disabled selected>Filter</option>
+            <option value="@_optionSelected">Car</option>
+            <option>Part</option>
+        </select>
+        <div class="indicator">
+            <span class="indicator-item badge badge-secondary">New</span> 
+            <button class="btn join-item btn-accent">Search</button>
+        </div>
+    </div>
+    <a href="/garage/add">
+        <button class="btn btn-neutral">Add New Item</button>
+    </a>
+</div>
+
+
+<AuthorizeView>
+    <NotAuthorized>
+        <Card ContainsBadge="@true">
+            <CardImage><img src="https://daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.jpg" alt="Shoes"/></CardImage>
+            <CardTitle>Vermilion's friendly Shoes</CardTitle>
+            <CardBody>Price: You Can't afford</CardBody>
+            <CardActions>
+                <a class="btn btn-primary" href=@($"/item/details?id=vermillion")>View Item</a>
+                <button class="btn btn-ghost btn-circle">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" />
+                    </svg>
+                </button>
+            </CardActions>
+        </Card>
+    </NotAuthorized>
+    <Authorized>
+        <div class="md:container md:mx-auto mx-auto my-auto grid gap-4 grid-cols-3">
+            @foreach (var item in State.Value.Items!) {
+                if (item.Type == 0) {
+                    var car = State.Value.CarsMap![item];
+                    <div class="card w-96 bg-base-200 shadow-xl px-2 py-2">
+                        <figure>
+                            <img src="@car.ImageUrls?[0]" alt="CarImg"/>
+                        </figure>
+                        <div class="card-body">
+                            <h2 class="card-title">@car.Model, @car.Make</h2>
+                            @if (State.Value.ListingsMap!.ContainsKey(item)) {
+                                <div class="badge badge-secondary">Listed</div>
+                            }else {
+                                <button class="badge badge-neutral" @onclick="@(() => ShowListModal(car.Id.ToString().Concat("-list").ToString()!))">Not Listed</button>
+                                <dialog id="@(car.Id.ToString().Concat("-list").ToString())" class="modal flex-auto">
+                                    <div class="modal-box">
+                                        <h3 class="font-semibold text-lg justify-center">Do you want add this item to your listings?</h3>
+                                        <div class="modal-action">
+                                            <form method="dialog">
+                                                @*TODO(Review Adding item to lists)*@
+                                                <button class="btn btn-primary" @onclick="async ()=> ListItem(item!)">Yes</button>
+                                                <button class="btn">No</button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </dialog>
+                            }
+                            <ul class="list-none">
+                                <li>Year: @car.Year</li>
+                                <li>Color: @car.Color</li>
+                                <li>Horsepower: @car.Horsepower</li>
+                                <li>Engine Type: @car.EngineType</li>
+                                <li>Fuel Type: @car.FuelType</li>
+                            </ul>
+                            <div class="card-actions justify-end">
+                                <a class="btn btn-primary" href=@($"/item/details?id={item.Id}")>View Item</a>
+                                <button class="btn btn-ghost btn-circle" @onclick="async () => await ShowDeleteModal(car.Id)">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" />
+                                    </svg>
+                                </button>
+                                <dialog id="@(car.Id.ToString().Concat("-delete"))" class="modal flex-auto">
+                                    <div class="modal-box">
+                                        <h3 class="font-semibold text-lg justify-center">Are you sure?</h3>
+                                        <div class="modal-action">
+                                            <form method="dialog">
+                                                <button class="btn btn-primary" @onclick="async ()=> DeleteItem(item)">Yes</button>
+                                                <button class="btn">No</button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </dialog>
+                            </div>
+                        </div>
+                    </div>
+                }
+                else {
+                    var part = State.Value.PartsMap![item];
+                    <div class="card w-96 bg-base-200 shadow-xl px-2 py-2">
+                        <div class="card-body">
+                            <h2 class="card-title">@part.Name</h2>
+                            <h4>Description:</h4>
+                            <p>@part.Description</p>
+                            <ul class="list-none">
+                                <li>Category : @part.Category</li>
+                                <li>Market Price: @part.MarketPrice</li>
+                                <li>Manufacturer : @part.Manufacturer</li>
+                            </ul>
+                            <div class="card-actions justify-end">
+                                <button class="btn btn-primary">View Item</button>
+                                <button class="btn btn-ghost btn-circle" @onclick="async () => await ShowDeleteModal(part.Id)">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" />
+                                    </svg>
+                                </button>
+                                <dialog id="@part.Id" class="modal flex-auto">
+                                    <div class="modal-box">
+                                        <h3 class="font-semibold text-lg justify-center">Are you sure?</h3>
+                                        <div class="modal-action">
+                                            <form method="dialog">
+                                                <button class="btn btn-primary" @onclick="async()=>DeleteItem(item)">Yes</button>
+                                                <button class="btn">No</button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </dialog>
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+        </div>
+    </Authorized>
+</AuthorizeView>
+
+@*
+<Card ContainsBadge="@true">
+<CardImage><img src="@car.ImageUrls?[0]" alt="Cars"/></CardImage>
+<CardTitle>@car.Model, @car.Make</CardTitle>
+<CardBody>
+    <ul class="list-none">
+        <li>Year: @car.Year</li>
+        <li>Color: @car.Color</li>
+        <li>Horsepower: @car.Horsepower</li>
+        <li>Engine Type: @car.EngineType</li>
+        <li>Fuel Type: @car.FuelType</li>
+    </ul>
+</CardBody>
+<CardActions>
+    <button class="btn btn-primary">View Item</button>
+    <button class="btn btn-ghost btn-circle" @onclick="async () => await ShowModal(car.Id)">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0"/>
+        </svg>
+    </button>
+    <dialog id="@car.Id" class="modal flex-auto">
+        <div class="modal-box">
+            <h3 class="font-semibold text-lg justify-center">Are you sure?</h3>
+            <div class="modal-action">
+                <form method="dialog">
+                    <button class="btn btn-primary" @onclick="async ()=> await ViewModel.DeleteItem(item)">Yes</button>
+                    <button class="btn" >No</button>
+                </form>
+            </div>
+        </div>
+    </dialog>
+</CardActions>
+</Card>
+*@
+
+@*
+<Card>
+    <CardTitle>@part.Name</CardTitle>
+    <CardBody>
+        Description:
+        <p>@part.Description</p>
+        <ul class="list-none">
+            <li>Category : @part.Category</li>
+            <li>Market Price: @part.MarketPrice</li>
+            <li>Manufacturer : @part.Manufacturer</li>
+        </ul>
+    </CardBody>
+    <CardActions>
+        <button class="btn btn-primary">View Item</button>
+        <button class="btn btn-ghost btn-circle" @onclick="async () => await ShowModal(part.Id)" >
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" />
+            </svg>
+        </button>
+        <dialog id="@part.Id" class="modal flex-auto">
+            <div class="modal-box">
+                <h3 class="font-semibold text-lg justify-center">Are you sure?</h3>
+                <div class="modal-action">
+                    <form method="dialog">
+                        <button class="btn btn-primary" @onclick="async()=>await ViewModel.DeleteItem(item)">Yes</button>
+                        <button class="btn">No</button>
+                    </form>
+                </div>
+            </div>
+        </dialog>
+    </CardActions>
+</Card>
+*@

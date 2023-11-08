@@ -1,0 +1,18 @@
+﻿@inject IJSRuntime _jsRuntime
+
+@*<SlideUp>
+    <div class="toast toast-center">
+    <div class="alert alert-@Type">
+    <span>
+    @ChildContent
+        </span>
+    </div>
+    </div>
+    </SlideUp>*@
+<div class="toast toast-center @ClassAttributes" id="@ToastId">
+    <div class="alert alert-@Type">
+        <span>
+            @ChildContent
+        </span>
+    </div>
+</div>

@@ -1,0 +1,25 @@
+﻿<div class="@HeroBgCustomAttributes">
+    <div class="hero-content flex-col lg:flex-row py-4">
+        <img src="@ImageSrc" class="@HeroImgCustomAttributes" />
+        <div>
+            <h1 class="@HeroTitleCustomAttributes">@HeroTitle</h1>
+            @HeroBody
+            @*<p class="py-6">@HeroBody</p>
+            <button class="btn btn-primary">Get Started</button>*@
+        </div>
+    </div>
+</div>
+@code {
+    [Parameter] public string ImageSrc { get; set; }
+    [Parameter] public RenderFragment HeroTitle { get; set; }
+    [Parameter] public RenderFragment HeroBody { get; set; }
+
+    [Parameter]
+    public string HeroTitleCustomAttributes { get; set; } = "text-5xl font-bold";
+    [Parameter]
+    public string HeroBgCustomAttributes { get; set; } = "hero min-h-screen bg-base-200";
+
+    [Parameter]
+    public string HeroImgCustomAttributes { get; set; } = "max-w-sm rounded-lg shadow-2xl";
+
+}

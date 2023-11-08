@@ -1,0 +1,24 @@
+﻿@inject GenericMethods genericMethods
+@inject ILocalStorageService localStorage
+<button class="btn btn-primary">
+    <span>
+        <svg></svg>
+    </span>
+</button>
+
+<dialog id="@ListingId" class="modal modal-bottom sm:modal-middle">
+    <h3 class="font-bold text-lg">Your bidamount:</h3>
+    <br/>
+    <InputText type="number" placeholder="eg: 3200 $" class="input input-bordered input w-full max-w-xs" Value="@BidAmtString" ></InputText>
+    <div class="modal-action">
+        <button class="btn btn-primary" @onclick="OnSubmit">Add</button>
+        <button class="btn" @onclick="Cancel">Cancel</button>
+    </div>
+    <div class="divider"/>
+    <h5 class="">Your previous bids on this listing :</h5>
+    <ol class="list-decimal scroll-smooth">
+        @foreach(var bid in Bids!) {
+            <li>@bid.BidAmount</li>
+        }
+    </ol>
+</dialog>

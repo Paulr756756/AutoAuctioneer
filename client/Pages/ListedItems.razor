@@ -1,0 +1,156 @@
+﻿@page "/ListedItems"
+@inject ILocalStorageService _localStorage
+@inject HttpClient _httpClient
+@inject GenericMethods _genericMethods
+<h3 class="font-extrabold">Top Listings</h3>
+
+@foreach(var listing in Listings!) {
+    switch (listing.ItemType) {
+        case 0:
+            <div class="card w-96 bg-base-200 shadow-xl px-2 py-2">
+                <figure>
+                    <img src="@listing.ImageUrl" alt="CarImg" />
+                </figure>
+                <div class="card-body">
+                    <h2 class="card-title">@listing.Model, @listing.Make</h2>
+                    <div class="badge badge-primary">Posted by @listing.UserName</div>
+                    Year : @listing.Year
+                    <div class="card-actions">
+                        <div class="stats bg-neutral text-neutral-content">
+                            <div class="stat">
+                                <div class="stat-title">Highest Bid</div>
+                                <div class="stat-value">@listing.HighestBidAmt</div>
+                            </div>
+                            <div class="stat">
+                                <div class="stat-title">Total bids</div>
+                                <div class="stat-value">@listing.BidCount</div>
+                                <AuthorizeView>
+                                    <Authorized>
+                                        <div class="stat-actions">
+                                            <a class="btn btn-sm btn-success" href=@($"/item/details/{listing.ItemId}") >Bid Now</a>
+                                        </div>
+                                        <AddBid ListingId="@listing.Id"/>
+                                    </Authorized>
+                                </AuthorizeView>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            break;
+        case 1:
+            <div class="card w-96 bg-base-200 shadow-xl px-2 py-2">
+                <div class="card-body">
+                    <h2 class="card-title">@listing.Name, @listing.Manufacturer</h2>
+                    <div class="badge badge-primary">Posted by @listing.UserName</div>
+                    Description : @listing.Description
+                    <div class="card-actions">
+                        <div class="stats bg-neutral text-neutral-content">
+                            <div class="stat">
+                                <div class="stat-title">Highest Bid</div>
+                                <div class="stat-value">@listing.HighestBidAmt</div>
+                            </div>
+                            <div class="stat">
+                                <div class="stat-title">Total bids</div>
+                                <div class="stat-value">@listing.BidCount</div>
+                                <AuthorizeView>
+                                    <Authorized>
+                                        <div class="stat-actions">
+                                            <div class="btn btn-sm btn-success">Bid Now</div>
+                                        </div>
+                                    </Authorized>
+                                </AuthorizeView>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            break;
+    }
+}
+
+
+@* 
+@foreach (var item in _items) {
+    switch (item.Type) {
+        case 0:
+            var car = FetchCar(item.Id).Result;
+            var (highestBid, yourHighestBid) = FetchBid(item.Id).Result;
+            
+            <Card>
+                <CardImage>
+                    @if (@car.ImageUrls[0] != null) {
+                        <img src="@car.ImageUrls[0]" alt="Car"/>
+                    }
+                    else {
+                        <img src="images/ItemPlaceholder.jpg" alt="Placeholder"/>
+                    }
+                </CardImage>
+                @if (@car.ImageUrls[0] != null) {
+                    <CardImage>
+                        <img src="@car.ImageUrls[0]" alt="Car"/>
+                    </CardImage>
+                }
+                <CardTitle>@car.Model, @car.Make</CardTitle>
+                <CardBody>
+                    <ul class="list-none">
+                        <li>Year: @car.Year</li>
+                        <li>Color: @car.Color</li>
+                        <li>HorsePower: @car.Horsepower</li>
+                        <li>Engine Type: @car.EngineType</li>
+                        <li>Fuel Type: @car.FuelType</li>
+                    </ul>
+                    
+                </CardBody>
+                <CardActions>
+                    <AuthorizeView>
+                        <Authorized>
+                            <div class="stats bg-primary text-primary-content">
+                              
+                                <div class="stat">
+                                    <div class="stat-title">Highest Bid</div>
+                                    <div class="stat-value">$89,400</div>
+                                    <div class="stat-actions">
+                                        <BidModal ElementId="@car.Id.ToString()"></BidModal>
+                                    </div>
+                                </div>                              
+                                <div class="stat">
+                                    <div class="stat-title">Your Bid</div>
+                                    <div class="stat-value">$83,400</div>
+                                    <div class="stat-actions">
+                                        <button class="btn btn-sm">Withdrawal</button> 
+                                        <button class="btn btn-sm">deposit</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </Authorized>
+                    </AuthorizeView>
+                </CardActions>
+            </Card>
+
+            break;
+        case 1:
+
+            var part = FetchPart(item.Id).Result;
+            <Card>
+                <CardTitle>@part.Name</CardTitle>
+                <CardBody>
+                    <h6>Description :</h6>
+                    <p>@part.Description</p>
+                    <ul class="list-none">
+                        <li>Market Price: @part.MarketPrice</li>
+                        <li>Manufacturer: @part.Manufacturer</li>
+                    </ul>
+                </CardBody>
+                <CardActions>
+                    <AuthorizeView>
+                        <Authorized>
+                            <BidModal ElementId="@part.Id.ToString()"></BidModal>
+                            </Authorized>
+                    </AuthorizeView>
+                </CardActions>
+            </Card>
+
+            break;
+    }
+}*@
