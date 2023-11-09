@@ -205,10 +205,8 @@ public class UserService : IUserService
                 client.Disconnect(true);
 
             }
-
             return true;
         }
-
         return false;
     }
     public async Task<bool> ResetPassword(ResetPasswordRequest request) {
