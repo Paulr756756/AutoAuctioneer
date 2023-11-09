@@ -1,6 +1,6 @@
-﻿using auc_client.Components.Tailwind;
+﻿using Client.Components.Tailwind;
 
-namespace auc_client.Components; 
+namespace Client.Components; 
 
 partial class RegisterModal {
     private Modal modalRef;

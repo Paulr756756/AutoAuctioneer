@@ -1,29 +1,23 @@
-using API_AutoAuctioneer.Models.DTOs;
-using API_AutoAuctioneer.Models.RequestModels;
-using API_AutoAuctioneer.Services.ListingService;
-using API_AutoAuctioneer.Services.UserService;
+using API.Models.DTOs;
+using API.Models.RequestModels;
+using API.Services.ListingService;
+using API.Services.UserService;
 using DataAccessLayer_AutoAuctioneer.Repositories.Interfaces;
 
-namespace API_AutoAuctioneer.Services.BidService;
+namespace API.Services.BidService;
 
 public class BidService : IBidService {
     private readonly IBidRepository _bidRepository;
     private readonly IListingRepository _listingRepository;
     private readonly IUserRepository _userRepository;
     private readonly ILogger<BidService> _logger;
-    private readonly IUserService _userService;
-    private readonly IListingService _listingService;
-
     public BidService(IBidRepository bidRepository, IUserRepository userRepository,IListingRepository listingRepository, 
-        ILogger<BidService> logger, IUserService userService, IListingService listingService) {
+        ILogger<BidService> logger) {
         _bidRepository = bidRepository;
         _userRepository = userRepository;
         _listingRepository = listingRepository;
         _logger = logger;
-        _userService = userService;
-        _listingService = listingService;
     }
-
     public async Task<List<BidDTO>?> GetAllBids() {
         var bids = await _bidRepository.GetAllBids();
         var dtos = bids?.Select(bid => new BidDTO {
@@ -35,12 +29,10 @@ public class BidService : IBidService {
         }).ToList();
         return dtos;
     }
-
     public async Task<BidDTO?> GetBidById(Guid id) {
         var bid =(BidDTO?) await _bidRepository.GetBidById(id);
         return bid;
     }
-    
     public async Task<List<BidDTO>?> GetOwned(Guid id) {
         var user = _userRepository.GetUserById(id);
         if (user == null) {
@@ -58,7 +50,6 @@ public class BidService : IBidService {
         }).ToList();
         return dtos;
     }
-
     public async Task<List<BidDTO>?> GetBidsPerListing(Guid id) {
         var bids = await _bidRepository.GetBidsPerListing(id);
         var dtos = bids?.Select(bid => new BidDTO {
@@ -71,9 +62,9 @@ public class BidService : IBidService {
         return dtos;
     }
     public async Task<List<BidDTO>?> GetBidsOfSingleUserPerListing(BidsListingUserRequest request) {
-        var user = await _userService.GetUserById(request.UserId);
+        var user = await _userRepository.GetUserById(request.UserId);
         if(user == null) return null;
-        var listing = await _listingService.GetListingyId(request.ListingId);
+        var listing = await _listingRepository.GetListingById(request.ListingId);
         if(listing?.UserId == user.Id) {
             _logger.LogError("Listing Owner trying to bid");
             return null;
@@ -114,7 +105,6 @@ public class BidService : IBidService {
         await _bidRepository.PostBid(dto);
         return true;
     }
-
     public async Task<bool> UpdateBidAmt(UpdateBidRequest request) {
         var dto = (BidDTO?) await _bidRepository.GetBidById(request.BidId);
         if (dto == null) {
@@ -129,7 +119,6 @@ public class BidService : IBidService {
         await _bidRepository.UpdateBidAmt(dto);
         return true;
     }
-
     public async Task<bool> DeleteBidService(DeleteBidRequest request) {
         var dto = (BidDTO?) await _bidRepository.GetBidById(request.BidId);
         if (dto == null) {

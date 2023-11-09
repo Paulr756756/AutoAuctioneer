@@ -1,4 +1,4 @@
-﻿namespace auc_client.Shared; 
+﻿namespace Client.Shared; 
 
 public static class EnvUrls {
     public const string BaseUrl = "https://localhost:7162/api/";
@@ -29,4 +29,5 @@ public static class EnvUrls {
     //listing
     public const string GetListings = "listing/getresponselist";
     public const string GetListingById = "listing/getresponsebyid?id=";
+    public const string VerifyUser = "";
 }

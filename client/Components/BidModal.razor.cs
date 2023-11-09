@@ -1,8 +1,8 @@
-﻿using auc_client.Components.Tailwind;
-using auc_client.Models;
+﻿using Client.Components.Tailwind;
+using Client.Models;
 using Microsoft.AspNetCore.Components;
 
-namespace auc_client.Components; 
+namespace Client.Components; 
 
 partial class BidModal {
     private Modal _modalRef;

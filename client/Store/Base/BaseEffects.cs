@@ -1,10 +1,10 @@
-﻿using auc_client.Shared;
-using auc_client.Store.Garage;
+﻿using Client.Shared;
+using Client.Store.Garage;
 using Blazored.LocalStorage;
 using Fluxor;
 using System.Runtime.CompilerServices;
 
-namespace auc_client.Store.Base;
+namespace Client.Store.Base;
 
 public class BaseEffects {
 
@@ -21,8 +21,9 @@ public class BaseEffects {
         var userId = (await LocalStorageService.GetItemAsStringAsync("userId")).Trim('"').Trim();
         var userName = (await LocalStorageService.GetItemAsStringAsync("userName")).Trim('"').Trim();
         var token = (await LocalStorageService.GetItemAsStringAsync("token")).Trim('"').Trim();
+        var isLoggedIn = !(string.IsNullOrEmpty(token) || string.Compare(token, "null")==0);
         dispatcher.Dispatch(new FetchGarageDataAction());
-        dispatcher.Dispatch(new FetchBaseDataResultAction(userId, userName, token));
+        dispatcher.Dispatch(new FetchBaseDataResultAction(userId, userName, token, isLoggedIn));
     }
 
 }

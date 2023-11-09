@@ -1,40 +1,30 @@
-﻿using API_AutoAuctioneer.Models.RequestModels;
+﻿using API.Models.RequestModels;
 using DataAccessLayer_AutoAuctioneer.Models;
 using DataAccessLayer_AutoAuctioneer.Repositories.Interfaces;
 
-namespace API_AutoAuctioneer.Services.CarService;
+namespace API.Services.CarService;
 
 public class CarService : ICarService {
     private readonly ICarRepository _carRepository;
     private readonly IUserRepository _userRepository;
     private readonly ILogger<CarService> _logger;
-
     public CarService(ICarRepository carRepository, IUserRepository userRepository, ILogger<CarService> logger) {
         _carRepository = carRepository;
         _userRepository = userRepository;
         _logger = logger;
     }
-
     public async Task<List<CarEntity>?> GetAllCars() {
         var carList = await _carRepository.GetAllCars();
-        /*if (!response.IsSuccess) {
-            Console.WriteLine(response.ErrorMessage);
-            throw new Exception();
-        }*/
-
         return carList;
     }
-
     public async Task<CarEntity?> GetCarById(Guid id) {
         var car = await _carRepository.GetCarById(id);
         if (car==null) {
             _logger.LogInformation("No such car present with id : {id}", id);
             return null;
         }
-
         return car;
     }
-
     public async Task<List<CarEntity>?> GetOwnedCars(Guid id) {
         var user = _userRepository.GetUserById(id);
         if(user==null) {
@@ -42,17 +32,14 @@ public class CarService : ICarService {
             return null;
         }
         var carList = await _carRepository.GetCarsOfSingleUser(id);
-
         return carList;
     }
-
     public async Task<bool> StoreCar(AddCarRequest request) {
         var user = await _userRepository.GetUserById(request.UserId);
         if (user == null) {
             _logger.LogInformation("No such user is present with id : {id}", request.UserId);
             return false;
         }
-
         CarEntity car = new CarEntity { 
             UserId = request.UserId,
             Type = request.Type,
@@ -79,7 +66,6 @@ public class CarService : ICarService {
         }
         return true;
     }
-
     public async Task<bool> UpdateCar(UpdateCarRequest request) {
         var user = await _userRepository.GetUserById(request.UserId);
         if (user == null) {
@@ -118,24 +104,20 @@ public class CarService : ICarService {
 
         return result;
     }
-
     public async Task<bool> DeleteCar(DeleteCarRequest request) {
         var user = await _userRepository.GetUserById(request.UserId);
         if(user == null) {
             _logger.LogError("NO such user present with id : {id}", request.UserId);
             return false;
         }
-
         var car = await GetCarById(request.Id);
         if (car == null) {
             _logger.LogError("No such car present with id : {id}", request.Id);
             return false;
         } 
-        
         /*else if (car.UserId != request.UserId) {
             Console.WriteLine("You do not own the car");
         }*/
-
         var response = await _carRepository.DeleteCar((Guid)car.Id!);
 
         return response;

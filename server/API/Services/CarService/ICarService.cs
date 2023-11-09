@@ -1,7 +1,7 @@
-﻿using API_AutoAuctioneer.Models.RequestModels;
+﻿using API.Models.RequestModels;
 using DataAccessLayer_AutoAuctioneer.Models;
 
-namespace API_AutoAuctioneer.Services.CarService;
+namespace API.Services.CarService;
 
 public interface ICarService {
     Task<List<CarEntity>?> GetAllCars();

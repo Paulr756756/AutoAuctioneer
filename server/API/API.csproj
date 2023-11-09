@@ -18,7 +18,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\DataAccessLayer_AutoAuctioneer\DataAccessLayer_API.csproj" />
+        <ProjectReference Include="..\DataAccessLayer_API\DataAccessLayer_API.csproj" />
     </ItemGroup>
 
     <ItemGroup>

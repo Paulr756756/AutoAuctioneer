@@ -1,13 +1,13 @@
 //Tested
-@baseUrl = https://localhost:7162/api/
-@userId = ba678a48-cb52-40ba-bb18-ac7a1de4f80f
-@jwtToken = eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTUxMiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoiUGF1bFIiLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOiJDbGllbnQiLCJzdWIiOiJiYTY3OGE0OC1jYjUyLTQwYmEtYmIxOC1hYzdhMWRlNGY4MGYiLCJleHAiOjE3MDA1NjA5ODd9.Vp0LzVf-ZGZVqkzEasv3hJKS0raySdq7rdQkyPH1w4v7pFyKklhK01IabU3873fKhIu0n1HOdzF9lXGEwccBVQ
-@carid = 7906d674-b4f6-4679-ab60-f22e42fd1f10
+#@baseUrl = https://localhost:7162/api/
+#@userId = ba678a48-cb52-40ba-bb18-ac7a1de4f80f
+#@jwtToken = eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTUxMiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoiUGF1bFIiLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOiJDbGllbnQiLCJzdWIiOiJiYTY3OGE0OC1jYjUyLTQwYmEtYmIxOC1hYzdhMWRlNGY4MGYiLCJleHAiOjE3MDA1NjA5ODd9.Vp0LzVf-ZGZVqkzEasv3hJKS0raySdq7rdQkyPH1w4v7pFyKklhK01IabU3873fKhIu0n1HOdzF9lXGEwccBVQ
+#@carid = 7906d674-b4f6-4679-ab60-f22e42fd1f10
 
 ###
 GET {{baseUrl}}car/getall
 ###
-GET {{baseUrl}}car/getbyid?id={{carid}}
+GET {{baseUrl}}car/getbyid?id={{carId}}
 
 ###
 GET {{baseUrl}}car/getowned?id={{userId}}

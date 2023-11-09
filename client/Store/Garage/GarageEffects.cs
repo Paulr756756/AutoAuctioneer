@@ -1,10 +1,9 @@
-﻿using auc_client.Models.Entities;
-using auc_client.Shared;
+﻿using Client.Models.Entities;
+using Client.Shared;
 using Blazored.LocalStorage;
 using Fluxor;
 
-
-namespace auc_client.Store.Garage;
+namespace Client.Store.Garage;
 
 public class GarageEffects {
     private readonly GenericMethods _genericMethods;

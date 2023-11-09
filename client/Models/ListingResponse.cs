@@ -1,6 +1,6 @@
-﻿using auc_client.Models.Entities;
+﻿using Client.Models.Entities;
 
-namespace auc_client.Models;
+namespace Client.Models;
 
 public class ListingResponse {
     public Guid Id { get; set; }
@@ -21,7 +21,6 @@ public class ListingResponse {
     public string? Name { get; set; }
     public string? Description { get; set; }
     public string? Manufacturer { get; set; }
-
 
     public static explicit operator ListingResponse?(ListingEntity? entity) {
         return entity == null ? null : new ListingResponse {

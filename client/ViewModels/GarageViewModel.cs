@@ -1,10 +1,10 @@
-﻿using auc_client.Models.DTOs;
-using auc_client.Models.Entities;
-using auc_client.Shared;
+﻿using Client.Models.DTOs;
+using Client.Models.Entities;
+using Client.Shared;
 using Blazored.LocalStorage;
 using Blazored.Toast.Services;
 
-namespace auc_client.ViewModels;
+namespace Client.ViewModels;
 
 public interface IGarageViewModel {
     List<CarEntity>? Cars { get; set; }

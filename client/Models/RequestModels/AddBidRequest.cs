@@ -1,7 +1,7 @@
 ﻿
 using System.ComponentModel.DataAnnotations;
 
-namespace auc_client.Models; 
+namespace Client.Models; 
 
 public class AddBidRequest {
     [Required]

@@ -1,5 +1,5 @@
 using DataAccessLayer_AutoAuctioneer.Repositories.Interfaces;
-using DataAccessLibrary_AutoAuctioneer.Models;
+using DataAccessLayer_API.Models;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Npgsql;

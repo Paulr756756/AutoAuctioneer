@@ -1,47 +1,42 @@
-﻿using API_AutoAuctioneer.Models.RequestModels;
-using API_AutoAuctioneer.Models.ResponseModels;
-using API_AutoAuctioneer.Services.BidService;
-using API_AutoAuctioneer.Services.CarService;
-using API_AutoAuctioneer.Services.ItemService;
-using API_AutoAuctioneer.Services.PartService;
-using API_AutoAuctioneer.Services.UserService;
+﻿using API.Services.BidService;
+using API.Models.RequestModels;
+using API.Models.ResponseModels;
+using API.Services.CarService;
+using API.Services.ItemService;
+using API.Services.PartService;
+using API.Services.UserService;
 using DataAccessLayer_AutoAuctioneer.Models;
 using DataAccessLayer_AutoAuctioneer.Repositories.Interfaces;
 
 
-namespace API_AutoAuctioneer.Services.ListingService;
+namespace API.Services.ListingService;
 
 public class ListingService : IListingService
 {
     private readonly IListingRepository _listingRepository;
     private readonly IItemRepository _itemRepository;
     private readonly IUserRepository _userRepository;
+    private readonly ICarRepository _carRepository;
+    private readonly IPartRepository _partRepository;
     private readonly IUserService userService;
     private readonly ILogger<ListingService> _logger;
     private readonly IBidRepository _bidRepository;
-    private readonly IItemService _itemService;
-    private readonly ICarService _carService;
-    private readonly IPartService _partService;
-
     public ListingService(IListingRepository listingRepository, IUserRepository userRepository,ILogger<ListingService> logger,
-        IItemRepository itemRepository, IBidRepository bidRepository, IItemService itemService, ICarService carService, IPartService partService)
+        IItemRepository itemRepository, IBidRepository bidRepository, ICarRepository carRepository, IPartRepository partRepository)
     {
         _listingRepository = listingRepository;
         _userRepository = userRepository;
         _itemRepository = itemRepository;
+        _carRepository = carRepository;
+        _partRepository = partRepository;
         _logger = logger;
          _bidRepository = bidRepository;
-        _itemService = itemService;
-        _carService = carService;
-        _partService = partService;
     }
-
     public async Task<List<ListingEntity>?> GetAlListingsService()
     {
         var listings = await _listingRepository.GetAllListings();
         return listings;
     }
-
     public async Task<ListingEntity?> GetListingyId(Guid guid)
     {
         var listing = await _listingRepository.GetListingById(guid);
@@ -50,7 +45,6 @@ public class ListingService : IListingService
         }
         return listing;
     }
-
     public async Task<List<ListingEntity>?> GetOwnedListings(Guid guid) {
         var user = await _userRepository.GetUserById(guid); 
         if (user == null) {
@@ -73,16 +67,16 @@ public class ListingService : IListingService
             var bidCount = bids == null ? 0 : bids.Count();
             listing!.HighestBidAmt = highestBid!.BidAmount;
             listing!.BidCount = bidCount;
-            var item = await _itemService.GetById(entity.ItemId);
+            var item = await _itemRepository.GetItemById(entity.ItemId);
             listing!.ItemType = item!.Type;
             if (item?.Type == 0) {
-                var car = await _carService.GetCarById(entity.ItemId);
+                var car = await _carRepository.GetCarById(entity.ItemId);
                 listing!.Make = car!.Make;
                 listing!.Model = car.Model;
                 listing!.Year = car.Year;
                 
             }else {
-                var part = await _partService.GetPartById(entity.ItemId);
+                var part = await _partRepository.GetPartById(entity.ItemId);
                 listing!.Name = part!.Name;
                 listing!.Description = part.Description;
             }
@@ -96,24 +90,23 @@ public class ListingService : IListingService
         var bids = await _bidRepository.GetBidsPerListing(entity.Id);
         var highestBid = bids?.MaxBy(b => b.BidAmount);
         var bidCount = bids==null?0:bids.Count();
-        var item = await _itemService.GetById(entity.ItemId);
+        var item = await _itemRepository.GetItemById(entity.ItemId);
         var response = (ListingResponse?)entity;
         response!.ItemType = item!.Type;
         response.BidCount = bidCount;
         if(item?.Type == 0) {
-            var car = await _carService.GetCarById(entity.ItemId);
+            var car = await _carRepository.GetCarById(entity.ItemId);
             response!.Make = car!.Make;
             response!.Model = car.Model;
             response!.Year = car.Year;
             response!.ImageUrl = car.ImageUrls?[0];
         } else {
-            var part = await _partService.GetPartById(entity.ItemId);
+            var part = await _partRepository.GetPartById(entity.ItemId);
             response!.Name = part!.Name;
             response!.Description = part.Description;
         }
         return response;
     }
-
     public async Task<bool> AddListingService(AddListingRequest request) {
 
         var user = await _userRepository.GetUserById(request.UserId);
@@ -134,8 +127,6 @@ public class ListingService : IListingService
 
         return result;
     }
-
-
     public async Task<bool> DeleteListingService(DeleteListingRequest request)
     {
         var listing = await _listingRepository.GetListingById(request.Id);

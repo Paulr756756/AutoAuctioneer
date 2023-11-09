@@ -1,9 +1,9 @@
 ﻿using System.Net.Http.Json;
-using auc_client.Models.RequestModels;
-using auc_client.Shared;
+using Client.Models.RequestModels;
+using Client.Shared;
 using Microsoft.AspNetCore.Components;
 
-namespace auc_client.Components; 
+namespace Client.Components; 
 
 partial class AddPart {
     private AddPartRequest _part { get; set; } = new();

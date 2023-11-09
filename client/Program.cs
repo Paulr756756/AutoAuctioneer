@@ -1,10 +1,11 @@
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
-using auc_client;
-using auc_client.Shared;
-using auc_client.ViewModels;
+using Client;
+using Client.Shared;
+using Client.ViewModels;
 using Blazored.LocalStorage;
 using Blazored.Toast;
+using Client;
 using Microsoft.AspNetCore.Components.Authorization;
 using Fluxor;
 

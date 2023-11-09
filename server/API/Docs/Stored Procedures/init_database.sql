@@ -29,7 +29,7 @@ create table "cars" (
     serialNo serial,
     make text not null,
     model text not null,
-    year date,
+    year varchar(4),
     vin text,
     color varchar(20),
     bodyType varchar(30),

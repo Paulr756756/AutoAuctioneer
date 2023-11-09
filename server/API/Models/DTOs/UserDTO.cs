@@ -1,6 +1,6 @@
 ﻿using DataAccessLayer_AutoAuctioneer.Models;
 
-namespace API_AutoAuctioneer.Models.DTOs;
+namespace API.Models.DTOs;
 public class UserDTO {
     public Guid? Id { get; set; }
     public string? UserName { get; set; }

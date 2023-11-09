@@ -1,4 +1,4 @@
-﻿namespace API_AutoAuctioneer.Models.DTOs;
+﻿namespace API.Models.DTOs;
 
 public class ItemDTO {
 

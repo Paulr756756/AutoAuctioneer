@@ -1,4 +1,4 @@
-using DataAccessLibrary_AutoAuctioneer.Models;
+using DataAccessLayer_API.Models;
 
 namespace DataAccessLayer_AutoAuctioneer.Models;
 

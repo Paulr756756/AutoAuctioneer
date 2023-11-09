@@ -1,4 +1,4 @@
-﻿namespace auc_client.Store.Base;
+﻿namespace Client.Store.Base;
 public class BaseState {
     public bool IsLoggedIn { get; set; }
     public string? UserId { get; set; }

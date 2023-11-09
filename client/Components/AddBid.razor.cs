@@ -1,8 +1,8 @@
-﻿using auc_client.Models.Entities;
+﻿using Client.Models.Entities;
 using Microsoft.AspNetCore.Components;
 using System.Text.Json;
 
-namespace auc_client.Components;
+namespace Client.Components;
 
 partial class AddBid
 {

@@ -1,7 +1,7 @@
-using API_AutoAuctioneer.Models.RequestModels;
-using API_AutoAuctioneer.Models.DTOs;
+using API.Models.DTOs;
+using API.Models.RequestModels;
 
-namespace API_AutoAuctioneer.Services.BidService;
+namespace API.Services.BidService;
 
 public interface IBidService {
     Task<List<BidDTO>?> GetAllBids();

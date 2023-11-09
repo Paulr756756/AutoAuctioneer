@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 
-namespace auc_client.Models.RequestModels; 
+namespace Client.Models.RequestModels; 
 
 public class AddCarRequest {
     [JsonPropertyName("carid")] public Guid Id { get; set; }

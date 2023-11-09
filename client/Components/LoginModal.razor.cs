@@ -1,13 +1,13 @@
 ﻿using System.Text;
 using System.Text.Json;
-using auc_client.Components.Tailwind;
-using auc_client.Models;
-using auc_client.Shared;
-using auc_client.Store.Base;
+using Client.Components.Tailwind;
+using Client.Models;
+using Client.Shared;
+using Client.Store.Base;
 using Fluxor;
 using Microsoft.AspNetCore.Components;
 
-namespace auc_client.Components; 
+namespace Client.Components; 
 
 partial class LoginModal {
     private Modal _modalRef;

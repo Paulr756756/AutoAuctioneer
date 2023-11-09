@@ -1,15 +1,15 @@
-﻿using auc_client.Models;
-using auc_client.Models.Entities;
-using auc_client.Shared;
-using auc_client.Store.Base;
-using auc_client.Store.Garage;
+﻿using Client.Models;
+using Client.Models.Entities;
+using Client.Shared;
+using Client.Store.Base;
+using Client.Store.Garage;
 using Fluxor;
 using Microsoft.AspNetCore.Components;
 using Microsoft.IdentityModel.Tokens;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
-namespace auc_client.Pages;
+namespace Client.Pages;
 
 partial class ListedItems {
     private List<ListingResponse>? Listings { get; set; } = new();
@@ -17,14 +17,17 @@ partial class ListedItems {
     [Inject] private IState<BaseState> BaseState { get; set; }
     private  Guid UserId { get; set; }
 
-    protected override async Task OnInitializedAsync() {
-        BaseState.Value.JwtToken!=null
+    protected override async Task OnInitializedAsync()
+    {
+        //TODO(Fix this)
+        // BaseState.Value.JwtToken != null;
         var listingsResponse = await GetResponse();
         if(listingsResponse != null) { 
             Listings = listingsResponse; 
         }
     }
-    async Task<List<ListingResponse>?> GetResponse() {
+    async Task<List<ListingResponse>?> GetResponse() 
+    {
         List<ListingResponse>? response = await _genericMethods.GetValuesFromApi<ListingResponse>(EnvUrls.GetListings);
         //Remove all listings by the logged in user.
         if(!response.IsNullOrEmpty() )  response?.RemoveAll(r=>r.UserId == UserId);

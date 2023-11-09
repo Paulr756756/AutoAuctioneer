@@ -6,9 +6,9 @@ using MailKit.Net.Smtp;
 using System.Security.Claims;
 using System.IdentityModel.Tokens.Jwt;
 using Microsoft.IdentityModel.Tokens;
-using API_AutoAuctioneer.Models.RequestModels;
+using API.Models.RequestModels;
 
-namespace API_AutoAuctioneer.Services.UserService;
+namespace API.Services.UserService;
 
 public class UserService : IUserService
 {
@@ -16,7 +16,6 @@ public class UserService : IUserService
 /*    private readonly IHttpContextAccessor _httpContextAccessor;*/
     private readonly IUserRepository _userRepository;
     private readonly ILogger<UserService> _logger;
-
     public UserService(IHttpContextAccessor httpContextAccessor,
         IUserRepository userRepository, IConfiguration config, ILogger<UserService> logger)
     {
@@ -25,8 +24,6 @@ public class UserService : IUserService
         _config = config;
         _logger = logger;
     }
-
-
     public async Task<bool> RegisterUser(RegisterUserRequestModel request)
     {
         if (await _userRepository.GetUserByEmail(request.Email) != null)
@@ -95,7 +92,6 @@ public class UserService : IUserService
         }
         return false;
     }
-
     public async Task<bool> UpdateUserInfo(UpdateUserRequest request) {
         var user = await _userRepository.GetUserById(request.UserId);
         if(user == null) {
@@ -116,7 +112,6 @@ public class UserService : IUserService
         }
         return false;
     }
-
     public async Task<bool> VerifyUser(string token, string email) {
         var user = await _userRepository.GetUserByEmail(email);
         if (user == null) {
@@ -135,8 +130,6 @@ public class UserService : IUserService
         _logger.LogInformation($"UserEntity with id : {user.Id} updated");
         return true;
     }
-
-
     public async Task<string> LoginUser(LoginUserRequest request) {
         var user = await _userRepository.GetUserByEmail(request.Email);
         if (user == null) {
@@ -153,7 +146,6 @@ public class UserService : IUserService
         }
         return CreateJwtToken(user);
     }
-
     public async Task<UserEntity?> GetUserById(Guid id) {
         var user = await _userRepository.GetUserById(id);
         if (user == null) { 
@@ -162,7 +154,6 @@ public class UserService : IUserService
         }
         return user;
     }
-
     public async Task<bool> ForgotPassword(string email) {
         var user = await _userRepository.GetUserByEmail(email);
 
@@ -220,7 +211,6 @@ public class UserService : IUserService
 
         return false;
     }
-
     public async Task<bool> ResetPassword(ResetPasswordRequest request) {
         var user = await _userRepository.GetUserByPasswordToken(request.Token);
 
@@ -242,7 +232,6 @@ public class UserService : IUserService
         _logger.LogError("Couldn't reset password." );
         return false;
     }
-
     private string CreateJwtToken(UserEntity user) {
         var claims = new List<Claim>
         {
@@ -265,12 +254,10 @@ public class UserService : IUserService
 
         return jwt;
     }
-
     private string CreateRandomToken()
     {
         return Convert.ToHexString(RandomNumberGenerator.GetBytes(64));
     }
-
     public async Task<bool> DeleteUser(DeleteUserRequest request) {
         var user = await _userRepository.GetUserByEmail(request.Email);
         if (user == null) {
@@ -287,7 +274,6 @@ public class UserService : IUserService
         return false;
     }
 }
-
 public class EmailUser {
     public string UserName { get; set; }
     public string Email { get; set; }

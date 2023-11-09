@@ -1,0 +1,12 @@
+/home/paulr/Documents/AutoAuctioneer/server/DataAccessLayer_API/bin/Debug/net7.0/DataAccessLayer_API.deps.json
+/home/paulr/Documents/AutoAuctioneer/server/DataAccessLayer_API/bin/Debug/net7.0/DataAccessLayer_API.dll
+/home/paulr/Documents/AutoAuctioneer/server/DataAccessLayer_API/bin/Debug/net7.0/DataAccessLayer_API.pdb
+/home/paulr/Documents/AutoAuctioneer/server/DataAccessLayer_API/obj/Debug/net7.0/DataAccessLayer_API.csproj.AssemblyReference.cache
+/home/paulr/Documents/AutoAuctioneer/server/DataAccessLayer_API/obj/Debug/net7.0/DataAccessLayer_API.GeneratedMSBuildEditorConfig.editorconfig
+/home/paulr/Documents/AutoAuctioneer/server/DataAccessLayer_API/obj/Debug/net7.0/DataAccessLayer_API.AssemblyInfoInputs.cache
+/home/paulr/Documents/AutoAuctioneer/server/DataAccessLayer_API/obj/Debug/net7.0/DataAccessLayer_API.AssemblyInfo.cs
+/home/paulr/Documents/AutoAuctioneer/server/DataAccessLayer_API/obj/Debug/net7.0/DataAccessLayer_API.csproj.CoreCompileInputs.cache
+/home/paulr/Documents/AutoAuctioneer/server/DataAccessLayer_API/obj/Debug/net7.0/DataAccessLayer_API.dll
+/home/paulr/Documents/AutoAuctioneer/server/DataAccessLayer_API/obj/Debug/net7.0/refint/DataAccessLayer_API.dll
+/home/paulr/Documents/AutoAuctioneer/server/DataAccessLayer_API/obj/Debug/net7.0/DataAccessLayer_API.pdb
+/home/paulr/Documents/AutoAuctioneer/server/DataAccessLayer_API/obj/Debug/net7.0/ref/DataAccessLayer_API.dll

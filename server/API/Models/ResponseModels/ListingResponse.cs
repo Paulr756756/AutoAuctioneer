@@ -1,7 +1,7 @@
-﻿using API_AutoAuctioneer.Models.DTOs;
+﻿using API.Models.DTOs;
 using DataAccessLayer_AutoAuctioneer.Models;
 
-namespace API_AutoAuctioneer.Models.ResponseModels;
+namespace API.Models.ResponseModels;
 
 public class ListingResponse {
     public Guid Id { get; set; }

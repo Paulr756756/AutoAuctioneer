@@ -1,8 +1,8 @@
 ﻿using System.Net.Http.Json;
-using auc_client.Models.RequestModels;
-using auc_client.Shared;
+using Client.Models.RequestModels;
+using Client.Shared;
 
-namespace auc_client.Components; 
+namespace Client.Components; 
 
 partial class AddCar {
     private AddCarRequest CarRequest { get; set; } = new();

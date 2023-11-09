@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 
-namespace API_AutoAuctioneer.Models.RequestModels;
+namespace API.Models.RequestModels;
 
 public class AddCarRequest {
     [Required,JsonPropertyName("userid")]

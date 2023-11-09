@@ -1,6 +1,6 @@
-﻿using auc_client.Models.Entities;
+﻿using Client.Models.Entities;
 
-namespace auc_client.Store.Garage;
+namespace Client.Store.Garage;
 
 public class FetchGarageDataResultAction {
     public List<ItemEntity>? Items { get; }

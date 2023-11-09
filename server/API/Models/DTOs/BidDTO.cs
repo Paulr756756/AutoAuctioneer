@@ -1,7 +1,7 @@
-﻿using API_AutoAuctioneer.Models.RequestModels;
-using DataAccessLibrary_AutoAuctioneer.Models;
+﻿using API.Models.RequestModels;
+using DataAccessLayer_API.Models;
 
-namespace API_AutoAuctioneer.Models.DTOs;
+namespace API.Models.DTOs;
 public class BidDTO {
     public Guid Id { get; set; }
     public Guid ListingId { get; set; }

@@ -5,7 +5,7 @@ using System.Text.Json;
 using Blazored.LocalStorage;
 using Microsoft.AspNetCore.Components.Authorization;
 
-namespace auc_client.Shared; 
+namespace Client.Shared; 
 
 public class CustomAuthStateProvider : AuthenticationStateProvider {
     private readonly ILocalStorageService _localStorageService;

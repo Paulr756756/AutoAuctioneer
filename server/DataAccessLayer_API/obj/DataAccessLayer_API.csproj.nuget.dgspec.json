@@ -1,27 +1,25 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\paul7\\Documents\\WorkStation\\AutoAuctioneer\\server\\DataAccessLayer_API\\DataAccessLayer_API.csproj": {}
+    "/home/paulr/Documents/AutoAuctioneer/server/DataAccessLayer_API/DataAccessLayer_API.csproj": {}
   },
   "projects": {
-    "C:\\Users\\paul7\\Documents\\WorkStation\\AutoAuctioneer\\server\\DataAccessLayer_API\\DataAccessLayer_API.csproj": {
+    "/home/paulr/Documents/AutoAuctioneer/server/DataAccessLayer_API/DataAccessLayer_API.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\paul7\\Documents\\WorkStation\\AutoAuctioneer\\server\\DataAccessLayer_API\\DataAccessLayer_API.csproj",
+        "projectUniqueName": "/home/paulr/Documents/AutoAuctioneer/server/DataAccessLayer_API/DataAccessLayer_API.csproj",
         "projectName": "DataAccessLayer_API",
-        "projectPath": "C:\\Users\\paul7\\Documents\\WorkStation\\AutoAuctioneer\\server\\DataAccessLayer_API\\DataAccessLayer_API.csproj",
-        "packagesPath": "C:\\Users\\paul7\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\paul7\\Documents\\WorkStation\\AutoAuctioneer\\server\\DataAccessLayer_API\\obj\\",
+        "projectPath": "/home/paulr/Documents/AutoAuctioneer/server/DataAccessLayer_API/DataAccessLayer_API.csproj",
+        "packagesPath": "/home/paulr/.nuget/packages/",
+        "outputPath": "/home/paulr/Documents/AutoAuctioneer/server/DataAccessLayer_API/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\paul7\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+          "/home/paulr/.nuget/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net7.0"
         ],
         "sources": {
-          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -69,7 +67,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.403\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/7.0.403/RuntimeIdentifierGraph.json"
         }
       }
     }

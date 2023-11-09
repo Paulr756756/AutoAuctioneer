@@ -2,10 +2,10 @@
 using System.Net.Http.Json;
 using System.Text;
 using System.Text.Json;
-using auc_client.Models.DTOs;
+using Client.Models.DTOs;
 using Blazored.LocalStorage;
 
-namespace auc_client.Shared; 
+namespace Client.Shared; 
 
 public class GenericMethods {
     private readonly ILocalStorageService _localStorageService;

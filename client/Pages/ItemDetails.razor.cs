@@ -1,9 +1,9 @@
-﻿using auc_client.Models.Entities;
-using auc_client.Store.Garage;
+﻿using Client.Models.Entities;
+using Client.Store.Garage;
 using Fluxor;
 using Microsoft.AspNetCore.Components;
 
-namespace auc_client.Pages;
+namespace Client.Pages;
 
 partial class ItemDetails {
     private readonly ItemEntity? _item;

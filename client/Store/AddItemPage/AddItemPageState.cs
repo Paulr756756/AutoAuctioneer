@@ -1,6 +1,6 @@
 ﻿using Fluxor;
 
-namespace auc_client.Store.AddItem;
+namespace Client.Store.AddItem;
 
 [FeatureState]
 public class AddItemPageState {

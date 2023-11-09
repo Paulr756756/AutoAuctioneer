@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 
-namespace auc_client.Components.Tailwind; 
+namespace Client.Components.Tailwind; 
 
 partial class Modal {
     [Parameter] public string ButtonColor { get; set; }

@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace API_AutoAuctioneer.Models.RequestModels;
+namespace API.Models.RequestModels;
 
 public class AddPartRequest {
     [Required] public Guid UserId { get; set; }

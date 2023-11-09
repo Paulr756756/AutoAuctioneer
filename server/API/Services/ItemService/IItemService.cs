@@ -1,6 +1,6 @@
 ﻿using DataAccessLayer_AutoAuctioneer.Models;
 
-namespace API_AutoAuctioneer.Services.ItemService;
+namespace API.Services.ItemService;
 
 public interface IItemService {
     Task<ItemEntity?> GetById(Guid id);

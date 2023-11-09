@@ -1,25 +1,22 @@
-﻿using API_AutoAuctioneer.Models.RequestModels;
+﻿using API.Models.RequestModels;
 using DataAccessLayer_AutoAuctioneer.Models;
 using DataAccessLayer_AutoAuctioneer.Repositories.Interfaces;
 
-namespace API_AutoAuctioneer.Services.PartService;
+namespace API.Services.PartService;
 
 public class PartService : IPartService {
     private readonly IPartRepository _partRepository;
     private readonly IUserRepository _userRepository;
     private readonly ILogger<PartService> _logger;
-
     public PartService(IPartRepository carPartRepository, IUserRepository userRepository, ILogger<PartService> logger) {
         _partRepository = carPartRepository;
         _userRepository = userRepository;
         _logger = logger;
     }
-
     public async Task<List<PartEntity>?> GetAllParts() {
         var parts = await _partRepository.GetAllParts();
         return parts;
     }
-
     public async Task<List<PartEntity>?> GetOwned(Guid id) {
         var user= await _userRepository.GetUserById(id);
         if (user == null) {
@@ -30,13 +27,11 @@ public class PartService : IPartService {
 
         return parts;
     }
-
     public async Task<PartEntity?> GetPartById(Guid guid) {
         var part = await _partRepository.GetPartById(guid);
 
         return part;
     }
-
     public async Task<bool> AddPart(AddPartRequest request) {
         var user = await _userRepository.GetUserById(request.UserId);
         if (user == null) {
@@ -57,7 +52,6 @@ public class PartService : IPartService {
 
         return response;
     }
-
     public async Task<bool> UpdatePart(UpdatePartRequest request) {
         var user = await _userRepository.GetUserById(request.UserId);
         if (user == null) {
@@ -86,7 +80,6 @@ public class PartService : IPartService {
 
         return response;
     }
-
     public async Task<bool> DeletePart(DeletePartRequest request) {
         var user = await _userRepository.GetUserById(request.UserId);
         if (user == null) {

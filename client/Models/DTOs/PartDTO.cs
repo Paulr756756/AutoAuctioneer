@@ -1,6 +1,6 @@
-﻿using auc_client.Models.Entities;
+﻿using Client.Models.Entities;
 
-namespace auc_client.Models.DTOs;
+namespace Client.Models.DTOs;
 
 public class PartDTO {
     public Guid Id { get; set; }

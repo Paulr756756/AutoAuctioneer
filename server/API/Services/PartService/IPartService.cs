@@ -1,7 +1,7 @@
-﻿using API_AutoAuctioneer.Models.RequestModels;
+﻿using API.Models.RequestModels;
 using DataAccessLayer_AutoAuctioneer.Models;
 
-namespace API_AutoAuctioneer.Services.PartService;
+namespace API.Services.PartService;
 
 public interface IPartService {
     Task<List<PartEntity>?> GetAllParts();

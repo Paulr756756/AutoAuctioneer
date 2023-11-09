@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components;
 
-namespace auc_client.Components.Tailwind; 
+namespace Client.Components.Tailwind; 
 
 partial class Card {
     private string _badgeAttribute = "invisible";

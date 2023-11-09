@@ -1,14 +1,13 @@
-﻿using API_AutoAuctioneer.Models.RequestModels;
-using API_AutoAuctioneer.Services.BidService;
+﻿using API.Models.RequestModels;
+using API.Services.BidService;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace API_AutoAuctioneer.Controllers;
+namespace API.Controllers;
 
 [ApiController, Route("api/[controller]")]
 public class BidController : ControllerBase {
     private readonly IBidService _bidService;
-
     public BidController( IBidService bidService) {
         _bidService = bidService;
     }
@@ -38,8 +37,6 @@ public class BidController : ControllerBase {
         var response = await _bidService.GetBidsOfSingleUserPerListing(request);
         return Ok(response);
     }
-
-
     [HttpPost("add"), Authorize(Roles = "Client")]
     public async Task<IActionResult> AddBid([FromBody] AddBidRequest request) {
         var response = await _bidService.PostBid(request);
@@ -47,7 +44,6 @@ public class BidController : ControllerBase {
 
         return Ok("Posted Bid");
     }
-
     [HttpDelete("delete"), Authorize(Roles = "Client")]
     public async Task<IActionResult> DeleteBid([FromBody]DeleteBidRequest request) {
         var response = await _bidService.DeleteBidService(request);
@@ -55,7 +51,6 @@ public class BidController : ControllerBase {
 
         return Ok("Success");
     }
-
     [HttpPatch("update"), Authorize(Roles = "Client")]
     public async Task<IActionResult> UpdateBidAmt([FromBody]UpdateBidRequest request) {
         var response = await _bidService.UpdateBidAmt(request);

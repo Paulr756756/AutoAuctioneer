@@ -2,7 +2,7 @@
 using DataAccessLayer_AutoAuctioneer.Repositories.Implementations;
 using DataAccessLayer_AutoAuctioneer.Repositories.Interfaces;
 
-namespace API_AutoAuctioneer.Services.ItemService; 
+namespace API.Services.ItemService; 
 
 public class ItemService : IItemService {
     private readonly ILogger<ItemService> _logger;

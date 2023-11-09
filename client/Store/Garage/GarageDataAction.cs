@@ -1,4 +1,4 @@
-﻿namespace auc_client.Store.Garage;
+﻿namespace Client.Store.Garage;
 
 public class GarageDataAction {
 }

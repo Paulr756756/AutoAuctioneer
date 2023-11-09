@@ -1,4 +1,4 @@
-﻿namespace auc_client.Store.AddItem;
+﻿namespace Client.Store.AddItem;
 
 public class ItemTypeSelectAction {
     public Type? SelectedType { get; }

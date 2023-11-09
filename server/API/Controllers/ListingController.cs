@@ -1,9 +1,9 @@
-﻿using API_AutoAuctioneer.Models.RequestModels;
-using API_AutoAuctioneer.Services.ListingService;
+﻿using API.Models.RequestModels;
+using API.Services.ListingService;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace API_AutoAuctioneer.Controllers;
+namespace API.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]

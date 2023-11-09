@@ -1,9 +1,9 @@
-﻿using API_AutoAuctioneer.Models.RequestModels;
+﻿using API.Models.RequestModels;
 using DataAccessLayer_AutoAuctioneer.Models;
 using Org.BouncyCastle.Asn1;
 using Org.BouncyCastle.Asn1.Mozilla;
 
-namespace API_AutoAuctioneer.Models.DTOs;
+namespace API.Models.DTOs;
 
 public class CarDTO {
     public Guid? Id { get; set; }

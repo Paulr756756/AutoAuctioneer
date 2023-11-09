@@ -1,10 +1,10 @@
-﻿using auc_client.Components;
-using auc_client.Models.RequestModels;
-using auc_client.Store.AddItem;
+﻿using Client.Components;
+using Client.Models.RequestModels;
+using Client.Store.AddItem;
 using Fluxor;
 using Microsoft.AspNetCore.Components;
 
-namespace auc_client.Pages;
+namespace Client.Pages;
 
 partial class AddItem {
     [Inject] IState<AddItemPageState> State { get; set; }

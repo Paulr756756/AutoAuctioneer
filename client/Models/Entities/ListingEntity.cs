@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace auc_client.Models.Entities;
+namespace Client.Models.Entities;
 
 public class ListingEntity
 {

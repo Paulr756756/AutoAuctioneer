@@ -1,7 +1,4 @@
-﻿using DataAccessLayer_AutoAuctioneer.Models;
-using System.Numerics;
-
-namespace DataAccessLibrary_AutoAuctioneer.Models;
+﻿namespace DataAccessLayer_API.Models;
 
 public class BidEntity
 {

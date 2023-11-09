@@ -1,9 +1,9 @@
-﻿using API_AutoAuctioneer.Models.RequestModels;
-using API_AutoAuctioneer.Services.CarService;
+﻿using API.Models.RequestModels;
+using API.Services.CarService;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace API_AutoAuctioneer.Controllers;
+namespace API.Controllers;
 
 [ApiController, Route("api/[controller]")]
 public class CarController : ControllerBase {

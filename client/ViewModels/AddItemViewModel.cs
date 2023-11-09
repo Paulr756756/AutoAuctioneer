@@ -1,10 +1,10 @@
-﻿using auc_client.Models.RequestModels;
-using auc_client.Shared;
+﻿using Client.Models.RequestModels;
+using Client.Shared;
 using Blazored.LocalStorage;
 using Blazored.Toast.Services;
 using Microsoft.AspNetCore.Components;
 
-namespace auc_client.ViewModels;
+namespace Client.ViewModels;
 
 public interface IAddItemViewModel {
     public Type? SelectedType { get; set; }

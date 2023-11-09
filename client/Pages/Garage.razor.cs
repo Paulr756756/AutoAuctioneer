@@ -1,11 +1,12 @@
-﻿using auc_client.Models.Entities;
-using auc_client.Shared;
-using auc_client.Store.Garage;
+﻿using Client.Models.Entities;
+using Client.Shared;
+using Client.Store.Garage;
+using Blazored.Toast.Services;
 using Fluxor;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 
-namespace auc_client.Pages; 
+namespace Client.Pages; 
 
 partial class Garage {
     [Inject] private IState<GarageState> State { get; set; }

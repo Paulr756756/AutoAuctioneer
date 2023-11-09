@@ -1,8 +1,8 @@
-using API_AutoAuctioneer.Models.RequestModels;
-using API_AutoAuctioneer.Models.ResponseModels;
+using API.Models.RequestModels;
+using API.Models.ResponseModels;
 using DataAccessLayer_AutoAuctioneer.Models;
 
-namespace API_AutoAuctioneer.Services.ListingService;
+namespace API.Services.ListingService;
 
 public interface IListingService {
     Task<List<ListingEntity>?> GetAlListingsService();

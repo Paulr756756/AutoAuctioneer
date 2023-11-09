@@ -1,7 +1,7 @@
-﻿using auc_client.Models.Entities;
+﻿using Client.Models.Entities;
 using Fluxor;
 
-namespace auc_client.Store.Garage;
+namespace Client.Store.Garage;
 
 [FeatureState]
 public class GarageState {

@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
-namespace auc_client.Models; 
+namespace Client.Models; 
 
 public class UserLoginRequest {
     [Required, EmailAddress(ErrorMessage = "Invalid Email")]

@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace API_AutoAuctioneer.Models.RequestModels;
+namespace API.Models.RequestModels;
 public class RegisterUserRequestModel
 {
     [Required]
@@ -75,7 +75,7 @@ public class ResetPasswordRequest
 public class VerifyUserRequest
 {
     [Required, EmailAddress]
-    public string email { get; set; }
+    public string Email { get; set; }
     [Required]
-    public string token { get; set; }
+    public string Token { get; set; }
 }
