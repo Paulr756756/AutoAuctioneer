@@ -26,29 +26,40 @@ partial class Garage {
     void ViewDetails() {
         
     }
-    private void DeleteItem(ItemEntity? item) {
+    private void DeleteItem(ItemEntity? item) 
+    {
         var action = new DeleteGarageItemAction(item);
         Dispatcher.Dispatch(action);
     }
-    private async Task ListItem(ItemEntity item) {
-        var response = await GenericMethods.PostValuesToApi($"{EnvUrls.Listing}{EnvUrls.Add}", item);
+    private async Task ListItem(ItemEntity item) 
+    {
+        var response = await GenericMethods.PostValuesToApi(EnvUrls.Listing.Concat(EnvUrls.Add).ToString()!, item);
         if (!response.IsSuccessStatusCode) {
             Dispatcher.Dispatch(new FetchGarageDataAction());
             ToastService.ShowSuccess("Item Listed");
         } else ToastService.ShowError("Couldn't Add to your listings");
     }
-    public async Task ShowListModal(string ElementId) {
+
+    private async Task RemoveFromListings() {
+        //var response = await GenericMethods.PostValuesToApi(EnvUrls.Listing.Concat(EnvUrls.Delete).ToString(), );
+    }
+    private async Task AddToListModal(string ElementId) 
+    {
         Console.WriteLine("List Modal Clicked");
         await JsRuntime.InvokeVoidAsync("eval", $"document.getElementById('{ElementId}').showModal();");
     }
-    public async Task CloseListModal(string ElementId) {
-        await JsRuntime.InvokeVoidAsync("eval", $"document.getElementById('{ElementId}').close();");
+    private async Task ShowModal(string ElementId) 
+    {
+        Console.WriteLine("Modal Opened");
+        await JsRuntime.InvokeVoidAsync("eval", $"document.getElementById('{ElementId}').showModal();");
     }
-    public async Task ShowDeleteModal(Guid ElementId) {
+    private async Task DeleteItemModal(Guid ElementId) 
+    {
         Console.WriteLine("Modal Clicked");
         await JsRuntime.InvokeVoidAsync("eval", $"document.getElementById('{ElementId}').showModal();");
     }
-    public async Task CloseDeleteModal(Guid ElementId) {
+    public async Task CloseModal(string ElementId) 
+    {
         await JsRuntime.InvokeVoidAsync("eval", $"document.getElementById('{ElementId}').close();");
-    }    
+    }
 }
