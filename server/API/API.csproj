@@ -8,21 +8,21 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="BCrypt.Net-Next" Version="4.0.3" />
-        <PackageReference Include="MailKit" Version="4.2.0" />
-        <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="7.0.7" />
-        <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="7.0.5" />
-        <PackageReference Include="Npgsql" Version="7.0.4" />
-        <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
-        <PackageReference Include="Swashbuckle.AspNetCore.Filters" Version="7.0.6" />
+        <PackageReference Include="BCrypt.Net-Next" Version="4.0.3"/>
+        <PackageReference Include="MailKit" Version="4.2.0"/>
+        <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="7.0.7"/>
+        <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="7.0.5"/>
+        <PackageReference Include="Npgsql" Version="7.0.4"/>
+        <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0"/>
+        <PackageReference Include="Swashbuckle.AspNetCore.Filters" Version="7.0.6"/>
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\DataAccessLayer_API\DataAccessLayer_API.csproj" />
+        <ProjectReference Include="..\DataAccessLayer_API\DataAccessLayer_API.csproj"/>
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Docs\Stored Procedures\" />
+        <Folder Include="Docs\Stored Procedures\"/>
     </ItemGroup>
 
 </Project>

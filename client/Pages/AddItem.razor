@@ -5,36 +5,38 @@
 <h1 class="font-bold text-5xl text-primary">Add Item</h1>
 
 <AuthorizeView>
-  <Authorized>
-    <div class="form-control w-full max-w-xs">
-      <label class="label">
-        <span class="label-text">Choose the item you want to store</span>
-      </label>
-      <select class="select select-bordered select-secondary" @onchange="OnDropDownChange">
-        <option disabled selected>Pick one</option>
-        <option value="@nameof(AddCar)">Car</option>
-        <option value="@nameof(AddPart)">Car Part</option>
-      </select>
-    </div>
+    <Authorized>
+        <div class="form-control w-full max-w-xs">
+            <label class="label">
+                <span class="label-text">Choose the item you want to store</span>
+            </label>
+            <select class="select select-bordered select-secondary" @onchange="OnDropDownChange">
+                <option disabled selected>Pick one</option>
+                <option value="@nameof(AddCar)">Car</option>
+                <option value="@nameof(AddPart)">Car Part</option>
+            </select>
+        </div>
 
-    @if (State.Value.SelectedType != null) {
-      <DynamicComponent Type="State.Value.SelectedType" @ref="dc"/>
-    }
-  </Authorized>
-  <NotAuthorized>
-    <div class="form-control w-full max-w-xs">
-      <label class="label">
-        <span class="label-text">Choose the item you want to store</span>
-      </label>
-      <select class="select select-bordered select-secondary" @onchange="OnDropDownChange">
-        <option disabled selected>Pick one</option>
-        <option value="@nameof(AddCar)">Car</option>
-        <option value="@nameof(AddPart)">Car Part</option>
-      </select>
-    </div>
-    
-    @if (State.Value.SelectedType != null) {
-      <DynamicComponent Type="State.Value.SelectedType"/>
-    }
-  </NotAuthorized>
+        @if (State.Value.SelectedType != null)
+        {
+            <DynamicComponent Type="State.Value.SelectedType" @ref="dc"/>
+        }
+    </Authorized>
+    <NotAuthorized>
+        <div class="form-control w-full max-w-xs">
+            <label class="label">
+                <span class="label-text">Choose the item you want to store</span>
+            </label>
+            <select class="select select-bordered select-secondary" @onchange="OnDropDownChange">
+                <option disabled selected>Pick one</option>
+                <option value="@nameof(AddCar)">Car</option>
+                <option value="@nameof(AddPart)">Car Part</option>
+            </select>
+        </div>
+
+        @if (State.Value.SelectedType != null)
+        {
+            <DynamicComponent Type="State.Value.SelectedType"/>
+        }
+    </NotAuthorized>
 </AuthorizeView>

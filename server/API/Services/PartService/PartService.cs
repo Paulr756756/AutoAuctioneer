@@ -4,42 +4,57 @@ using DataAccessLayer_AutoAuctioneer.Repositories.Interfaces;
 
 namespace API.Services.PartService;
 
-public class PartService : IPartService {
+public class PartService : IPartService
+{
+    private readonly ILogger<PartService> _logger;
     private readonly IPartRepository _partRepository;
     private readonly IUserRepository _userRepository;
-    private readonly ILogger<PartService> _logger;
-    public PartService(IPartRepository carPartRepository, IUserRepository userRepository, ILogger<PartService> logger) {
+
+    public PartService(IPartRepository carPartRepository, IUserRepository userRepository, ILogger<PartService> logger)
+    {
         _partRepository = carPartRepository;
         _userRepository = userRepository;
         _logger = logger;
     }
-    public async Task<List<PartEntity>?> GetAllParts() {
+
+    public async Task<List<PartEntity>?> GetAllParts()
+    {
         var parts = await _partRepository.GetAllParts();
         return parts;
     }
-    public async Task<List<PartEntity>?> GetOwned(Guid id) {
-        var user= await _userRepository.GetUserById(id);
-        if (user == null) {
+
+    public async Task<List<PartEntity>?> GetOwned(Guid id)
+    {
+        var user = await _userRepository.GetUserById(id);
+        if (user == null)
+        {
             _logger.LogInformation("No such user present in the database");
             return null;
         }
+
         var parts = await _partRepository.GetPartsOfSingleUser(id);
 
         return parts;
     }
-    public async Task<PartEntity?> GetPartById(Guid guid) {
+
+    public async Task<PartEntity?> GetPartById(Guid guid)
+    {
         var part = await _partRepository.GetPartById(guid);
 
         return part;
     }
-    public async Task<bool> AddPart(AddPartRequest request) {
+
+    public async Task<bool> AddPart(AddPartRequest request)
+    {
         var user = await _userRepository.GetUserById(request.UserId);
-        if (user == null) {
-            _logger.LogInformation($"UserEntity does not exist");
+        if (user == null)
+        {
+            _logger.LogInformation("UserEntity does not exist");
             return false;
         }
 
-        var part = new PartEntity {
+        var part = new PartEntity
+        {
             UserId = request.UserId,
             Name = request.Name,
             PartType = request.PartType,
@@ -52,15 +67,19 @@ public class PartService : IPartService {
 
         return response;
     }
-    public async Task<bool> UpdatePart(UpdatePartRequest request) {
+
+    public async Task<bool> UpdatePart(UpdatePartRequest request)
+    {
         var user = await _userRepository.GetUserById(request.UserId);
-        if (user == null) {
+        if (user == null)
+        {
             _logger.LogInformation("UserEntity does not exist");
             return false;
         }
 
         var part = await _partRepository.GetPartById(request.Id);
-        if (part == null) {
+        if (part == null)
+        {
             _logger.LogInformation("PartEntity does not exist.");
             return false;
         }
@@ -69,26 +88,30 @@ public class PartService : IPartService {
             Console.WriteLine("UserEntity does not own this part");
             return false;
         }*/
-    
-        if(request.Name!=null) part.PartType = request.PartType;
-        if(request.Description!=null) part.Description = request.Description;
-        if(request.MarketPrice!=null) part.MarketPrice = request.MarketPrice;
-        if(request.Category!=null) part.Category = request.Category;
-        if(request.Manufacturer!=null) part.Manufacturer = request.Manufacturer;
+
+        if (request.Name != null) part.PartType = request.PartType;
+        if (request.Description != null) part.Description = request.Description;
+        if (request.MarketPrice != null) part.MarketPrice = request.MarketPrice;
+        if (request.Category != null) part.Category = request.Category;
+        if (request.Manufacturer != null) part.Manufacturer = request.Manufacturer;
 
         var response = await _partRepository.UpdatePart(part);
 
         return response;
     }
-    public async Task<bool> DeletePart(DeletePartRequest request) {
+
+    public async Task<bool> DeletePart(DeletePartRequest request)
+    {
         var user = await _userRepository.GetUserById(request.UserId);
-        if (user == null) {
+        if (user == null)
+        {
             _logger.LogInformation("UserEntity does not exist.");
             return false;
         }
 
-        var part= await _partRepository.GetPartById(request.Id);
-        if (part == null) {
+        var part = await _partRepository.GetPartById(request.Id);
+        if (part == null)
+        {
             _logger.LogInformation("PartEntity does not exist.");
             return false;
         }
@@ -98,7 +121,7 @@ public class PartService : IPartService {
             return false;
         }*/
 
-        var response= await _partRepository.DeletePart(request.Id);
+        var response = await _partRepository.DeletePart(request.Id);
         return response;
     }
 }

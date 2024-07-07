@@ -2,7 +2,8 @@
 
 namespace Client.Models.DTOs;
 
-public class CarDTO {
+public class CarDTO
+{
     public Guid Id { get; set; }
     public string Make { get; set; }
     public string Model { get; set; }
@@ -17,20 +18,24 @@ public class CarDTO {
     public double? Acceleration { get; set; }
     public string? ImageUrl { get; set; }
 
-    public static explicit operator CarDTO?(CarEntity? car) {
-        return car == null ? null : new CarDTO {
-            Make = car.Make,
-            Model = car.Model,
-            Year = car.Year,
-            Color = car.Color,
-            BodyType = car.BodyType,
-            FuelType = car.FuelType,
-            EngineType = car.EngineType,
-            TransmissionType = car.TransmissionType,
-            Horsepower = car.Horsepower,
-            TopSpeed = car.TopSpeed,
-            Acceleration = car.Acceleration,
-            ImageUrl = car.ImageUrls?[0]
-        };
+    public static explicit operator CarDTO?(CarEntity? car)
+    {
+        return car == null
+            ? null
+            : new CarDTO
+            {
+                Make = car.Make,
+                Model = car.Model,
+                Year = car.Year,
+                Color = car.Color,
+                BodyType = car.BodyType,
+                FuelType = car.FuelType,
+                EngineType = car.EngineType,
+                TransmissionType = car.TransmissionType,
+                Horsepower = car.Horsepower,
+                TopSpeed = car.TopSpeed,
+                Acceleration = car.Acceleration,
+                ImageUrl = car.ImageUrls?[0]
+            };
     }
 }

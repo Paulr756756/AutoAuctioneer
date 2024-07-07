@@ -1,5 +1,3 @@
-using DataAccessLayer_API.Models;
-
 namespace DataAccessLayer_AutoAuctioneer.Models;
 
 public class UserEntity

@@ -2,9 +2,12 @@
 
 namespace Client.Store.Garage;
 
-public class DeleteGarageItemAction {
-    public ItemEntity? Item { get;}
-    public DeleteGarageItemAction(ItemEntity? item) {
+public class DeleteGarageItemAction
+{
+    public DeleteGarageItemAction(ItemEntity? item)
+    {
         Item = item;
     }
+
+    public ItemEntity? Item { get; }
 }

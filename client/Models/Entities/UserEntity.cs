@@ -5,15 +5,16 @@ namespace Client.Models.Entities;
 
 public class UserEntity
 {
-    [JsonPropertyName("id")]
-    public Guid? Id { get; set; }
+    [JsonPropertyName("id")] public Guid? Id { get; set; }
 
     [JsonPropertyName("username")]
-    [Required, MaxLength(25, ErrorMessage = "Username cannot have more than 25 letters")]
+    [Required]
+    [MaxLength(25, ErrorMessage = "Username cannot have more than 25 letters")]
     public string UserName { get; set; }
 
     [JsonPropertyName("email")]
-    [Required, EmailAddress]
+    [Required]
+    [EmailAddress]
     public string Email { get; set; }
 
     [JsonPropertyName("address")]
@@ -37,6 +38,7 @@ public class UserEntity
     public string? Phone { get; set; }
 
     [JsonPropertyName("registrationdate")]
-    [Required, DataType(DataType.PhoneNumber)]
+    [Required]
+    [DataType(DataType.PhoneNumber)]
     public DateTime? RegistrationDate { get; set; }
 }

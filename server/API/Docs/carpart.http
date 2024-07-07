@@ -6,6 +6,7 @@
 
 ###
 GET {{baseUrl}}getall
+
 ###
 GET {{baseUrl}}getbyid?id={{partId}}
 
@@ -44,6 +45,7 @@ Content-Type: application/json
   "partType": 1,
   "manufacturer": "Mazda"
 }
+
 ###
 //DELETE Part
 DELETE {{baseUrl}}delete

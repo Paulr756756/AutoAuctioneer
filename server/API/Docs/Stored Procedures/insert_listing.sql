@@ -4,17 +4,15 @@ create procedure insert_listing(
     _userid uuid,
     _itemid uuid
 )
-language plpgsql as $$
+    language plpgsql as $$
 begin
-    _id := gen_random_uuid();
-    insert into listings(
-        id,
-        userid,
-        itemid
-    ) values (
-        _id,
+    _id
+:= gen_random_uuid();
+insert into listings(id,
+                     userid,
+                     itemid)
+values (_id,
         _userid,
-        _itemid
-    );
+        _itemid);
 end;
 $$;

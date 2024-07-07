@@ -6,20 +6,20 @@
 
 <EditForm Model="@RequestModel" OnValidSubmit="OnSubmit">
     <div>
-        <InputText type="text" DisplayName="Email" @bind-Value="RequestModel.EmailAddress" 
-                   class="input input-bordered input-primary w-full max-w-xs" />
+        <InputText type="text" DisplayName="Email" @bind-Value="RequestModel.EmailAddress"
+                   class="input input-bordered input-primary w-full max-w-xs"/>
     </div>
     <div>
-        <InputText type="text" placeholder="Token" class="input input-bordered input-primary w-full max-w-xs" 
+        <InputText type="text" placeholder="Token" class="input input-bordered input-primary w-full max-w-xs"
                    @bind-Value="RequestModel.VerificationToken"/>
         <ValidationMessage For="() => RequestModel.VerificationToken"></ValidationMessage>
     </div>
-    <button type="submit" class="btn btn-primary btn-xs sm:btn-sm md:btn-md lg:btn-lg" >Verify</button>
+    <button type="submit" class="btn btn-primary btn-xs sm:btn-sm md:btn-md lg:btn-lg">Verify</button>
 </EditForm>
 
 
 @code {
-    VerifyUserRequest RequestModel = new ();
+    readonly VerifyUserRequest RequestModel = new();
 
     async Task OnSubmit()
     {
@@ -28,10 +28,11 @@
             ToastService.ShowError("You have entered incorrect values");
             return;
         }
+
         var response = await GenericMethods.PostValuesToApi(EnvUrls.BaseUrl.Concat(EnvUrls.User)
             .Concat("verify").ToString(), RequestModel);
-        if(!response.IsSuccessStatusCode) ToastService.ShowError($"{response.ReasonPhrase}");
+        if (!response.IsSuccessStatusCode) ToastService.ShowError($"{response.ReasonPhrase}");
         else ToastService.ShowSuccess("Account Verification Successful");
     }
-    
+
 }

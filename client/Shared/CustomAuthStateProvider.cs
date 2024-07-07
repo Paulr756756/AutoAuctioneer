@@ -5,33 +5,37 @@ using System.Text.Json;
 using Blazored.LocalStorage;
 using Microsoft.AspNetCore.Components.Authorization;
 
-namespace Client.Shared; 
+namespace Client.Shared;
 
-public class CustomAuthStateProvider : AuthenticationStateProvider {
-    private readonly ILocalStorageService _localStorageService;
+public class CustomAuthStateProvider : AuthenticationStateProvider
+{
     private readonly HttpClient _httpClient;
+    private readonly ILocalStorageService _localStorageService;
 
-    public CustomAuthStateProvider(ILocalStorageService localStorageService, HttpClient httpClient) {
+    public CustomAuthStateProvider(ILocalStorageService localStorageService, HttpClient httpClient)
+    {
         _localStorageService = localStorageService;
         _httpClient = httpClient;
     }
 
-    public override async Task<AuthenticationState> GetAuthenticationStateAsync() {
+    public override async Task<AuthenticationState> GetAuthenticationStateAsync()
+    {
         var token = await _localStorageService.GetItemAsStringAsync("token");
         var identity = new ClaimsIdentity();
         _httpClient.DefaultRequestHeaders.Authorization = null;
 
-        if (!string.IsNullOrEmpty(token)) {
+        if (!string.IsNullOrEmpty(token))
+        {
             identity = new ClaimsIdentity(ParseClaimsFromJwt(token), "jwt");
             _httpClient.DefaultRequestHeaders.Authorization =
                 new AuthenticationHeaderValue("Bearer", token.Replace("\"", ""));
         }
 
         var user = new ClaimsPrincipal(identity);
-        
+
         //localstorage setting
         await _localStorageService.SetItemAsync("userName", user.Identity!.Name);
-        await _localStorageService.SetItemAsync("userId",user.FindFirst(JwtRegisteredClaimNames.Sub)?.Value);
+        await _localStorageService.SetItemAsync("userId", user.FindFirst(JwtRegisteredClaimNames.Sub)?.Value);
         await _localStorageService.SetItemAsync("userRole", user.FindFirst(ClaimTypes.Role)?.Value);
 
         var state = new AuthenticationState(user);
@@ -39,7 +43,7 @@ public class CustomAuthStateProvider : AuthenticationStateProvider {
 
         return state;
     }
-    
+
     private static IEnumerable<Claim> ParseClaimsFromJwt(string jwt)
     {
         var payload = jwt.Split('.')[1];
@@ -52,9 +56,14 @@ public class CustomAuthStateProvider : AuthenticationStateProvider {
     {
         switch (base64.Length % 4)
         {
-            case 2: base64 += "=="; break;
-            case 3: base64 += "="; break;
+            case 2:
+                base64 += "==";
+                break;
+            case 3:
+                base64 += "=";
+                break;
         }
+
         return Convert.FromBase64String(base64);
     }
 }

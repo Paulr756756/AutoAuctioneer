@@ -4,12 +4,14 @@
 @inject GenericMethods _genericMethods
 <h3 class="font-extrabold">Top Listings</h3>
 
-@foreach(var listing in Listings!) {
-    switch (listing.ItemType) {
+@foreach (var listing in Listings!)
+{
+    switch (listing.ItemType)
+    {
         case 0:
             <div class="card w-96 bg-base-200 shadow-xl px-2 py-2">
                 <figure>
-                    <img src="@listing.ImageUrl" alt="CarImg" />
+                    <img src="@listing.ImageUrl" alt="CarImg"/>
                 </figure>
                 <div class="card-body">
                     <h2 class="card-title">@listing.Model, @listing.Make</h2>
@@ -27,7 +29,7 @@
                                 <AuthorizeView>
                                     <Authorized>
                                         <div class="stat-actions">
-                                            <a class="btn btn-sm btn-success" href=@($"/item/details/{listing.ItemId}") >Bid Now</a>
+                                            <a class="btn btn-sm btn-success" href=@($"/item/details/{listing.ItemId}")>Bid Now</a>
                                         </div>
                                         <AddBid ListingId="@listing.Id"/>
                                     </Authorized>

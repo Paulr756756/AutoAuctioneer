@@ -12,7 +12,7 @@ public class Part_EngineRepository : BaseRepository, IPart_EngineRepository {
         var sql = "select * from (" +
             "select \"parts\".id as primaryid, name, description, category, marketprice," +
             "parttype, manufacturer, enginetype, displacement, horsepower, torque from \"parts\" inner join " +
-            "\"parts_engine\" on \"parts\".id = \"parts_engine\".id) as \"engine\" where \"engine\".primaryId = @Id ;"; 
+            "\"parts_engine\" on \"parts\".id = \"parts_engine\".id) as \"engine\" where \"engine\".primaryId = @Id ;";
         var result = await LoadData<Part_Engine, dynamic>(sql, new { Id = guid });
 
         if (!result.IsSuccess) {
@@ -22,7 +22,7 @@ public class Part_EngineRepository : BaseRepository, IPart_EngineRepository {
 
     }
 
-    *//*(TODO)
+    */ /*(TODO)
     public async Task<List<PartEntity>?> GetAllEngines() {
         var sql = "select * from \"parts\";";
         var result = await LoadData<PartEntity, dynamic>(sql, new { });
@@ -94,3 +94,4 @@ public class Part_EngineRepository : BaseRepository, IPart_EngineRepository {
     }
 }
 */
+

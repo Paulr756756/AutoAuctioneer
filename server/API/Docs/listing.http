@@ -7,11 +7,14 @@
 
 ###
 GET {{baseUrl}}getall
+
 ###
 GET {{baseUrl}}getowned?id={{userId}}
+
 ###
 GET {{baseUrl}}getbyid?id={{listingId}}
 Authorization: Bearer {{jwtToken}}
+
 ###
 POST {{baseUrl}}add
 Authorization: Bearer {{jwtToken}}
@@ -21,6 +24,7 @@ Content-Type: application/json
   "userId": "{{userId}}",
   "itemId": "{{itemId}}"
 }
+
 ###
 DELETE {{baseUrl}}delete
 Authorization: Bearer {{jwtToken}}

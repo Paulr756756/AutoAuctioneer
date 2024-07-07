@@ -4,7 +4,8 @@ using DataAccessLayer_AutoAuctioneer.Models;
 
 namespace API.Services.ListingService;
 
-public interface IListingService {
+public interface IListingService
+{
     Task<List<ListingEntity>?> GetAlListingsService();
     Task<List<ListingResponse>?> GetAllListingResponses();
     Task<ListingResponse?> GetListingResponseById(Guid id);

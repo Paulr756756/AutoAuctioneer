@@ -6,22 +6,21 @@ create procedure insert_bid(
     _bidamount bigint,
     out _bidtime timestamp
 )
-language plpgsql as $$
+    language plpgsql as $$
 begin
-    _id := gen_random_uuid();
-    _bidtime := CURRENT_TIMESTAMP AT TIME ZONE 'UTC';
-    insert into bids (
-        id,
-        userid,
-        listingid,
-        bidamount,
-        bidtime
-    ) values (
-        _id,
+    _id
+:= gen_random_uuid();
+    _bidtime
+:= CURRENT_TIMESTAMP AT TIME ZONE 'UTC';
+insert into bids (id,
+                  userid,
+                  listingid,
+                  bidamount,
+                  bidtime)
+values (_id,
         _userid,
         _listingid,
         _bidamount,
-        _bidtime
-    );
+        _bidtime);
 end;
 $$;

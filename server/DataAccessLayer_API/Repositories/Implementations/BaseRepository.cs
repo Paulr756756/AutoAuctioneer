@@ -1,22 +1,22 @@
 ﻿using System.Data;
+using Dapper;
+using DataAccessLayer_AutoAuctioneer.Repositories.Interfaces;
 using DataAccessLayer_AutoAuctioneer.Util;
 using Microsoft.Extensions.Configuration;
 using Npgsql;
-using Dapper;
-using DataAccessLayer_AutoAuctioneer.Repositories.Interfaces;
 
 namespace DataAccessLayer_AutoAuctioneer.Repositories.Implementations;
 
-
 public class BaseRepository : IBaseRepository
 {
-
     private readonly IConfiguration _config;
-    public string connectionStringName { get; set; } = "aucdb";
+
     public BaseRepository(IConfiguration config)
     {
         _config = config;
     }
+
+    public string connectionStringName { get; set; } = "aucdb";
 
     public async Task<Result<T>> LoadData<T, U>(string sql, U parameters)
     {
@@ -34,7 +34,7 @@ public class BaseRepository : IBaseRepository
             }
         }
     }
-    
+
     public async Task<Result<T>> SaveData<T>(string sql, T parameters, CommandType? cmdType)
     {
         var connectionString = _config.GetConnectionString(connectionStringName);
@@ -52,17 +52,21 @@ public class BaseRepository : IBaseRepository
         }
     }
 
-    public async Task<Result<T>> SaveData<T>(NpgsqlCommand command) {
+    public async Task<Result<T>> SaveData<T>(NpgsqlCommand command)
+    {
         var connectionString = _config.GetConnectionString(connectionStringName);
-        await using (var connection = new NpgsqlConnection(connectionString)) {
+        await using (var connection = new NpgsqlConnection(connectionString))
+        {
             command.Connection = connection;
             await command.Connection.OpenAsync();
-            try {                
+            try
+            {
                 await command.ExecuteNonQueryAsync();
                 await command.Connection.CloseAsync();
                 return Result<T>.SuccessNoData();
             }
-            catch (Exception e) {
+            catch (Exception e)
+            {
                 await command.Connection.CloseAsync();
                 return Result<T>.Failure(e.ToString());
             }

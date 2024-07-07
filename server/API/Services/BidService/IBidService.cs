@@ -3,7 +3,8 @@ using API.Models.RequestModels;
 
 namespace API.Services.BidService;
 
-public interface IBidService {
+public interface IBidService
+{
     Task<List<BidDTO>?> GetAllBids();
     Task<BidDTO?> GetBidById(Guid id);
     Task<List<BidDTO>?> GetOwned(Guid id);

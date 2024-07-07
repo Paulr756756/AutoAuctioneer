@@ -1,12 +1,11 @@
-using Microsoft.AspNetCore.Components.Web;
-using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
-using Client;
-using Client.Shared;
 using Blazored.LocalStorage;
 using Blazored.Toast;
-using Microsoft.AspNetCore.Components.Authorization;
+using Client;
+using Client.Shared;
 using Fluxor;
-
+using Microsoft.AspNetCore.Components.Authorization;
+using Microsoft.AspNetCore.Components.Web;
+using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 var currentAssembly = typeof(Program).Assembly;

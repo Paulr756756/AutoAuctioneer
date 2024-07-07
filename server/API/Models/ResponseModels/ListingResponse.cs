@@ -1,9 +1,9 @@
-﻿using API.Models.DTOs;
-using DataAccessLayer_AutoAuctioneer.Models;
+﻿using DataAccessLayer_AutoAuctioneer.Models;
 
 namespace API.Models.ResponseModels;
 
-public class ListingResponse {
+public class ListingResponse
+{
     public Guid Id { get; set; }
     public Guid UserId { get; set; }
     public Guid ItemId { get; set; }
@@ -26,11 +26,15 @@ public class ListingResponse {
     public string? Manufacturer { get; set; }
 
 
-    public static explicit operator ListingResponse?(ListingEntity? entity) {
-        return entity == null ? null : new ListingResponse {
-            Id = entity.Id,
-            UserId = entity.UserId,
-            ItemId = entity.ItemId
-        };
+    public static explicit operator ListingResponse?(ListingEntity? entity)
+    {
+        return entity == null
+            ? null
+            : new ListingResponse
+            {
+                Id = entity.Id,
+                UserId = entity.UserId,
+                ItemId = entity.ItemId
+            };
     }
 }

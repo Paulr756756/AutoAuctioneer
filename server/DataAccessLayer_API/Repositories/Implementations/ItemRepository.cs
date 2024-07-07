@@ -1,36 +1,44 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using System.Data;
 using DataAccessLayer_AutoAuctioneer.Models;
-using Microsoft.Extensions.Logging;
 using DataAccessLayer_AutoAuctioneer.Repositories.Interfaces;
-using System.Data;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using Npgsql;
 using NpgsqlTypes;
 
 namespace DataAccessLayer_AutoAuctioneer.Repositories.Implementations;
 
-public class ItemRepository : BaseRepository, IItemRepository {
+public class ItemRepository : BaseRepository, IItemRepository
+{
     private readonly IConfiguration _config;
     private readonly ILogger<ItemRepository> _logger;
-    public ItemRepository(IConfiguration config, ILogger<ItemRepository> logger) : base(config) {
+
+    public ItemRepository(IConfiguration config, ILogger<ItemRepository> logger) : base(config)
+    {
         _config = config;
         _logger = logger;
     }
 
-    public async Task<List<ItemEntity>?> GetOwnedItems(Guid id) {
+    public async Task<List<ItemEntity>?> GetOwnedItems(Guid id)
+    {
         var sql = "select * from \"items\" where  userid=@Id ;";
         var result = await LoadData<ItemEntity, dynamic>(sql, new { Id = id });
 
-        if (!result.IsSuccess) {
+        if (!result.IsSuccess)
+        {
             //Log
         }
 
         return result.Data;
     }
-    public async Task<ItemEntity?> GetItemById(Guid id) {
+
+    public async Task<ItemEntity?> GetItemById(Guid id)
+    {
         var sql = "select * from items where id=@Id";
         var result = await LoadData<ItemEntity, dynamic>(sql, new { Id = id });
 
-        if (!result.IsSuccess) {
+        if (!result.IsSuccess)
+        {
             _logger.LogError("Couldn't fetch item by id : {e}", result.ErrorMessage);
             return null;
         }
@@ -38,9 +46,11 @@ public class ItemRepository : BaseRepository, IItemRepository {
         return result.Data!.FirstOrDefault();
     }
 
-    public async Task<bool> DeleteItem(Guid id) {
+    public async Task<bool> DeleteItem(Guid id)
+    {
         var sql = "delete_item";
-        var command = new NpgsqlCommand() {
+        var command = new NpgsqlCommand
+        {
             CommandText = sql,
             CommandType = CommandType.StoredProcedure
         };
@@ -48,10 +58,12 @@ public class ItemRepository : BaseRepository, IItemRepository {
         var result = await SaveData<ItemEntity>(command);
 
         _logger.LogInformation("Stored Procedure Executed : {sql}", sql);
-        if (!result.IsSuccess) {
+        if (!result.IsSuccess)
+        {
             _logger.LogError("Couldn't delete the item. {e}", result.ErrorMessage);
             return false;
         }
+
         return true;
     }
 }

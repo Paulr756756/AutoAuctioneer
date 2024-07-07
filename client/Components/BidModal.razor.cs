@@ -2,21 +2,24 @@
 using Client.Models;
 using Microsoft.AspNetCore.Components;
 
-namespace Client.Components; 
+namespace Client.Components;
 
-partial class BidModal {
+partial class BidModal
+{
     private Modal _modalRef;
     private string _bidamt { get; set; } = "0";
-    [Parameter] public string ElementId { get; set; } 
+    [Parameter] public string ElementId { get; set; }
     private AddBidRequest BidRequest { get; set; } = new();
 
-    async Task Add() {
+    private async Task Add()
+    {
         BidRequest.BidAmount = long.Parse(_bidamt);
         _modalRef.CloseModal();
     }
 
-    async Task Cancel() {
-        BidRequest = new();
+    private async Task Cancel()
+    {
+        BidRequest = new AddBidRequest();
         _bidamt = "0";
         _modalRef.CloseModal();
     }

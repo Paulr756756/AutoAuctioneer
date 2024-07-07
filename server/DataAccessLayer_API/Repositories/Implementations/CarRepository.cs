@@ -1,60 +1,60 @@
-﻿using Dapper;
+﻿using System.Data;
 using DataAccessLayer_AutoAuctioneer.Models;
 using DataAccessLayer_AutoAuctioneer.Repositories.Interfaces;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
-using System.Data;
 using Npgsql;
 using NpgsqlTypes;
 
 namespace DataAccessLayer_AutoAuctioneer.Repositories.Implementations;
 
-public class CarRepository : BaseRepository, ICarRepository {
+public class CarRepository : BaseRepository, ICarRepository
+{
     private readonly IConfiguration _config;
     private readonly ILogger<CarRepository> _logger;
-    public CarRepository(IConfiguration config, ILogger<CarRepository> logger) : base(config) {
+
+    public CarRepository(IConfiguration config, ILogger<CarRepository> logger) : base(config)
+    {
         _config = config;
         _logger = logger;
     }
 
-    public async Task<CarEntity?> GetCarById(Guid carid) {
+    public async Task<CarEntity?> GetCarById(Guid carid)
+    {
         var sql = "select * from cars where id=@Id";
 
         var result = await LoadData<CarEntity, dynamic>(sql, new { Id = carid });
         _logger.LogInformation("Sql statement executed: {e}", sql);
 
-        if (!result.IsSuccess) {
-            _logger.LogInformation("Unable to fetch car : {e}", result.ErrorMessage);
-        }
+        if (!result.IsSuccess) _logger.LogInformation("Unable to fetch car : {e}", result.ErrorMessage);
 
         return result.Data!.FirstOrDefault();
     }
 
-    public async Task<List<CarEntity>?> GetAllCars() {
+    public async Task<List<CarEntity>?> GetAllCars()
+    {
         var sql = "select * from cars";
 
         var result = await LoadData<CarEntity, dynamic>(sql, new { });
         _logger.LogInformation("Sql statement executed : {m}", sql);
 
-        if (!result.IsSuccess) {
-            _logger.LogError("GetAllCars() Error : {e}", result.ErrorMessage);
-        }
+        if (!result.IsSuccess) _logger.LogError("GetAllCars() Error : {e}", result.ErrorMessage);
         return result.Data;
     }
 
-    public async Task<List<CarEntity>?> GetCarsOfSingleUser(Guid userId) {
+    public async Task<List<CarEntity>?> GetCarsOfSingleUser(Guid userId)
+    {
         var sql = "select cars.* from cars inner join items on cars.id = items.id where items.userid = @Id;";
-        var result = await LoadData<CarEntity, dynamic>(sql, new { @Id = userId });
+        var result = await LoadData<CarEntity, dynamic>(sql, new { Id = userId });
         _logger.LogInformation("Stored procedure executed: {e}", sql);
 
-        if (!result.IsSuccess) {
-            _logger.LogError("Unable to get cars of single user : {error}", result.ErrorMessage);
-        }
+        if (!result.IsSuccess) _logger.LogError("Unable to get cars of single user : {error}", result.ErrorMessage);
 
         return result.Data;
     }
 
-    public async Task<bool> StoreCar(CarEntity car) {
+    public async Task<bool> StoreCar(CarEntity car)
+    {
         /*const string sql = "insert_car";
         var parameters = new DynamicParameters();
         parameters.Add("_id", Guid.NewGuid(),DbType.Guid, ParameterDirection.Output);
@@ -75,10 +75,11 @@ public class CarRepository : BaseRepository, ICarRepository {
         parameters.Add("_acceleration", car.Acceleration);
         parameters.Add("_topspeed", car.TopSpeed);
         parameters.Add("_imageurls", car.ImageUrls);*/
-        
-        var command = new NpgsqlCommand() {
+
+        var command = new NpgsqlCommand
+        {
             CommandText = "insert_car",
-            CommandType = CommandType.StoredProcedure,
+            CommandType = CommandType.StoredProcedure
         };
 
         command.Parameters.AddWithValue("_id", NpgsqlDbType.Uuid, Guid.NewGuid()).Direction = ParameterDirection.Output;
@@ -89,32 +90,44 @@ public class CarRepository : BaseRepository, ICarRepository {
         command.Parameters.AddWithValue("_year", NpgsqlDbType.Varchar, car.Year == null ? DBNull.Value : car.Year);
         command.Parameters.AddWithValue("_color", NpgsqlDbType.Varchar, car.Color == null ? DBNull.Value : car.Color);
         command.Parameters.AddWithValue("_vin", NpgsqlDbType.Text, car.VIN == null ? DBNull.Value : car.VIN);
-        command.Parameters.AddWithValue("_bodytype", NpgsqlDbType.Varchar, car.BodyType == null ? DBNull.Value : car.BodyType);
-        command.Parameters.AddWithValue("_fueltype", NpgsqlDbType.Varchar, car.FuelType == null ?DBNull.Value : car.FuelType);
-        command.Parameters.AddWithValue("_transmissiontype", NpgsqlDbType.Varchar, car.TransmissionType == null ? DBNull.Value : car.TransmissionType);
-        command.Parameters.AddWithValue("_enginetype", NpgsqlDbType.Varchar, car.EngineType == null ? DBNull.Value : car.EngineType);
-        command.Parameters.AddWithValue("_horsepower", NpgsqlDbType.Integer, car.Horsepower == null ? DBNull.Value : car.Horsepower);
-        command.Parameters.AddWithValue("_torque", NpgsqlDbType.Integer,car.Torque == null ? DBNull.Value : car.Torque);
-        command.Parameters.AddWithValue("_fuelefficiency", NpgsqlDbType.Real, car.FuelEfficiency == null ?DBNull.Value : car.FuelEfficiency);
-        command.Parameters.AddWithValue("_acceleration", NpgsqlDbType.Real, car.Acceleration == null ? DBNull.Value : car.Acceleration);
-        command.Parameters.AddWithValue("_topspeed",NpgsqlDbType.Integer,car.TopSpeed == null ? DBNull.Value : car.TopSpeed);
-        command.Parameters.AddWithValue(parameterName: "_imageurls",
-            parameterType: NpgsqlDbType.Array | NpgsqlDbType.Text,
-            value: car.ImageUrls == null ? DBNull.Value : car.ImageUrls);
-        
+        command.Parameters.AddWithValue("_bodytype", NpgsqlDbType.Varchar,
+            car.BodyType == null ? DBNull.Value : car.BodyType);
+        command.Parameters.AddWithValue("_fueltype", NpgsqlDbType.Varchar,
+            car.FuelType == null ? DBNull.Value : car.FuelType);
+        command.Parameters.AddWithValue("_transmissiontype", NpgsqlDbType.Varchar,
+            car.TransmissionType == null ? DBNull.Value : car.TransmissionType);
+        command.Parameters.AddWithValue("_enginetype", NpgsqlDbType.Varchar,
+            car.EngineType == null ? DBNull.Value : car.EngineType);
+        command.Parameters.AddWithValue("_horsepower", NpgsqlDbType.Integer,
+            car.Horsepower == null ? DBNull.Value : car.Horsepower);
+        command.Parameters.AddWithValue("_torque", NpgsqlDbType.Integer,
+            car.Torque == null ? DBNull.Value : car.Torque);
+        command.Parameters.AddWithValue("_fuelefficiency", NpgsqlDbType.Real,
+            car.FuelEfficiency == null ? DBNull.Value : car.FuelEfficiency);
+        command.Parameters.AddWithValue("_acceleration", NpgsqlDbType.Real,
+            car.Acceleration == null ? DBNull.Value : car.Acceleration);
+        command.Parameters.AddWithValue("_topspeed", NpgsqlDbType.Integer,
+            car.TopSpeed == null ? DBNull.Value : car.TopSpeed);
+        command.Parameters.AddWithValue("_imageurls",
+            NpgsqlDbType.Array | NpgsqlDbType.Text,
+            car.ImageUrls == null ? DBNull.Value : car.ImageUrls);
+
 
         // var result = await SaveData(sql, parameters, cmdType: CommandType.StoredProcedure);
         var result = await SaveData<CarEntity>(command);
         // _logger.LogInformation("Stored procedure executed: {e} for id : {id}", command);
-        if (!result.IsSuccess) {
+        if (!result.IsSuccess)
+        {
             _logger.LogError("Unable to store car : {}", result.ErrorMessage);
             return false;
         }
+
         _logger.LogInformation("Stored car with id :{id}", car.Id);
         return true;
     }
 
-    public async Task<bool> UpdateCar(CarEntity car) {
+    public async Task<bool> UpdateCar(CarEntity car)
+    {
         var sql = "update_car";
 /*        var parameters = new DynamicParameters();
         parameters.Add("_id", car.Id);
@@ -134,7 +147,8 @@ public class CarRepository : BaseRepository, ICarRepository {
         parameters.Add("_topspeed", car.TopSpeed);
         parameters.Add("_imageurls", car.ImageUrls);*/
 
-        var command = new NpgsqlCommand() {
+        var command = new NpgsqlCommand
+        {
             CommandText = sql,
             CommandType = CommandType.StoredProcedure
         };
@@ -144,40 +158,56 @@ public class CarRepository : BaseRepository, ICarRepository {
         command.Parameters.AddWithValue("_year", NpgsqlDbType.Varchar, car.Year == null ? DBNull.Value : car.Year);
         command.Parameters.AddWithValue("_vin", NpgsqlDbType.Text, car.VIN == null ? DBNull.Value : car.VIN);
         command.Parameters.AddWithValue("_color", NpgsqlDbType.Varchar, car.Color == null ? DBNull.Value : car.Color);
-        command.Parameters.AddWithValue("_bodytype", NpgsqlDbType.Varchar, car.BodyType == null ? DBNull.Value : car.BodyType);
-        command.Parameters.AddWithValue("_fueltype", NpgsqlDbType.Varchar, car.FuelType == null ? DBNull.Value : car.FuelType);
-        command.Parameters.AddWithValue("_transmissiontype", NpgsqlDbType.Varchar, car.TransmissionType == null ? DBNull.Value : car.TransmissionType);
-        command.Parameters.AddWithValue("_enginetype", NpgsqlDbType.Varchar, car.EngineType == null ? DBNull.Value : car.EngineType);
-        command.Parameters.AddWithValue("_horsepower", NpgsqlDbType.Integer, car.Horsepower == null ? DBNull.Value : car.Horsepower);
-        command.Parameters.AddWithValue("_torque", NpgsqlDbType.Integer, car.Torque==null?DBNull.Value:car.Torque);
-        command.Parameters.AddWithValue("_fuelefficiency", NpgsqlDbType.Real, car.FuelEfficiency==null?DBNull.Value:car.FuelEfficiency);
-        command.Parameters.AddWithValue("_acceleration", NpgsqlDbType.Real, car.Acceleration==null?DBNull.Value:car.Acceleration);
-        command.Parameters.AddWithValue("_topspeed", NpgsqlDbType.Integer, car.TopSpeed==null?DBNull.Value:car.TopSpeed);
-        command.Parameters.AddWithValue("_imageurls", NpgsqlDbType.Text | NpgsqlDbType.Array, car.ImageUrls==null?DBNull.Value:car.ImageUrls);
+        command.Parameters.AddWithValue("_bodytype", NpgsqlDbType.Varchar,
+            car.BodyType == null ? DBNull.Value : car.BodyType);
+        command.Parameters.AddWithValue("_fueltype", NpgsqlDbType.Varchar,
+            car.FuelType == null ? DBNull.Value : car.FuelType);
+        command.Parameters.AddWithValue("_transmissiontype", NpgsqlDbType.Varchar,
+            car.TransmissionType == null ? DBNull.Value : car.TransmissionType);
+        command.Parameters.AddWithValue("_enginetype", NpgsqlDbType.Varchar,
+            car.EngineType == null ? DBNull.Value : car.EngineType);
+        command.Parameters.AddWithValue("_horsepower", NpgsqlDbType.Integer,
+            car.Horsepower == null ? DBNull.Value : car.Horsepower);
+        command.Parameters.AddWithValue("_torque", NpgsqlDbType.Integer,
+            car.Torque == null ? DBNull.Value : car.Torque);
+        command.Parameters.AddWithValue("_fuelefficiency", NpgsqlDbType.Real,
+            car.FuelEfficiency == null ? DBNull.Value : car.FuelEfficiency);
+        command.Parameters.AddWithValue("_acceleration", NpgsqlDbType.Real,
+            car.Acceleration == null ? DBNull.Value : car.Acceleration);
+        command.Parameters.AddWithValue("_topspeed", NpgsqlDbType.Integer,
+            car.TopSpeed == null ? DBNull.Value : car.TopSpeed);
+        command.Parameters.AddWithValue("_imageurls", NpgsqlDbType.Text | NpgsqlDbType.Array,
+            car.ImageUrls == null ? DBNull.Value : car.ImageUrls);
 
 
         /*var result = await SaveData(sql,parameters, cmdType:CommandType.StoredProcedure);*/
         var result = await SaveData<CarEntity>(command);
         _logger.LogInformation("Stored procedure executed : {e} for id : {id}", sql, car.Id);
 
-        if (!result.IsSuccess) {
+        if (!result.IsSuccess)
+        {
             _logger.LogError("Unable to update car : {e}", result.ErrorMessage);
             return false;
         }
+
         return true;
     }
-    public async Task<bool> DeleteCar(Guid id) {
+
+    public async Task<bool> DeleteCar(Guid id)
+    {
         var sql = "delete_item";
-        var command = new NpgsqlCommand() {
+        var command = new NpgsqlCommand
+        {
             CommandText = sql,
-            CommandType = CommandType.StoredProcedure,
+            CommandType = CommandType.StoredProcedure
         };
         command.Parameters.AddWithValue("_id", NpgsqlDbType.Uuid, id);
 
         var result = await SaveData<CarEntity>(command);
         _logger.LogInformation("Stored procedure executed : {e} for id : {id}", sql, id);
 
-        if (!result.IsSuccess) {
+        if (!result.IsSuccess)
+        {
             _logger.LogError($"Could not delete car {id}, DeleteCar", id);
             return false;
         }

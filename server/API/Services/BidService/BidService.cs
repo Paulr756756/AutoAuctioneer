@@ -1,26 +1,31 @@
 using API.Models.DTOs;
 using API.Models.RequestModels;
-using API.Services.ListingService;
-using API.Services.UserService;
 using DataAccessLayer_AutoAuctioneer.Repositories.Interfaces;
 
 namespace API.Services.BidService;
 
-public class BidService : IBidService {
+public class BidService : IBidService
+{
     private readonly IBidRepository _bidRepository;
     private readonly IListingRepository _listingRepository;
-    private readonly IUserRepository _userRepository;
     private readonly ILogger<BidService> _logger;
-    public BidService(IBidRepository bidRepository, IUserRepository userRepository,IListingRepository listingRepository, 
-        ILogger<BidService> logger) {
+    private readonly IUserRepository _userRepository;
+
+    public BidService(IBidRepository bidRepository, IUserRepository userRepository,
+        IListingRepository listingRepository,
+        ILogger<BidService> logger)
+    {
         _bidRepository = bidRepository;
         _userRepository = userRepository;
         _listingRepository = listingRepository;
         _logger = logger;
     }
-    public async Task<List<BidDTO>?> GetAllBids() {
+
+    public async Task<List<BidDTO>?> GetAllBids()
+    {
         var bids = await _bidRepository.GetAllBids();
-        var dtos = bids?.Select(bid => new BidDTO {
+        var dtos = bids?.Select(bid => new BidDTO
+        {
             Id = bid.Id,
             UserId = bid.UserId,
             ListingId = bid.ListingId,
@@ -29,19 +34,25 @@ public class BidService : IBidService {
         }).ToList();
         return dtos;
     }
-    public async Task<BidDTO?> GetBidById(Guid id) {
-        var bid =(BidDTO?) await _bidRepository.GetBidById(id);
+
+    public async Task<BidDTO?> GetBidById(Guid id)
+    {
+        var bid = (BidDTO?)await _bidRepository.GetBidById(id);
         return bid;
     }
-    public async Task<List<BidDTO>?> GetOwned(Guid id) {
+
+    public async Task<List<BidDTO>?> GetOwned(Guid id)
+    {
         var user = _userRepository.GetUserById(id);
-        if (user == null) {
+        if (user == null)
+        {
             _logger.LogInformation("No such user present in the database");
             return null;
         }
 
         var bids = await _bidRepository.GetOwned(id);
-        var dtos = bids?.Select(bid => new BidDTO {
+        var dtos = bids?.Select(bid => new BidDTO
+        {
             Id = bid.Id,
             UserId = bid.UserId,
             ListingId = bid.ListingId,
@@ -50,9 +61,12 @@ public class BidService : IBidService {
         }).ToList();
         return dtos;
     }
-    public async Task<List<BidDTO>?> GetBidsPerListing(Guid id) {
+
+    public async Task<List<BidDTO>?> GetBidsPerListing(Guid id)
+    {
         var bids = await _bidRepository.GetBidsPerListing(id);
-        var dtos = bids?.Select(bid => new BidDTO {
+        var dtos = bids?.Select(bid => new BidDTO
+        {
             Id = bid.Id,
             UserId = bid.UserId,
             ListingId = bid.ListingId,
@@ -61,17 +75,21 @@ public class BidService : IBidService {
         }).ToList();
         return dtos;
     }
-    public async Task<List<BidDTO>?> GetBidsOfSingleUserPerListing(BidsListingUserRequest request) {
+
+    public async Task<List<BidDTO>?> GetBidsOfSingleUserPerListing(BidsListingUserRequest request)
+    {
         var user = await _userRepository.GetUserById(request.UserId);
-        if(user == null) return null;
+        if (user == null) return null;
         var listing = await _listingRepository.GetListingById(request.ListingId);
-        if(listing?.UserId == user.Id) {
+        if (listing?.UserId == user.Id)
+        {
             _logger.LogError("Listing Owner trying to bid");
             return null;
         }
 
         var bids = await _bidRepository.GetBidsPerListing(request.ListingId);
-        var dtos = bids?.Select(bid => new BidDTO {
+        var dtos = bids?.Select(bid => new BidDTO
+        {
             Id = bid.Id,
             UserId = bid.UserId,
             ListingId = bid.ListingId,
@@ -81,21 +99,29 @@ public class BidService : IBidService {
         var result = dtos?.Where(b => b.UserId == request.UserId).ToList();
         return result;
     }
-    public async Task<bool> PostBid(AddBidRequest request) {
-        var user = (UserDTO?) await _userRepository.GetUserById(request.UserId);
-        if (user == null) {
+
+    public async Task<bool> PostBid(AddBidRequest request)
+    {
+        var user = (UserDTO?)await _userRepository.GetUserById(request.UserId);
+        if (user == null)
+        {
             _logger.LogInformation("No such user present");
             return false;
         }
 
-        var listing = (ListingDTO?) await _listingRepository.GetListingById(request.ListingId);
-        if (listing== null) {
+        var listing = (ListingDTO?)await _listingRepository.GetListingById(request.ListingId);
+        if (listing == null)
+        {
             _logger.LogInformation("No such listing exists");
             return false;
-        } else if (listing.UserId == request.UserId) {
+        }
+
+        if (listing.UserId == request.UserId)
+        {
             _logger.LogInformation("UserEntity trying to post on his own listing");
             return false;
         }
+
         var dto = (BidDTO)request;
 /*        var dto = new BidEntity {
             UserId = request.UserId,
@@ -105,12 +131,18 @@ public class BidService : IBidService {
         await _bidRepository.PostBid(dto);
         return true;
     }
-    public async Task<bool> UpdateBidAmt(UpdateBidRequest request) {
-        var dto = (BidDTO?) await _bidRepository.GetBidById(request.BidId);
-        if (dto == null) {
+
+    public async Task<bool> UpdateBidAmt(UpdateBidRequest request)
+    {
+        var dto = (BidDTO?)await _bidRepository.GetBidById(request.BidId);
+        if (dto == null)
+        {
             _logger.LogInformation("No such dto exists");
             return false;
-        } else if (dto.UserId != request.UserId) {
+        }
+
+        if (dto.UserId != request.UserId)
+        {
             _logger.LogInformation("UserEntity does not own this dto");
             return false;
         }
@@ -119,12 +151,18 @@ public class BidService : IBidService {
         await _bidRepository.UpdateBidAmt(dto);
         return true;
     }
-    public async Task<bool> DeleteBidService(DeleteBidRequest request) {
-        var dto = (BidDTO?) await _bidRepository.GetBidById(request.BidId);
-        if (dto == null) {
+
+    public async Task<bool> DeleteBidService(DeleteBidRequest request)
+    {
+        var dto = (BidDTO?)await _bidRepository.GetBidById(request.BidId);
+        if (dto == null)
+        {
             _logger.LogInformation("No such dto exists");
             return false;
-        } else if (dto.UserId != request.UserId) {
+        }
+
+        if (dto.UserId != request.UserId)
+        {
             _logger.LogInformation("UserEntity does not own this dto");
             return false;
         }

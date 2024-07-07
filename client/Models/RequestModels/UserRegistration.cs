@@ -1,5 +1,5 @@
-﻿namespace Client.Models; 
+﻿namespace Client.Models;
 
-public class UserRegistration {
-    
+public class UserRegistration
+{
 }

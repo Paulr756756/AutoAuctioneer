@@ -1,5 +1,6 @@
 using API.Services.BidService;
 using API.Services.CarService;
+using API.Services.ItemService;
 using API.Services.ListingService;
 using API.Services.PartService;
 using API.Services.UserService;
@@ -8,9 +9,6 @@ using DataAccessLayer_AutoAuctioneer.Repositories.Interfaces;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.Filters;
-using System.CodeDom.Compiler;
-using System.Text.Json;
-using API.Services.ItemService;
 
 var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
@@ -43,7 +41,8 @@ builder.Services
     .AddScoped<IItemRepository, ItemRepository>()
     .AddScoped<IItemService, ItemService>()
     .AddHttpContextAccessor()
-    .AddLogging(logging => {
+    .AddLogging(logging =>
+    {
         logging.ClearProviders();
         /*logging.AddConsole();*/
         logging.AddSimpleConsole();
@@ -80,6 +79,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
 app.UseSwagger();
 app.UseSwaggerUI();
 //Setting the CORS policy

@@ -1,17 +1,16 @@
-﻿
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
-namespace Client.Models; 
+namespace Client.Models;
 
-public class AddBidRequest {
+public class AddBidRequest
+{
+    [Required] public Guid UserId { get; set; }
+
+    [Required] public Guid ListingId { get; set; }
+
     [Required]
-    public Guid UserId { get; set; }
-    
-    [Required]
-    public Guid ListingId { get; set; }
-    
-    [Required, DataType(DataType.Currency)]
+    [DataType(DataType.Currency)]
     public long BidAmount { get; set; }
-    
+
     public DateTime BidTime { get; set; }
 }

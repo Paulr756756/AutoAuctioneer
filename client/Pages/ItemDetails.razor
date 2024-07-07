@@ -8,10 +8,14 @@
     </NotAuthorized>
     <Authorized>
         <div class="card lg:card-side bg-base-100 shadow-xl">
-            @if (_item != null) {
-                switch (_item.Type) {
+            @if (_item != null)
+            {
+                switch (_item.Type)
+                {
                     case 0:
-                        <figure><img src=@_car!.ImageUrls?[0] alt="Img" /></figure>
+                        <figure>
+                            <img src=@_car!.ImageUrls?[0] alt="Img"/>
+                        </figure>
                         <div class="card-body">
                             <h2 class="card-title">@_car.Make, @_car.Model/</h2>
 
@@ -31,13 +35,11 @@
                         break;
                     case 1:
                         break;
-                    default:
-                        break;
                 }
-            } else {
-
             }
-            <figure><img src="/images/stock/photo-1494232410401-ad00d5433cfa.jpg" alt="Album" /></figure>
+            <figure>
+                <img src="/images/stock/photo-1494232410401-ad00d5433cfa.jpg" alt="Album"/>
+            </figure>
             <div class="card-body">
                 <h2 class="card-title">@StringIdParam</h2>
                 <p>Click the button to listen on Spotiwhy app.</p>
@@ -48,4 +50,3 @@
         </div>
     </Authorized>
 </AuthorizeView>
-

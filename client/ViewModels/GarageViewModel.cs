@@ -1,12 +1,13 @@
-﻿using Client.Models.DTOs;
+﻿using Blazored.LocalStorage;
+using Blazored.Toast.Services;
+using Client.Models.DTOs;
 using Client.Models.Entities;
 using Client.Shared;
-using Blazored.LocalStorage;
-using Blazored.Toast.Services;
 
 namespace Client.ViewModels;
 
-public interface IGarageViewModel {
+public interface IGarageViewModel
+{
     List<CarEntity>? Cars { get; set; }
     List<PartEntity>? Parts { get; set; }
     List<ItemEntity>? Items { get; set; }
@@ -18,27 +19,33 @@ public interface IGarageViewModel {
     void TriggerStateChange();
 }
 
-public class GarageViewModel : IGarageViewModel { 
-    private readonly ILocalStorageService _localStorage;
+public class GarageViewModel : IGarageViewModel
+{
     private readonly GenericMethods _genericMethods;
+    private readonly ILocalStorageService _localStorage;
     private readonly IToastService _toastService;
-    public List<CarEntity>? Cars { get; set; } = new();
-    public List<PartEntity>? Parts { get; set; } = new();
-    public List<ItemEntity>? Items { get; set; } = new();
-    public List<ItemDTO> ItemDTOs { get; set; } = new();
-    public List<CarDTO> CarDTOs { get; set; } = new();
-    public List<PartDTO> PartDTOs { get; set; } = new();
 
-    public Dictionary<ItemEntity, CarEntity> CarMapping { get; set; } = new();
-    public Dictionary<ItemEntity, PartEntity> PartMapping { get; set; } = new();
-
-    public GarageViewModel(ILocalStorageService localStorage, GenericMethods genericMethods, IToastService toastService) {
+    public GarageViewModel(ILocalStorageService localStorage, GenericMethods genericMethods, IToastService toastService)
+    {
         _localStorage = localStorage;
         _genericMethods = genericMethods;
         _toastService = toastService;
     }
+
+    public List<ItemDTO> ItemDTOs { get; set; } = new();
+    public List<CarDTO> CarDTOs { get; set; } = new();
+    public List<PartDTO> PartDTOs { get; set; } = new();
+    public List<CarEntity>? Cars { get; set; } = new();
+    public List<PartEntity>? Parts { get; set; } = new();
+    public List<ItemEntity>? Items { get; set; } = new();
+
+    public Dictionary<ItemEntity, CarEntity> CarMapping { get; set; } = new();
+
+    public Dictionary<ItemEntity, PartEntity> PartMapping { get; set; } = new();
+
     //TODO(Test)
-    public async Task Initialize() {
+    public async Task Initialize()
+    {
         /*if (Items.Count == 0) {
             var userId = (await _localStorage.GetItemAsStringAsync("userId")).Trim('"').Trim();
             if (userId is not (null and "null")) {
@@ -52,63 +59,86 @@ public class GarageViewModel : IGarageViewModel {
                 TriggerStateChange();
             }*/
         var userId = (await _localStorage.GetItemAsStringAsync("userId")).Trim('"').Trim();
-        if (userId is not (null and "null")) {
+        if (userId is not (null and "null"))
+        {
             Items = await _genericMethods.GetValuesFromApi<ItemEntity>($"{EnvUrls.Item}{EnvUrls.GetOwned}?id={userId}");
-            Cars = (await _genericMethods.GetValuesFromApi<CarEntity>($"{EnvUrls.Car}{EnvUrls.GetOwned}?id={userId}"));
+            Cars = await _genericMethods.GetValuesFromApi<CarEntity>($"{EnvUrls.Car}{EnvUrls.GetOwned}?id={userId}");
             Parts = await _genericMethods.GetValuesFromApi<PartEntity>($"{EnvUrls.Part}{EnvUrls.GetOwned}?id={userId}");
-            foreach (var item in Items!) {
+            foreach (var item in Items!)
+            {
                 ItemDTOs.Add((ItemDTO)item!);
-                if (item.Type == 0) {
+                if (item.Type == 0)
+                {
                     var car = Cars?.FirstOrDefault(c => c.Id == item.Id);
                     CarMapping.Add(item, car!);
                     /*CarDTOs.Add((CarDTO)car!);*/
-                } else {
+                }
+                else
+                {
                     var part = Parts?.FirstOrDefault(c => c.Id == item.Id);
                     PartMapping.Add(item, part!);
                     /*PartDTOs.Add((PartDTO)part!);*/
                 }
             }
+
             TriggerStateChange();
         }
     }
+
     //TODO(Test)
-    public async Task DeleteItem(ItemEntity item) {
-        if (item.Type == 0) {
+    public async Task DeleteItem(ItemEntity item)
+    {
+        if (item.Type == 0)
             // var response = await _genericMethods.GetValuesFromApi<Item>($"{EnvUrls.Item}");
-            try {
-                var httpResponse = await _genericMethods.DeleteValuesFromApi(EnvUrls.Car + EnvUrls.Delete, 
-                    new { UserId = item.UserId, Id = item.Id});
-                if (httpResponse.IsSuccessStatusCode) {
+            try
+            {
+                var httpResponse = await _genericMethods.DeleteValuesFromApi(EnvUrls.Car + EnvUrls.Delete,
+                    new { item.UserId, item.Id });
+                if (httpResponse.IsSuccessStatusCode)
+                {
                     Cars!.Remove(CarMapping[item]);
                     CarMapping.Remove(item);
                     Items!.Remove(item);
                     _toastService.ShowSuccess("Car deleted");
-                } else _toastService.ShowError(httpResponse.ReasonPhrase!);
-            } catch (Exception ex) {
+                }
+                else
+                {
+                    _toastService.ShowError(httpResponse.ReasonPhrase!);
+                }
+            }
+            catch (Exception ex)
+            {
                 _toastService.ShowError(ex.Message);
             }
-        }
-        else {
-            try {
-                var httpResponse = await _genericMethods.DeleteValuesFromApi(EnvUrls.Part+EnvUrls.Delete,
-                    new { UserId = item.UserId, Id = item.Id});
-                if (httpResponse.IsSuccessStatusCode) {
+        else
+            try
+            {
+                var httpResponse = await _genericMethods.DeleteValuesFromApi(EnvUrls.Part + EnvUrls.Delete,
+                    new { item.UserId, item.Id });
+                if (httpResponse.IsSuccessStatusCode)
+                {
                     Parts!.Remove(PartMapping[item]);
                     PartMapping.Remove(item);
                     Items!.Remove(item);
                     _toastService.ShowSuccess("Part deleted");
-                } else _toastService.ShowError(httpResponse.ReasonPhrase!);
-
-            } catch (Exception ex) {
+                }
+                else
+                {
+                    _toastService.ShowError(httpResponse.ReasonPhrase!);
+                }
+            }
+            catch (Exception ex)
+            {
                 _toastService.ShowError(ex.Message);
             }
-            
-        }
+
         TriggerStateChange();
     }
+
     public event Action? StateChanged;
-    public void TriggerStateChange() {
+
+    public void TriggerStateChange()
+    {
         StateChanged?.Invoke();
     }
-
 }

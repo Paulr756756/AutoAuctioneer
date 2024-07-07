@@ -1,5 +1,4 @@
 ﻿@using System.Timers
-@using System.Reflection.Metadata
 @implements IDisposable
 
 @*
@@ -11,30 +10,38 @@ Transform => Ability to move around the component
 </div>
 
 @code {
+
     private Timer _timer = default!;
+
     //Initial location changed to y-full and invisible
     private string _animationStyles = "translate-y-full opacity-0";
-    
-    [Parameter, EditorRequired]
-    public RenderFragment ChildContent { get; set; } = default!;
 
-    protected override void OnInitialized() {
+    [Parameter] [EditorRequired] public RenderFragment ChildContent { get; set; } = default!;
+
+    protected override void OnInitialized()
+    {
         _timer = new Timer(300) { AutoReset = false };
         _timer.Elapsed += TriggerAnimation;
     }
 
-    protected override void OnAfterRender(bool firstRender) {
-        if (firstRender) {
+    protected override void OnAfterRender(bool firstRender)
+    {
+        if (firstRender)
+        {
             _timer.Start();
         }
     }
 
-    private void TriggerAnimation(object? sender, ElapsedEventArgs e) {
+    private void TriggerAnimation(object? sender, ElapsedEventArgs e)
+    {
         //After 500 ms , component moved back to initial position with full opacity
         _animationStyles = "translate-y-0 opacity-100";
         StateHasChanged();
     }
-    
+
     void IDisposable.Dispose()
-        => _timer.Dispose();
+    {
+        _timer.Dispose();
+    }
+
 }

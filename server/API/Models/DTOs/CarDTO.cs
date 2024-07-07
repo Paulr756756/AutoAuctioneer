@@ -1,11 +1,10 @@
 ﻿using API.Models.RequestModels;
 using DataAccessLayer_AutoAuctioneer.Models;
-using Org.BouncyCastle.Asn1;
-using Org.BouncyCastle.Asn1.Mozilla;
 
 namespace API.Models.DTOs;
 
-public class CarDTO {
+public class CarDTO
+{
     public Guid? Id { get; set; }
     public int Type { get; set; }
     public string Make { get; set; }
@@ -24,8 +23,10 @@ public class CarDTO {
     public int? TopSpeed { get; set; }
     public string[]? ImageUrls { get; set; }
 
-    public static explicit operator CarDTO(CarEntity entity) {
-        return new CarDTO {
+    public static explicit operator CarDTO(CarEntity entity)
+    {
+        return new CarDTO
+        {
             Id = entity.Id,
             Type = entity.Type,
             Make = entity.Make,
@@ -45,8 +46,11 @@ public class CarDTO {
             ImageUrls = entity.ImageUrls
         };
     }
-    public static explicit operator CarDTO(AddCarRequest request) {
-        return new CarDTO {
+
+    public static explicit operator CarDTO(AddCarRequest request)
+    {
+        return new CarDTO
+        {
             Type = request.Type,
             Make = request.Make,
             Model = request.Model,
@@ -65,5 +69,4 @@ public class CarDTO {
             Torque = request.Torque
         };
     }
-    
 }

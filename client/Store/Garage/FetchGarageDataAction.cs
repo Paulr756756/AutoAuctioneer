@@ -1,3 +1,5 @@
 ﻿namespace Client.Store.Garage;
 
-public class FetchGarageDataAction { }
+public class FetchGarageDataAction
+{
+}

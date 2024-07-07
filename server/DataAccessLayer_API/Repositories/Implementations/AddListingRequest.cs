@@ -1,4 +1,5 @@
-﻿namespace DataAccessLayer_AutoAuctioneer.Repositories.Implementations {
-    public class AddListingRequest {
-    }
+﻿namespace DataAccessLayer_AutoAuctioneer.Repositories.Implementations;
+
+public class AddListingRequest
+{
 }

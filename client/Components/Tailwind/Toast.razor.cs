@@ -1,28 +1,30 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 
-namespace Client.Components.Tailwind; 
+namespace Client.Components.Tailwind;
 
-partial class Toast {
+partial class Toast
+{
     [Parameter] public RenderFragment ChildContent { get; set; } = default!;
     [Parameter] public string Type { get; set; } = "info";
     [Parameter] public string ClassAttributes { get; set; } = "";
     [Parameter] public string ToastId { get; set; } = "default_toast";
 
-    protected override Task OnInitializedAsync() {
+    protected override Task OnInitializedAsync()
+    {
         return base.OnInitializedAsync();
     }
 
-    public async Task PopUp() {
+    public async Task PopUp()
+    {
         await _jsRuntime.InvokeVoidAsync("eval", $"document.getElementById('{ToastId}').classList.add('show')");
     }
 
-    public async Task ShowToast() {
-        
+    public async Task ShowToast()
+    {
     }
 
-    public async Task CloseToast() {
-        
+    public async Task CloseToast()
+    {
     }
-    
 }

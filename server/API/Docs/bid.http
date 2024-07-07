@@ -35,6 +35,7 @@ Authorization: Bearer {{jwtToken}}
   "userId": "{{userId}}",
   "bidId": "{{bidId}}"
 }
+
 ###
 PATCH {{baseUrl}}update
 Content-Type:application/json

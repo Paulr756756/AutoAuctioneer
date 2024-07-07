@@ -1,6 +1,7 @@
-﻿namespace Client.Shared; 
+﻿namespace Client.Shared;
 
-public static class EnvUrls {
+public static class EnvUrls
+{
     public const string BaseUrl = "https://localhost:7162/api/";
     public const string User = "user/";
     public const string Car = "car/";
@@ -10,12 +11,12 @@ public static class EnvUrls {
     public const string Item = "item/";
 
     public const string GetAll = "getall";
-    
+
     //car
     public const string GetOwned = "getowned";
     public const string StoreCar = "store";
     public const string UpdateCar = "";
-    
+
     //item
     public const string GetById = "getById?id=";
 

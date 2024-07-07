@@ -7,59 +7,40 @@ public class CarEntity
 {
     public Guid? Id { get; set; }
 
-    [JsonPropertyName("userid")]
-    public Guid UserId { get; set; }
+    [JsonPropertyName("userid")] public Guid UserId { get; set; }
 
-    [JsonPropertyName("type")]
-    public int Type { get; set; }
+    [JsonPropertyName("type")] public int Type { get; set; }
 
     //Basic Attributes
-    [Required]
-    [JsonPropertyName("make")]
-    public string Make { get; set; }
+    [Required] [JsonPropertyName("make")] public string Make { get; set; }
 
-    [Required]
-    [JsonPropertyName("model")]
-    public string Model { get; set; }
+    [Required] [JsonPropertyName("model")] public string Model { get; set; }
 
-    [JsonPropertyName("year")]
-    public string? Year { get; set; }
+    [JsonPropertyName("year")] public string? Year { get; set; }
 
-    [JsonPropertyName("vin")]
-    public string? VIN { get; set; }
+    [JsonPropertyName("vin")] public string? VIN { get; set; }
 
-    [JsonPropertyName("color")]
-    public string? Color { get; set; }
+    [JsonPropertyName("color")] public string? Color { get; set; }
 
-    [JsonPropertyName("bodytype")]
-    public string? BodyType { get; set; }
+    [JsonPropertyName("bodytype")] public string? BodyType { get; set; }
 
-    [JsonPropertyName("fueltype")]
-    public string? FuelType { get; set; }
+    [JsonPropertyName("fueltype")] public string? FuelType { get; set; }
 
-    [JsonPropertyName("transmissiontype")]
-    public string? TransmissionType { get; set; }
+    [JsonPropertyName("transmissiontype")] public string? TransmissionType { get; set; }
 
-    [JsonPropertyName("enginetype")]
-    public string? EngineType { get; set; }
+    [JsonPropertyName("enginetype")] public string? EngineType { get; set; }
 
-    [JsonPropertyName("horsepower")]
-    public int? Horsepower { get; set; }
+    [JsonPropertyName("horsepower")] public int? Horsepower { get; set; }
 
-    [JsonPropertyName("torque")]
-    public int? Torque { get; set; }
+    [JsonPropertyName("torque")] public int? Torque { get; set; }
 
-    [JsonPropertyName("fuelefficiency")]
-    public double? FuelEfficiency { get; set; }
+    [JsonPropertyName("fuelefficiency")] public double? FuelEfficiency { get; set; }
 
-    [JsonPropertyName("acceleration")]
-    public double? Acceleration { get; set; }
+    [JsonPropertyName("acceleration")] public double? Acceleration { get; set; }
 
-    [JsonPropertyName("topspeed")]
-    public int? TopSpeed { get; set; }
+    [JsonPropertyName("topspeed")] public int? TopSpeed { get; set; }
 
-    [JsonPropertyName("imageurls")]
-    public string[]? ImageUrls { get; set; }
+    [JsonPropertyName("imageurls")] public string[]? ImageUrls { get; set; }
 
     /*    public Guid Id { get; set; }
 

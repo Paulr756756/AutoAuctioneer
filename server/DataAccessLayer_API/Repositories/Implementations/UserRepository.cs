@@ -1,105 +1,108 @@
-﻿using Dapper;
+﻿using System.Data;
 using DataAccessLayer_AutoAuctioneer.Models;
 using DataAccessLayer_AutoAuctioneer.Repositories.Interfaces;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Npgsql;
 using NpgsqlTypes;
-using System.Data;
-using System.Data.SqlTypes;
 
 namespace DataAccessLayer_AutoAuctioneer.Repositories.Implementations;
 
-public class UserRepository : BaseRepository, IUserRepository {
+public class UserRepository : BaseRepository, IUserRepository
+{
     private readonly IConfiguration _config;
     private readonly ILogger<UserRepository> _logger;
-    public UserRepository(IConfiguration config, ILogger<UserRepository> logger) : base(config) {
+
+    public UserRepository(IConfiguration config, ILogger<UserRepository> logger) : base(config)
+    {
         _config = config;
         _logger = logger;
     }
 
-    public async Task<List<UserEntity>?> GetAllUsers() {
+    public async Task<List<UserEntity>?> GetAllUsers()
+    {
         var sql = "select id, username from \"users\"";
         var result = await LoadData<UserEntity, dynamic>(sql, new { });
 
-        if (!result.IsSuccess) {
+        if (!result.IsSuccess)
             //Do some logging
             _logger.LogCritical($"Response not a success : {result.ErrorMessage}");
-        }
         return result.Data;
     }
 
 
-    public async Task<UserEntity?> GetUserByEmail(string email) {
-       /* var sql = "select " +
-            "id," +
-            "username," +
-            "email," +
-            "address," +
-            "phoneno," +
-            "firstname," +
-            "lastname," +
-            "dateofbirth" +*/
-       var sql = "select *" + 
-            " from \"users\" where email = @Email";
+    public async Task<UserEntity?> GetUserByEmail(string email)
+    {
+        /* var sql = "select " +
+             "id," +
+             "username," +
+             "email," +
+             "address," +
+             "phoneno," +
+             "firstname," +
+             "lastname," +
+             "dateofbirth" +*/
+        var sql = "select *" +
+                  " from \"users\" where email = @Email";
         var result = await LoadData<UserEntity, dynamic>(sql, new { Email = email });
-        if (!result.IsSuccess) {
-            _logger.LogCritical($"Response not a success : {result.ErrorMessage}");
-        }
+        if (!result.IsSuccess) _logger.LogCritical($"Response not a success : {result.ErrorMessage}");
         var user = result.Data?.FirstOrDefault();
         return user;
     }
 
-    public async Task<UserEntity?> GetUserByVerificationToken(string token) {
+    public async Task<UserEntity?> GetUserByVerificationToken(string token)
+    {
         var sql = "select id, username from user where verificationtoken=@Token";
         var result = await LoadData<UserEntity, dynamic>(sql, new { Token = token });
-        if (!result.IsSuccess) {
-            _logger.LogCritical($"Response not a success {result.ErrorMessage}");
-        }
+        if (!result.IsSuccess) _logger.LogCritical($"Response not a success {result.ErrorMessage}");
 
         var user = result.Data?.FirstOrDefault();
         return user;
     }
 
-    public async Task<UserEntity?> GetUserByPasswordToken(string token) {
+    public async Task<UserEntity?> GetUserByPasswordToken(string token)
+    {
         var sql = "select * from users where passwordresettoken = @Token";
         var result = await LoadData<UserEntity, dynamic>(sql, new { Token = token });
 
-        if (!result.IsSuccess) {
-            _logger.LogCritical($"Response not a success : {result.ErrorMessage}");
-        }
+        if (!result.IsSuccess) _logger.LogCritical($"Response not a success : {result.ErrorMessage}");
         var user = result.Data?.FirstOrDefault();
         return user;
     }
 
-    public async Task<UserEntity?> GetUserById(Guid id) {
+    public async Task<UserEntity?> GetUserById(Guid id)
+    {
         var sql = "select * from users where id = @Id ;";
         var result = await LoadData<UserEntity, dynamic>(sql, new { Id = id });
 
-        if (!result.IsSuccess) {
-            _logger.LogCritical($"Response not a success: {result.ErrorMessage}");
-        }
+        if (!result.IsSuccess) _logger.LogCritical($"Response not a success: {result.ErrorMessage}");
         var user = result.Data?.FirstOrDefault();
         return user;
     }
 
-    public async Task<bool> RegisterUser(UserEntity user) {
+    public async Task<bool> RegisterUser(UserEntity user)
+    {
         var sql = "insert_user";
-        var command = new NpgsqlCommand() {
+        var command = new NpgsqlCommand
+        {
             CommandText = sql,
-            CommandType = CommandType.StoredProcedure,
+            CommandType = CommandType.StoredProcedure
         };
 
         command.Parameters.AddWithValue("_id", NpgsqlDbType.Uuid, DBNull.Value).Direction = ParameterDirection.Output;
         command.Parameters.AddWithValue("_username", NpgsqlDbType.Varchar, user.UserName!);
         command.Parameters.AddWithValue("_email", NpgsqlDbType.Varchar, user.Email!);
         command.Parameters.AddWithValue("_verificationtoken", NpgsqlDbType.Text, user.VerificationToken!);
-        command.Parameters.AddWithValue("_address", NpgsqlDbType.Text, user.Address==null?DBNull.Value:user.Address);
+        command.Parameters.AddWithValue("_address", NpgsqlDbType.Text,
+            user.Address == null ? DBNull.Value : user.Address);
         command.Parameters.AddWithValue("_registrationdate", NpgsqlDbType.Timestamp, user.RegistrationDate!);
         command.Parameters.AddWithValue("_phoneno", NpgsqlDbType.Text, user.Phone == null ? DBNull.Value : user.Phone);
-        command.Parameters.AddWithValue("_firstname", NpgsqlDbType.Varchar, user.FirstName==null?DBNull.Value : user.FirstName);
-        command.Parameters.AddWithValue("_lastname", NpgsqlDbType.Varchar, user.LastName==null?DBNull.Value : user.LastName);
-        command.Parameters.AddWithValue("_dateofbirth", NpgsqlDbType.Date, user.DateOfBirth == null ? DBNull.Value : user.DateOfBirth);
+        command.Parameters.AddWithValue("_firstname", NpgsqlDbType.Varchar,
+            user.FirstName == null ? DBNull.Value : user.FirstName);
+        command.Parameters.AddWithValue("_lastname", NpgsqlDbType.Varchar,
+            user.LastName == null ? DBNull.Value : user.LastName);
+        command.Parameters.AddWithValue("_dateofbirth", NpgsqlDbType.Date,
+            user.DateOfBirth == null ? DBNull.Value : user.DateOfBirth);
         command.Parameters.AddWithValue("_passwordhash", NpgsqlDbType.Text, user.PasswordHash!);
 
         /*        var parameters = new DynamicParameters();
@@ -117,28 +120,36 @@ public class UserRepository : BaseRepository, IUserRepository {
 
         /*        var result = await SaveData(sql, parameters, cmdType : CommandType.StoredProcedure);*/
         var result = await SaveData<UserEntity>(command);
-        if (!result.IsSuccess) {
+        if (!result.IsSuccess)
+        {
             _logger.LogCritical($"Response not a success : {result.ErrorMessage}");
             return false;
         }
-        _logger.LogInformation("UserEntity created with ID : {userid}",command.Parameters["_id"]);
+
+        _logger.LogInformation("UserEntity created with ID : {userid}", command.Parameters["_id"]);
         return true;
     }
 
-    public async Task<bool> UpdateUser(UserEntity user) {
+    public async Task<bool> UpdateUser(UserEntity user)
+    {
         var sql = "update_user";
-        var command = new NpgsqlCommand() {
+        var command = new NpgsqlCommand
+        {
             CommandText = sql,
-            CommandType = CommandType.StoredProcedure,
+            CommandType = CommandType.StoredProcedure
         };
         command.Parameters.AddWithValue("_id", NpgsqlDbType.Uuid, user.Id!);
         command.Parameters.AddWithValue("_username", NpgsqlDbType.Varchar, user.UserName!);
         command.Parameters.AddWithValue("_email", NpgsqlDbType.Varchar, user.Email!);
-        command.Parameters.AddWithValue("_address", NpgsqlDbType.Text, user.Address==null?DBNull.Value : user.Address);
-        command.Parameters.AddWithValue("_phoneno", NpgsqlDbType.Text, user.Phone==null?DBNull.Value : user.Phone);
-        command.Parameters.AddWithValue("_firstname", NpgsqlDbType.Varchar, user.FirstName==null?DBNull.Value : user.FirstName);
-        command.Parameters.AddWithValue("_lastname", NpgsqlDbType.Varchar, user.LastName==null?DBNull.Value : user.LastName);
-        command.Parameters.AddWithValue("_dateofbirth", NpgsqlDbType.Date, user.DateOfBirth==null?DBNull.Value:user.DateOfBirth);
+        command.Parameters.AddWithValue("_address", NpgsqlDbType.Text,
+            user.Address == null ? DBNull.Value : user.Address);
+        command.Parameters.AddWithValue("_phoneno", NpgsqlDbType.Text, user.Phone == null ? DBNull.Value : user.Phone);
+        command.Parameters.AddWithValue("_firstname", NpgsqlDbType.Varchar,
+            user.FirstName == null ? DBNull.Value : user.FirstName);
+        command.Parameters.AddWithValue("_lastname", NpgsqlDbType.Varchar,
+            user.LastName == null ? DBNull.Value : user.LastName);
+        command.Parameters.AddWithValue("_dateofbirth", NpgsqlDbType.Date,
+            user.DateOfBirth == null ? DBNull.Value : user.DateOfBirth);
 
         /*        var parameters = new DynamicParameters();
                 parameters.Add("_id", user.Id, DbType.Guid, ParameterDirection.InputOutput);
@@ -153,7 +164,8 @@ public class UserRepository : BaseRepository, IUserRepository {
                 var result = await SaveData(sql,parameters, cmdType: CommandType.StoredProcedure);*/
 
         var result = await SaveData<UserEntity>(command);
-        if (!result.IsSuccess) {
+        if (!result.IsSuccess)
+        {
             _logger.LogCritical($"Response not a success : {result.ErrorMessage}");
             return false;
         }
@@ -162,19 +174,23 @@ public class UserRepository : BaseRepository, IUserRepository {
         return true;
     }
 
-    public async Task<bool> VerifyUser(UserEntity user) {
+    public async Task<bool> VerifyUser(UserEntity user)
+    {
         var sql = "update users set verifiedat= @VerifiedAt";
         var command = new NpgsqlCommand(sql);
         command.Parameters.AddWithValue("VerifiedAt", NpgsqlDbType.Timestamp, user.VerifiedAt!);
         var result = await SaveData<UserEntity>(command);
-        if(!result.IsSuccess) {
+        if (!result.IsSuccess)
+        {
             _logger.LogCritical("Failure : {message}", result.ErrorMessage);
             return false;
         }
+
         return true;
     }
 
-    public async Task<bool> SetPasswordResetToken(string token, Guid userId) {
+    public async Task<bool> SetPasswordResetToken(string token, Guid userId)
+    {
         var sql = "update \"users\" set passwordresettoken=@Token, resettokenexpires=@ExpireDate where id=@UserId";
         var command = new NpgsqlCommand(sql);
         var date = DateTime.UtcNow.AddDays(1);
@@ -184,40 +200,50 @@ public class UserRepository : BaseRepository, IUserRepository {
 
         /*        var result = await SaveData(sql, new { Token = token, ExpireDate = date, UserId = userId }, null);*/
         var result = await SaveData<UserEntity>(command);
-        if (!result.IsSuccess) {
+        if (!result.IsSuccess)
+        {
             _logger.LogCritical($"Response not a success : {result.ErrorMessage}");
             return false;
         }
+
         return true;
     }
 
-    public async Task<bool> UpdatePassword(string passwordHash, Guid id) {
-        var sql = "update \"users\" set passwordhash=@PasswordHash, resettokenexpires=null,passwordresettoken=null where id=@Id";
+    public async Task<bool> UpdatePassword(string passwordHash, Guid id)
+    {
+        var sql =
+            "update \"users\" set passwordhash=@PasswordHash, resettokenexpires=null,passwordresettoken=null where id=@Id";
         var command = new NpgsqlCommand(sql);
         command.Parameters.AddWithValue("PasswordHash", passwordHash);
         command.Parameters.AddWithValue("Id", NpgsqlDbType.Uuid, id);
         /*var result = await SaveData(sql, new { PasswordHash = passwordHash, Id = id }, null);*/
         var result = await SaveData<UserEntity>(command);
-        if (!result.IsSuccess) {
+        if (!result.IsSuccess)
+        {
             _logger.LogCritical($"Response not a success : {result.ErrorMessage}");
             return false;
         }
+
         return true;
     }
 
-    public async Task<bool> DeleteUser(Guid id) {
+    public async Task<bool> DeleteUser(Guid id)
+    {
         var sql = "delete_user";
-        var command = new NpgsqlCommand() {
+        var command = new NpgsqlCommand
+        {
             CommandText = sql,
-            CommandType = CommandType.StoredProcedure,
+            CommandType = CommandType.StoredProcedure
         };
         command.Parameters.AddWithValue("_id", NpgsqlDbType.Uuid, id);
 
         var result = await SaveData<UserEntity>(command);
-        if (!result.IsSuccess) {
+        if (!result.IsSuccess)
+        {
             _logger.LogError("DeleteUser() Couldn't delete user:{e}", result.ErrorMessage);
             return false;
         }
+
         return true;
     }
 }

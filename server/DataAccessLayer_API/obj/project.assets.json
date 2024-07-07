@@ -243,26 +243,24 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\paul7\\.nuget\\packages\\": {}
+    "/home/paulr/.nuget/packages/": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\paul7\\Documents\\WorkStation\\AutoAuctioneer\\server\\DataAccessLayer_API\\DataAccessLayer_API.csproj",
+      "projectUniqueName": "/home/paulr/Documents/WKS/AutoAuctioneer/server/DataAccessLayer_API/DataAccessLayer_API.csproj",
       "projectName": "DataAccessLayer_API",
-      "projectPath": "C:\\Users\\paul7\\Documents\\WorkStation\\AutoAuctioneer\\server\\DataAccessLayer_API\\DataAccessLayer_API.csproj",
-      "packagesPath": "C:\\Users\\paul7\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\paul7\\Documents\\WorkStation\\AutoAuctioneer\\server\\DataAccessLayer_API\\obj\\",
+      "projectPath": "/home/paulr/Documents/WKS/AutoAuctioneer/server/DataAccessLayer_API/DataAccessLayer_API.csproj",
+      "packagesPath": "/home/paulr/.nuget/packages/",
+      "outputPath": "/home/paulr/Documents/WKS/AutoAuctioneer/server/DataAccessLayer_API/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\paul7\\AppData\\Roaming\\NuGet\\NuGet.Config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        "/home/paulr/.nuget/NuGet/NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net7.0"
       ],
       "sources": {
-        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
@@ -305,13 +303,35 @@
         ],
         "assetTargetFallback": true,
         "warn": true,
+        "downloadDependencies": [
+          {
+            "name": "Microsoft.AspNetCore.App.Ref",
+            "version": "[7.0.19, 7.0.19]"
+          },
+          {
+            "name": "Microsoft.NETCore.App.Ref",
+            "version": "[7.0.19, 7.0.19]"
+          }
+        ],
         "frameworkReferences": {
           "Microsoft.NETCore.App": {
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.403\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "/usr/lib/dotnet/sdk/8.0.105/RuntimeIdentifierGraph.json"
       }
     }
-  }
+  },
+  "logs": [
+    {
+      "code": "NU1903",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Package 'Npgsql' 7.0.4 has a known high severity vulnerability, https://github.com/advisories/GHSA-x9vc-6hfv-hg8c",
+      "libraryId": "Npgsql",
+      "targetGraphs": [
+        "net7.0"
+      ]
+    }
+  ]
 }

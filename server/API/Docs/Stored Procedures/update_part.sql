@@ -8,20 +8,20 @@ create procedure update_part(
     _parttype int,
     _manufacturer text
 )
-language plpgsql as $$
+    language plpgsql as $$
 begin
-    update parts set
-        name = _name,
-        description = _description,
-        category = _category,
-        marketprice = _marketprice,
-        parttype = _parttype,
-        manufacturer  = _manufacturer 
-    where id=_id;
+update parts
+set name         = _name,
+    description  = _description,
+    category     = _category,
+    marketprice  = _marketprice,
+    parttype     = _parttype,
+    manufacturer = _manufacturer
+where id = _id;
 
-    EXCEPTION
+EXCEPTION
     WHEN others THEN
     RAISE EXCEPTION 'Error updating part : %', SQLERRM;
-    
+
 end;
 $$;

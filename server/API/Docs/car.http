@@ -6,6 +6,7 @@
 
 ###
 GET {{baseUrl}}car/getall
+
 ###
 GET {{baseUrl}}car/getbyid?id={{carId}}
 
@@ -62,6 +63,7 @@ Authorization: Bearer {{jwtToken}}
   "topspeed": 117,
   "imageurls": null
 }
+
 ###
 DELETE {{baseUrl}}car/delete
 Content-Type: application/json

@@ -1,4 +1,5 @@
 ﻿namespace Client.Store.Garage;
 
-public class GarageDataAction {
+public class GarageDataAction
+{
 }

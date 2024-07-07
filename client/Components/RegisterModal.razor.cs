@@ -1,11 +1,12 @@
 ﻿using Client.Components.Tailwind;
 
-namespace Client.Components; 
+namespace Client.Components;
 
-partial class RegisterModal {
+partial class RegisterModal
+{
     private Modal modalRef;
 
-    async Task Register() {
-        
+    private async Task Register()
+    {
     }
 }

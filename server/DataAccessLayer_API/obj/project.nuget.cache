@@ -1,14 +1,27 @@
 {
   "version": 2,
-  "dgSpecHash": "Gh8UJPClVi3Tf05t9ESuk857t6iByMKAKxxMhAOWjt/QXj0gbTg0QfeXOZmSZKYm0VVGNnYcnv36fj8av0ziQQ==",
+  "dgSpecHash": "IUFts88CF2w1zLqDZLTrqTXmTD/YuVo+qpApCnut1SVrZR7Ms5m30j+P02fOMCUxQDJYKbVlVkRVMwzjwXuftA==",
   "success": true,
-  "projectFilePath": "C:\\Users\\paul7\\Documents\\WorkStation\\AutoAuctioneer\\server\\DataAccessLayer_API\\DataAccessLayer_API.csproj",
+  "projectFilePath": "/home/paulr/Documents/WKS/AutoAuctioneer/server/DataAccessLayer_API/DataAccessLayer_API.csproj",
   "expectedPackageFiles": [
-    "C:\\Users\\paul7\\.nuget\\packages\\dapper\\2.0.151\\dapper.2.0.151.nupkg.sha512",
-    "C:\\Users\\paul7\\.nuget\\packages\\microsoft.extensions.configuration.abstractions\\7.0.0\\microsoft.extensions.configuration.abstractions.7.0.0.nupkg.sha512",
-    "C:\\Users\\paul7\\.nuget\\packages\\microsoft.extensions.logging.abstractions\\6.0.0\\microsoft.extensions.logging.abstractions.6.0.0.nupkg.sha512",
-    "C:\\Users\\paul7\\.nuget\\packages\\microsoft.extensions.primitives\\7.0.0\\microsoft.extensions.primitives.7.0.0.nupkg.sha512",
-    "C:\\Users\\paul7\\.nuget\\packages\\npgsql\\7.0.4\\npgsql.7.0.4.nupkg.sha512"
+    "/home/paulr/.nuget/packages/dapper/2.0.151/dapper.2.0.151.nupkg.sha512",
+    "/home/paulr/.nuget/packages/microsoft.extensions.configuration.abstractions/7.0.0/microsoft.extensions.configuration.abstractions.7.0.0.nupkg.sha512",
+    "/home/paulr/.nuget/packages/microsoft.extensions.logging.abstractions/6.0.0/microsoft.extensions.logging.abstractions.6.0.0.nupkg.sha512",
+    "/home/paulr/.nuget/packages/microsoft.extensions.primitives/7.0.0/microsoft.extensions.primitives.7.0.0.nupkg.sha512",
+    "/home/paulr/.nuget/packages/npgsql/7.0.4/npgsql.7.0.4.nupkg.sha512",
+    "/home/paulr/.nuget/packages/microsoft.netcore.app.ref/7.0.19/microsoft.netcore.app.ref.7.0.19.nupkg.sha512",
+    "/home/paulr/.nuget/packages/microsoft.aspnetcore.app.ref/7.0.19/microsoft.aspnetcore.app.ref.7.0.19.nupkg.sha512"
   ],
-  "logs": []
+  "logs": [
+    {
+      "code": "NU1903",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Package 'Npgsql' 7.0.4 has a known high severity vulnerability, https://github.com/advisories/GHSA-x9vc-6hfv-hg8c",
+      "libraryId": "Npgsql",
+      "targetGraphs": [
+        "net7.0"
+      ]
+    }
+  ]
 }

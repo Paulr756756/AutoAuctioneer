@@ -2,7 +2,8 @@
 
 namespace API.Services.ItemService;
 
-public interface IItemService {
+public interface IItemService
+{
     Task<ItemEntity?> GetById(Guid id);
     Task<List<ItemEntity>?> GetOwned(Guid id);
 }

@@ -3,68 +3,76 @@
 @inject IToastService _toastService
 
 <EditForm Model="@_part" method="dialogue" OnValidSubmit="@OnFormSubmit">
-  <div class="space-y-12 py-4">
-    <div class="border-b border-gray-900/10 pb-12">
-      <h2 class="text-base font-semibold leading-7 text-gray-900">Provide item information</h2>
-      <p class="mt-1 text-sm leading-6 text-gray-600">You can leave the following fields blank unless they are marked by a *</p>
+    <div class="space-y-12 py-4">
+        <div class="border-b border-gray-900/10 pb-12">
+            <h2 class="text-base font-semibold leading-7 text-gray-900">Provide item information</h2>
+            <p class="mt-1 text-sm leading-6 text-gray-600">You can leave the following fields blank unless they are marked by a *</p>
 
-      <div class="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
-        <div class="sm:col-span-3 form-control">
-          <label class=" label">
-            <span class="label-text">Name</span>
-          </label>
-          <div class="mt-2">
-            <InputText type="text" placeholder="eg.- 13B-DEI Rotary Engine" class="input input-bordered w-full" @bind-Value="_part.Name"/>
-            <ValidationMessage For="@(() => _part.Name)"/>
-          </div>
-        </div>
+            <div class="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
+                <div class="sm:col-span-3 form-control">
+                    <label class=" label">
+                        <span class="label-text">Name</span>
+                    </label>
+                    <div class="mt-2">
+                        <InputText type="text" placeholder="eg.- 13B-DEI Rotary Engine" class="input input-bordered w-full" @bind-Value="_part.Name"/>
+                        <ValidationMessage For="@(() => _part.Name)"/>
+                    </div>
+                </div>
 
-        <div class="sm:col-span-3 form-control">
-          <label class="label"><span class="label-text">Description</span></label>
-          <div class="mt-2">
-            @*TODO(Figure out why textarea-bordered ain't working)*@
-            <InputTextArea type="text" class="textarea textarea-primary w-full" placeholder="Description" @bind-Value="_part.Description"/>
-            <ValidationMessage For="@(() => _part.Description)"/>
-          </div>
-        </div>
-        
-        <div class="sm:col-span-3 form-control">
-          <label class="text"><span class="label-text">Category</span></label>
-          <div class="mt-2">
-            <InputText type="text" placeholder="eg.- Engines" class="input input-bordered w-full" @bind-Value="_part.Category"/>
-            <ValidationMessage For="@(()=> _part.Category)"/>
-          </div>
-        </div>
-        
-        <div class="sm:col-span-3 form-control">
-          <label class="text"><span class="label-text">Manufacturer</span></label>
-          <div class="mt-2">
-            <InputText type="text" placeholder="eg.- Mazda" class="input input-bordered w-full" @bind-Value="_part.Manufacturer"/>
-            <ValidationMessage For="@(()=> _part.Manufacturer)"/>
-          </div>
-        </div>
-        
-        <div class="sm:col-span-2 form-control">
-          <label class="text"><span class="label-text">Market Price</span></label>
-          <div class="mt-2">
-            <InputText type="number" placeholder="eg.- 2725 ($)" class="input input-bordered w-full" @bind-Value="_marketPrice"/>
-            <ValidationMessage For="@(()=> _part.MarketPrice)"/>
-          </div>
-        </div>
-        
-        @*TODO(Select does not work as intended)*@
-        <div class="sm:col-span-2 form-control">
-          <label class="label">
-            <span class="label-text">Choose the type of part</span>
-          </label>
-          <select title="partSelect"  bind-Value="@_partType" class="select select-bordered" @onchange="() => PartTypeChanged()">
-            <option disabled selected>Pick one</option>
-            <option value="0">Generic Car Part</option>
-            <option value="1" disabled>Engine</option>
-            <option value="2" disabled>Customization Car Part</option>
-            <option value="3" disabled>Individual Car Part</option>
-          </select>
-          @*
+                <div class="sm:col-span-3 form-control">
+                    <label class="label">
+                        <span class="label-text">Description</span>
+                    </label>
+                    <div class="mt-2">
+                        @*TODO(Figure out why textarea-bordered ain't working)*@
+                        <InputTextArea type="text" class="textarea textarea-primary w-full" placeholder="Description" @bind-Value="_part.Description"/>
+                        <ValidationMessage For="@(() => _part.Description)"/>
+                    </div>
+                </div>
+
+                <div class="sm:col-span-3 form-control">
+                    <label class="text">
+                        <span class="label-text">Category</span>
+                    </label>
+                    <div class="mt-2">
+                        <InputText type="text" placeholder="eg.- Engines" class="input input-bordered w-full" @bind-Value="_part.Category"/>
+                        <ValidationMessage For="@(() => _part.Category)"/>
+                    </div>
+                </div>
+
+                <div class="sm:col-span-3 form-control">
+                    <label class="text">
+                        <span class="label-text">Manufacturer</span>
+                    </label>
+                    <div class="mt-2">
+                        <InputText type="text" placeholder="eg.- Mazda" class="input input-bordered w-full" @bind-Value="_part.Manufacturer"/>
+                        <ValidationMessage For="@(() => _part.Manufacturer)"/>
+                    </div>
+                </div>
+
+                <div class="sm:col-span-2 form-control">
+                    <label class="text">
+                        <span class="label-text">Market Price</span>
+                    </label>
+                    <div class="mt-2">
+                        <InputText type="number" placeholder="eg.- 2725 ($)" class="input input-bordered w-full" @bind-Value="_marketPrice"/>
+                        <ValidationMessage For="@(() => _part.MarketPrice)"/>
+                    </div>
+                </div>
+
+                @*TODO(Select does not work as intended)*@
+                <div class="sm:col-span-2 form-control">
+                    <label class="label">
+                        <span class="label-text">Choose the type of part</span>
+                    </label>
+                    <select title="partSelect" bind-Value="@_partType" class="select select-bordered" @onchange="() => PartTypeChanged()">
+                        <option disabled selected>Pick one</option>
+                        <option value="0">Generic Car Part</option>
+                        <option value="1" disabled>Engine</option>
+                        <option value="2" disabled>Customization Car Part</option>
+                        <option value="3" disabled>Individual Car Part</option>
+                    </select>
+                    @*
           <select class="select select-bordered" @onchange="PartTypeChanged" >
             <option disabled selected>Pick one</option>
             <option value="@(()=>0)">Generic Car Part</option>
@@ -72,9 +80,9 @@
             <option value="@(()=>2)" disabled>Customization Car Part</option>
             <option value="@(()=>3)" disabled>Individual Car Part</option>
           </select>*@
-        </div>
-        
-        @*<div>
+                </div>
+
+                @*<div>
           <label>
             Primary Classification:
             <InputSelect class="select select-bordered" @bind-Value="_demoSelectValue" onchange="@(()=> Console.WriteLine(_demoSelectValue))">
@@ -85,23 +93,23 @@
             </InputSelect>
           </label>
         </div>*@
-        
-        
-        
-        @*<div class="sm:col-span-4 form-control">
+
+
+
+                @*<div class="sm:col-span-4 form-control">
           <label class="text"><span class="label-text">ImageUrls</span></label>
           <div class="mt-2">
             <InputText type="text" placeholder="eg.- Just place a google images link for now" class="input input-bordered w-full" @bind-Value="_mainImage"/>
             <ValidationMessage For="@(()=> _part.ImageUrls)"/>
           </div>
         </div>*@
-        
-      </div>
-    </div>
-  </div>
 
-  <div class="mt-6 flex items-center justify-end gap-x-6">
-    <button type="button" class="btn btn-ghost btn-active" @onclick="Cancel">Cancel</button>
-    <button type="submit" class="btn btn-primary btn-active">Save</button>
-  </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="mt-6 flex items-center justify-end gap-x-6">
+        <button type="button" class="btn btn-ghost btn-active" @onclick="Cancel">Cancel</button>
+        <button type="submit" class="btn btn-primary btn-active">Save</button>
+    </div>
 </EditForm>
